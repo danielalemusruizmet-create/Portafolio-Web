@@ -1,0 +1,16 @@
+<svg viewBox="0 0 560 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="privacyTitle">
+  <title id="privacyTitle">Ilustración de protección de datos personales</title>
+  <rect width="560" height="400" rx="30" fill="#0d6efd" opacity=".08"/>
+  <circle cx="160" cy="110" r="70" fill="#ffc107" opacity=".12"/>
+  <path d="M330 80 H450 C470 80 480 100 470 118 L440 170 H360 V140 C360 120 345 100 330 100 Z" fill="#fff" stroke="#0d6efd" stroke-width="4"/>
+  <path d="M360 170 V220" stroke="#0d6efd" stroke-width="4" stroke-linecap="round"/>
+  <path d="M320 220 H420" stroke="#0d6efd" stroke-width="4" stroke-linecap="round"/>
+  <rect x="110" y="220" width="240" height="120" rx="20" fill="#fff" stroke="#dee2e6" stroke-width="4"/>
+  <path d="M150 270 H330" stroke="#0d6efd" stroke-width="6" stroke-linecap="round"/>
+  <path d="M150 310 H320" stroke="#0d6efd" stroke-width="6" stroke-linecap="round"/>
+  <path d="M150 350 H280" stroke="#0d6efd" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="180" cy="140" r="14" fill="#0d6efd"/>
+  <circle cx="220" cy="160" r="10" fill="#0d6efd"/>
+  <circle cx="450" cy="300" r="35" fill="#0d6efd" opacity=".16"/>
+  <path d="M420 320 C430 340 455 340 465 320" stroke="#495057" stroke-width="8" stroke-linecap="round" fill="none"/>
+</svg>
