@@ -7,11 +7,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #1a2744; --gold: #c8953a; --teal: #3d7a8a;
-    --cream: #f5f0e8; --paper: #faf7f2; --ink: #2c2416;
-    --muted: #7a6e5f; --border: #ddd5c2;
-    --success: #3a7a5a; --danger: #7a3030; --warn: #7a5a10;
-    --red-bg: #fdf0f0; --green-bg: #f0faf4; --amber-bg: #fef9ec;
+      --navy: #2563eb;
+      --gold: #f97316;
+      --teal: #0ea5e9;
+      --cream: #f8fafc;
+      --paper: #ffffff;
+      --ink: #0f172a;
+      --text-dark: #0f172a;
+      --text-muted: #475569;
+      --border: #c7d2fe;
+      --success: #16a34a;
+      --danger: #be123c;
+      --primary-dark: #0f172a;
+      --primary-medium: #2563eb;
+      --white: #ffffff;
+      --accent-yellow: #fbbf24;
+      --text-yellow: #92400e;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Libre Baskerville', Georgia, serif; background: var(--cream); color: var(--ink); line-height: 1.75; }
@@ -24,6 +35,8 @@
   h1 { font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 900; line-height: 1.15; margin-bottom: 12px; }
   h1 em { color: var(--gold); font-style: italic; }
   .header-desc { color: rgba(255,255,255,0.72); font-size: 0.93rem; max-width: 580px; margin-bottom: 20px; }
+  .back-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 11px 18px; border-radius: 8px; background: white; color: var(--navy); text-decoration: none; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); transition: background 0.2s; }
+  .back-link:hover { background: rgba(255,255,255,0.95); }
   .header-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.8rem; color: rgba(255,255,255,0.55); }
   .badge { display: inline-block; padding: 3px 10px; background: rgba(200,149,58,0.2); border: 1px solid rgba(200,149,58,0.4); border-radius: 2px; font-size: 0.73rem; color: var(--gold); letter-spacing: 0.08em; }
 
@@ -134,14 +147,9 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <div class="unit-label">Unidad 2 · Semana 5</div>
     <h1>Casos colombianos:<br><em>Datos y Ley</em></h1>
     <div class="header-desc">Analizamos casos reales de manejo de datos en Colombia, identificamos qué normas fueron vulneradas y construimos propuestas de actuación ética.</div>
-    <div class="header-meta">
-      <span>⏱ 2 horas</span>
-      <span>⚖️ Análisis de casos + informe</span>
-      <span class="badge">Grupal / Individual</span>
-    </div>
+    <a href="index.html" class="back-link">← Regresar al portafolio</a>
   </div>
 </header>
 
@@ -480,9 +488,9 @@
 </main>
 
 <div class="nav-footer">
-  <a href="#">← Actividad 4: Auditoría de datos</a>
-  <span>Actividad 5 de 9 · Ética de la IA</span>
-  <a href="#">Actividad 6: Huella digital →</a>
+  <a href="a4-actividad.html">← Actividad 4: Auditoría de datos</a>
+  <span>Actividad 5 de 7 · Ética de la IA</span>
+  <a href="a6-actividad.html">Actividad 6: Huella digital →</a>
 </div>
 
 <script>
