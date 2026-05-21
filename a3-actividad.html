@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actividad A3 — ¿La IA es neutral? | Ética de la IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #2563eb;
+    --gold: #f97316;
+    --teal: #0ea5e9;
+    --cream: #f8fafc;
+    --paper: #ffffff;
+    --ink: #0f172a;
+    --muted: #475569;
+    --border: #c7d2fe;
+    --success: #16a34a;
+    --danger: #be123c;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+  a { color: inherit; text-decoration: none; }
+  .site-header {
+    background: var(--navy);
+    color: white;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(249,115,22,0.07) 20px, rgba(249,115,22,0.07) 21px);
+  }
+  .header-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 32px 40px;
+  }
+  .unit-label {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .unit-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  h1 span { color: var(--gold); font-style: italic; }
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.65);
+    margin-top: 20px;
+  }
+  .header-meta span { display: flex; align-items: center; gap: 6px; }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    background: rgba(200,149,58,0.2);
+    border: 1px solid rgba(200,149,58,0.4);
+    border-radius: 2px;
+    font-size: 0.75rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+  }
+  .main-content { max-width: 860px; margin: 0 auto; padding: 48px 32px 80px; }
+  .section { margin-bottom: 52px; }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .num-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    font-family: 'Fraunces', serif;
+    font-size: 0.9rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .objectives-box {
+    background: var(--paper);
+    border-left: 4px solid var(--gold);
+    padding: 24px 28px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 32px;
+  }
+  .objectives-box p { font-size: 0.95rem; color: var(--muted); margin-bottom: 8px; }
+  .objectives-box p:last-child { margin: 0; }
+  .reading-card { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 24px; }
+  .reading-card-header {
+    background: var(--navy);
+    color: white;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .reading-card-header:hover { background: #1d4ed8; }
+  .reading-card-header h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    flex: 1;
+  }
+  .toggle-arrow { font-size: 1.1rem; transition: transform 0.3s; }
+  .reading-card-header.open .toggle-arrow { transform: rotate(180deg); }
+  .reading-card-body { padding: 24px; display: none; font-size: 0.93rem; line-height: 1.8; }
+  .reading-card-body.open { display: block; }
+  .reading-card-body p { margin-bottom: 14px; }
+  .reading-card-body p:last-child { margin: 0; }
+  .quote-block {
+    border-left: 3px solid var(--teal);
+    padding: 12px 20px;
+    background: #eff6ff;
+    margin: 16px 0;
+    font-style: italic;
+    color: #1e3a8a;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.92rem;
+  }
+  .debate-arena { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+  @media (max-width: 640px) { .debate-arena { grid-template-columns: 1fr; } }
+  .debate-side { border: 2px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
+  .debate-side.pro { border-color: #2563eb; }
+  .debate-side.con { border-color: #be123c; }
+  .debate-side-header {
+    padding: 16px 20px;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .debate-side.pro .debate-side-header { background: #eff6ff; color: #1e3a8a; }
+  .debate-side.con .debate-side-header { background: #fffbeb; color: #92400e; }
+  .debate-side-body { padding: 18px 20px; background: white; }
+  .argument-item { display: flex; gap: 10px; margin-bottom: 14px; align-items: flex-start; font-size: 0.88rem; line-height: 1.65; }
+  .argument-item:last-child { margin: 0; }
+  .arg-icon { font-size: 1rem; flex-shrink: 0; padding-top: 2px; }
+  .step-tracker { display: flex; gap: 0; margin-bottom: 36px; overflow: hidden; border-radius: 8px; border: 1px solid var(--border); }
+  .step-item { flex: 1; text-align: center; padding: 14px 8px; background: white; font-size: 0.78rem; border-right: 1px solid var(--border); color: var(--muted); cursor: pointer; transition: background 0.2s, color 0.2s; }
+  .step-item:last-child { border-right: none; }
+  .step-item.active { background: var(--navy); color: var(--gold); }
+  .step-item.done { background: #e0f2fe; color: var(--success); }
+  .step-num { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 900; display: block; margin-bottom: 2px; }
+  .activity-panel { display: none; }
+  .activity-panel.active { display: block; }
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 0.88rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; letter-spacing: 0.03em; }
+  .form-hint { font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; font-style: italic; }
+  textarea, select { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 6px; font-family: 'Libre Baskerville', serif; font-size: 0.9rem; line-height: 1.6; background: white; color: var(--ink); resize: vertical; transition: border-color 0.2s, box-shadow 0.2s; }
+  textarea:focus, select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(61,122,138,0.1); }
+  textarea { min-height: 120px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 6px; font-family: 'Libre Baskerville', serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; border: none; text-decoration: none; transition: all 0.2s; }
+  .btn-primary { background: var(--navy); color: white; }
+  .btn-primary:hover { background: linear-gradient(135deg, #fb923c, #60a5fa); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
+  .btn-secondary { background: white; color: var(--navy); border: 2px solid var(--navy); }
+  .btn-secondary:hover { background: var(--cream); }
+  .btn-gold { background: var(--gold); color: white; }
+  .btn-gold:hover { background: #fb923c; transform: translateY(-1px); }
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+  .position-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media (max-width: 600px) { .position-cards { grid-template-columns: 1fr; } }
+  .position-card { border: 2px solid var(--border); border-radius: 10px; padding: 20px; cursor: pointer; background: white; transition: all 0.2s; }
+  .position-card:hover { border-color: var(--navy); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .position-card.selected-pro { border-color: var(--success); background: #f0faf4; }
+  .position-card.selected-con { border-color: var(--danger); background: #faf0f0; }
+  .position-card h4 { font-family: 'Fraunces', serif; font-size: 1rem; margin-bottom: 6px; }
+  .position-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.55; }
+  .argument-check { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+  .argument-check p { font-size: 0.9rem; font-style: italic; color: var(--ink); margin-bottom: 12px; }
+  .check-buttons { display: flex; gap: 10px; }
+  .check-btn { flex: 1; padding: 10px; border: 1px solid var(--border); background: white; border-radius: 6px; cursor: pointer; font-family: 'Libre Baskerville', serif; font-size: 0.83rem; transition: all 0.2s; }
+  .check-btn:hover { background: var(--cream); }
+  .check-btn.selected-a { background: #ecfdf5; border-color: var(--success); color: var(--success); font-weight: 700; }
+  .check-btn.selected-b { background: #fffbeb; border-color: var(--danger); color: var(--danger); font-weight: 700; }
+  .check-btn.selected-c { background: #eff6ff; border-color: var(--teal); color: var(--teal); font-weight: 700; }
+  .feedback-box { margin-top: 10px; padding: 10px 14px; border-radius: 6px; font-size: 0.83rem; display: none; }
+  .feedback-box.show { display: block; }
+  .feedback-box.ok { background: #ecfdf5; color: #166534; }
+  .feedback-box.warn { background: #fef3e2; color: #8a5a10; }
+  .output-card { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-top: 20px; }
+  .output-card-header { background: var(--teal); color: white; padding: 14px 20px; font-family: 'Fraunces', serif; font-size: 0.95rem; font-weight: 600; }
+  .output-card-body { padding: 20px; }
+  .output-preview { background: var(--cream); border: 1px dashed var(--border); border-radius: 6px; padding: 16px; font-size: 0.88rem; line-height: 1.7; color: var(--muted); min-height: 80px; white-space: pre-wrap; font-family: 'Libre Baskerville', serif; }
+  .progress-bar-wrap { background: var(--border); border-radius: 99px; height: 4px; margin-bottom: 28px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--gold); border-radius: 99px; transition: width 0.4s ease; }
+  .info-box { background: #eff6ff; border-left: 3px solid var(--navy); padding: 14px 18px; border-radius: 0 8px 8px 0; font-size: 0.88rem; color: #1e3a8a; margin-bottom: 20px; }
+  .info-box strong { display: block; margin-bottom: 4px; color: var(--navy); }
+  .nav-footer { background: var(--navy); color: white; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .nav-footer a { color: var(--gold); text-decoration: none; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
+  .nav-footer span { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+  .word-count { font-size: 0.75rem; color: var(--muted); text-align: right; margin-top: 4px; }
+  .success-banner { background: #eff6ff; border: 1px solid #60a5fa; border-radius: 8px; padding: 20px 24px; text-align: center; display: none; }
+  .success-banner.show { display: block; }
+  .success-banner h3 { font-family: 'Fraunces', serif; color: var(--navy); margin-bottom: 6px; }
+  .success-banner p { font-size: 0.88rem; color: #1e3a8a; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1.5rem; color: var(--navy); border: 1px solid var(--border); background: white; padding: 12px 18px; border-radius: 8px; transition: all 0.2s; }
+  .back-link:hover { background: var(--paper); color: var(--gold); border-color: var(--gold); }
+</style>
+</head>
+<body>
+<header class="site-header">
+<div class="header-inner">
+<h1>¿La IA es <span>neutral</span>?<br>Debate estructurado</h1>
+<div style="margin-top:14px; color:rgba(255,255,255,0.75); font-size:0.93rem; max-width:560px;">
+      Exploramos si los sistemas de inteligencia artificial son herramientas neutrales o si llevan consigo valores, sesgos y decisiones de diseño que afectan a las personas.
+</div>
+</div>
+</header>
+<main class="main-content">
+<a class="back-link" href="index.html">← Regresar al portafolio</a>
+  <div class="objectives-box">
+<p><strong>🎯 Propósito de la actividad:</strong> Construir argumentos fundamentados sobre la neutralidad (o no) de la IA, a través de la lectura crítica, el debate estructurado y la redacción argumentativa individual.</p>
+<p><strong>📦 Producto esperado:</strong> Un párrafo argumentativo individual (mínimo 150 palabras) que defienda una postura razonada sobre la neutralidad de la IA.</p>
+</div>
+<div class="progress-bar-wrap">
+<div class="progress-bar-fill" id="progressBar" style="width:12%"></div>
+</div>
+<div class="step-tracker">
+<div class="step-item active" onclick="goToStep(1)"><span class="step-num">1</span>Lectura</div>
+<div class="step-item" onclick="goToStep(2)"><span class="step-num">2</span>Posición</div>
+<div class="step-item" onclick="goToStep(3)"><span class="step-num">3</span>Argumentos</div>
+<div class="step-item" onclick="goToStep(4)"><span class="step-num">4</span>Contraargumentos</div>
+<div class="step-item" onclick="goToStep(5)"><span class="step-num">5</span>Párrafo</div>
+</div>
+<div class="activity-panel active" id="panel1">
+<div class="section">
+<div class="section-title"><div class="num-icon">1</div> Lectura preparatoria</div>
+<p style="margin-bottom:20px; color:var(--muted); font-size:0.93rem;">Lee los siguientes fragmentos que presentan diferentes perspectivas sobre la neutralidad tecnológica. Haz clic en cada tarjeta para expandir.</p>
+<div class="reading-card">
+<div class="reading-card-header" onclick="toggleCard(this)"><h3>📖 Perspectiva A — La IA como herramienta neutral</h3><span class="toggle-arrow">▼</span></div>
+<div class="reading-card-body">
+<p>Desde una visión instrumentalista, la tecnología —incluyendo la IA— es considerada un medio neutral: su valor ético depende exclusivamente del uso que las personas hagan de ella. Bajo esta lógica, una IA no tiene intenciones propias; simplemente ejecuta instrucciones definidas por sus programadores y procesa datos de forma matemática.</p>
+<div class="quote-block">"Las herramientas no son ni buenas ni malas; depende de cómo las uses." — Argumento clásico instrumentalista</div>
+<p>Quienes defienden esta postura argumentan que los modelos de IA no tienen conciencia, valores ni prejuicios propios. Si una IA reproduce patrones problemáticos, el problema está en los datos o en el programador, no en la tecnología en sí misma. La solución sería, entonces, mejorar los datos y los procesos de diseño.</p>
+<p>Esta perspectiva es frecuente en discursos empresariales y en algunos enfoques de ingeniería que ven a la IA como un conjunto de ecuaciones matemáticas sin carga ideológica.</p>
+</div>
+</div>
+<div class="reading-card">
+<div class="reading-card-header" onclick="toggleCard(this)"><h3>📖 Perspectiva B — La IA como artefacto social cargado de valores</h3><span class="toggle-arrow">▼</span></div>
+<div class="reading-card-body">
+<p>Filósofos de la tecnología como Langdon Winner argumentan que los artefactos tecnológicos "tienen política": incorporan decisiones que privilegian ciertos grupos, valores y visiones del mundo. La IA no es la excepción.</p>
+<div class="quote-block">"¿Tienen política los artefactos?" — Langdon Winner, 1980. Winner demuestra que el diseño técnico nunca es neutral: siempre refleja decisiones sobre quién tiene poder y quién no.</div>
+<p>En el caso de la IA, cada etapa del proceso de desarrollo involucra decisiones cargadas de valores: ¿Qué datos se recopilan y de quiénes? ¿Quiénes diseñan los algoritmos? ¿Cuáles son los objetivos de optimización? ¿Quién financia el desarrollo?</p>
+<p>Investigadoras como Safiya Noble (<em>Algorithms of Oppression</em>, 2018) han documentado cómo los motores de búsqueda reproducen estereotipos de género y raza. Joy Buolamwini demostró que los sistemas de reconocimiento facial tienen tasas de error mucho mayores en personas de piel oscura y mujeres.</p>
+<p>Desde esta perspectiva, hablar de "neutralidad de la IA" es un mito que puede ser peligroso, porque invisibiliza las decisiones políticas y sociales que hay detrás de cada sistema.</p>
+</div>
+</div>
+<div class="reading-card">
+<div class="reading-card-header" onclick="toggleCard(this)"><h3>📖 Perspectiva C — El contexto colombiano y educativo</h3><span class="toggle-arrow">▼</span></div>
+<div class="reading-card-body">
+<p>En Colombia, como en gran parte de América Latina, los sistemas de IA que se usan en educación, contratación, finanzas y servicios públicos han sido desarrollados principalmente en el Norte Global, con datos que no representan la diversidad cultural, lingüística y socioeconómica de nuestras poblaciones.</p>
+<p>Esto tiene implicaciones concretas: un sistema de evaluación automática de redacciones entrenado con textos en inglés o con español peninsular puede penalizar las formas de escritura de estudiantes de regiones colombianas. Un algoritmo de detección de fraude entrenado con datos de otro país puede discriminar a personas de estratos bajos.</p>
+<div class="quote-block">"La soberanía digital no es solo un problema técnico; es una cuestión de justicia y de quién define los valores que gobiernan nuestras vidas." — Adaptado de UNESCO, 2021</div>
+<p>Para los docentes colombianos, esto plantea una pregunta urgente: ¿estamos aceptando acríticamente tecnologías diseñadas para otros contextos, sin preguntarnos a quién sirven y a quién perjudican?</p>
+</div>
+</div>
+<div style="margin-top:24px;">
+<div class="form-group">
+<label class="form-label">✍️ Reflexión inicial (no se califica, es para ti)</label>
+<div class="form-hint">Antes de continuar, escribe en 2–3 líneas: ¿cuál de las tres perspectivas te resulta más convincente en este momento? ¿Por qué?</div>
+<textarea id="initialReflection" placeholder="Escribe tu reflexión inicial aquí..."></textarea>
+</div>
+</div>
+<div class="btn-row">
+<button class="btn btn-primary" onclick="goToStep(2)">Continuar al debate →</button>
+</div>
+</div>
+</div>
+<div class="activity-panel" id="panel2">
+<div class="section">
+<div class="section-title"><div class="num-icon">2</div> Elige tu posición para el debate</div>
+<div class="info-box"><strong>📌 Instrucción importante</strong> En un debate académico, a veces se defiende una posición que no es necesariamente la propia. Esto desarrolla la capacidad de entender múltiples perspectivas. Elige la posición que quieras defender hoy — puedes cambiar de opinión al final.</div>
+<div class="position-cards" id="positionCards">
+<div class="position-card" id="card-pro" onclick="selectPosition('pro')"><h4>✅ Posición A: La IA SÍ es neutral</h4><p>Defenderás que la IA es una herramienta matemática sin valores propios. Los problemas éticos no son de la tecnología, sino del uso humano que se haga de ella. La responsabilidad recae en los programadores y los usuarios, no en el sistema en sí.</p></div>
+<div class="position-card" id="card-con" onclick="selectPosition('con')"><h4>❌ Posición B: La IA NO es neutral</h4><p>Defenderás que la IA incorpora valores, sesgos y decisiones políticas desde su diseño. Los datos, los objetivos de optimización y quiénes la desarrollan determinan efectos sociales que no son accidentales ni evitables.</p></div>
+</div>
+<div id="positionFeedback" style="display:none;" class="info-box"><strong id="positionTitle"></strong><span id="positionDesc"></span></div>
+<div class="btn-row">
+<button class="btn btn-secondary" onclick="goToStep(1)">← Volver</button>
+<button class="btn btn-primary" id="toStep3Btn" onclick="goToStep(3)" disabled>Continuar →</button>
+</div>
+</div>
+</div>
+<div class="activity-panel" id="panel3">
+<div class="section">
+<div class="section-title"><div class="num-icon">3</div> Construye tus argumentos</div>
+<p style="margin-bottom:20px; color:var(--muted); font-size:0.93rem;">Desarrolla al menos 3 argumentos sólidos para tu posición. Un buen argumento incluye: <strong>afirmación + evidencia/ejemplo + explicación</strong>.</p>
+<div class="debate-arena" id="debateArena">
+<div class="debate-side pro"><div class="debate-side-header">✅ Argumentos: IA SÍ es neutral</div><div class="debate-side-body"><div class="argument-item"><span class="arg-icon">•</span><span>Las matemáticas no tienen ideología: un algoritmo calcula probabilidades, no toma decisiones morales.</span></div><div class="argument-item"><span class="arg-icon">•</span><span>El mismo modelo de IA puede usarse para hacer daño o para bien, según quien lo use y cómo.</span></div><div class="argument-item"><span class="arg-icon">•</span><span>Los sesgos vienen de los datos humanos, no de la IA. Mejorar los datos resuelve el problema.</span></div><div class="argument-item"><span class="arg-icon">•</span><span>Una calculadora no es "pro-matemáticas"; la IA tampoco tiene agenda propia.</span></div></div></div>
+<div class="debate-side con"><div class="debate-side-header">❌ Argumentos: IA NO es neutral</div><div class="debate-side-body"><div class="argument-item"><span class="arg-icon">•</span><span>Los datos reflejan el pasado: si la sociedad fue injusta, la IA aprende y reproduce esa injusticia.</span></div><div class="argument-item"><span class="arg-icon">•</span><span>Las decisiones de diseño (qué optimizar, qué datos usar) son decisiones políticas disfrazadas de técnicas.</span></div><div class="argument-item"><span class="arg-icon">•</span><span>Joy Buolamwini demostró que el reconocimiento facial falla más con mujeres negras: eso no es accidental.</span></div><div class="argument-item"><span class="arg-icon">•</span><span>La IA amplifica el poder de quienes la controlan: las grandes tech definen qué es "correcto" a escala global.</span></div></div></div>
+</div>
+<div class="form-group"><label class="form-label">📝 Mis argumentos propios (para mi posición elegida)</label><div class="form-hint">Escribe en tus propias palabras los 3 argumentos más fuertes que puedes usar. Intenta usar ejemplos concretos del contexto educativo colombiano.</div><textarea id="myArguments" placeholder="Argumento 1: ...\n\nArgumento 2: ...\n\nArgumento 3: ..." style="min-height:160px;"></textarea><div class="word-count" id="argsCount">0 palabras</div></div>
+<div class="btn-row"><button class="btn btn-secondary" onclick="goToStep(2)">← Volver</button><button class="btn btn-primary" onclick="goToStep(4)">Continuar →</button></div>
+</div>
+</div>
+<div class="activity-panel" id="panel4">
+<div class="section">
+<div class="section-title"><div class="num-icon">4</div> Analiza los contraargumentos</div>
+<p style="margin-bottom:20px; color:var(--muted); font-size:0.93rem;">Un debate sólido requiere conocer —y poder refutar— los argumentos del otro lado. Evalúa los siguientes argumentos contrarios a tu posición.</p>
+<div id="counterArgsContainer"></div>
+<div class="form-group" style="margin-top:20px;"><label class="form-label">🛡️ ¿Cómo responderías al argumento más difícil?</label><div class="form-hint">Identifica el contraargumento más fuerte y escribe una respuesta razonada.</div><textarea id="counterResponse" placeholder="El contraargumento más difícil para mí es... porque... Sin embargo, yo respondería que..."></textarea></div>
+<div class="btn-row"><button class="btn btn-secondary" onclick="goToStep(3)">← Volver</button><button class="btn btn-primary" onclick="goToStep(5)">Escribir párrafo final →</button></div>
+</div>
+</div>
+<div class="activity-panel" id="panel5">
+<div class="section">
+<div class="section-title"><div class="num-icon">5</div> Párrafo argumentativo individual</div>
+<div class="info-box"><strong>📐 Estructura del párrafo argumentativo</strong> 1. <strong>Tesis:</strong> Declara tu posición claramente (1–2 oraciones) · 2. <strong>Argumento central:</strong> Tu razón más fuerte (2–3 oraciones) · 3. <strong>Evidencia:</strong> Ejemplo concreto o referencia (1–2 oraciones) · 4. <strong>Reconocimiento del otro lado:</strong> Muestra que entiendes la posición contraria (1 oración) · 5. <strong>Cierre:</strong> Reafirma tu posición con una conclusión (1–2 oraciones)</div>
+<div class="form-group"><label class="form-label">✍️ Mi párrafo argumentativo (mínimo 150 palabras)</label><div class="form-hint">Escribe tu párrafo final aquí. Puedes usar las ideas que desarrollaste en los pasos anteriores. Este es tu producto de entrega.</div><textarea id="finalParagraph" placeholder="Escribe tu párrafo argumentativo aquí..." style="min-height:200px;" oninput="updateFinalCount()"></textarea><div class="word-count" id="finalCount">0 / 150 palabras mínimo</div></div>
+<div class="form-group"><label class="form-label">🔄 Reflexión metacognitiva</label><div class="form-hint">Opcional pero recomendado: ¿Cambió tu posición después del debate? ¿Qué aprendiste sobre la neutralidad tecnológica?</div><textarea id="metaReflection" placeholder="Después de explorar ambas posiciones, pienso que..." style="min-height:100px;"></textarea></div>
+<button class="btn btn-gold" onclick="generateOutput()" style="margin-bottom:20px;">📄 Generar mi entrega →</button>
+<div class="output-card" id="outputCard" style="display:none;"><div class="output-card-header">📋 Tu entrega — Lista para copiar y enviar</div><div class="output-card-body"><div class="output-preview" id="outputPreview"></div><div class="btn-row" style="margin-top:16px;"><button class="btn btn-primary" onclick="copyOutput()">📋 Copiar texto</button><button class="btn btn-secondary" onclick="printOutput()">🖨️ Imprimir / Guardar PDF</button></div></div></div>
+<div class="success-banner" id="successBanner"><h3>✅ ¡Actividad completada!</h3><p>Tu párrafo argumentativo está listo. Recuerda entregarlo según las indicaciones de tu docente.</p></div>
+<div class="btn-row" style="margin-top:20px;"><button class="btn btn-secondary" onclick="goToStep(4)">← Volver</button></div>
+</div>
+</div>
+</main>
+<div class="nav-footer"><a href="a2-actividad.html">← Actividad 2: Teachable Machine</a><span>Actividad 3 de 9 · Ética de la IA</span><a href="a4-actividad.html">Actividad 4: Auditoría de datos →</a></div>
+<script>
+  let currentStep = 1;
+  let selectedPosition = null;
+  const counterArgsPro = [
+    { text: '"Los datos reflejan injusticias históricas que la IA reproduce y amplifica. Eso no es neutral."', label: 'A favor de: IA NO es neutral' },
+    { text: '"Joy Buolamwini demostró tasas de error del 34% en mujeres de piel oscura en reconocimiento facial. ¿Eso es un accidente neutral?"', label: 'A favor de: IA NO es neutral' },
+    { text: '"Cuando la IA decide quién recibe un crédito o quién es contratado, las consecuencias de los sesgos son muy reales."', label: 'A favor de: IA NO es neutral' },
+  ];
+  const counterArgsCon = [
+    { text: '"El mismo algoritmo de detección de fraude puede usarse para proteger a los pobres o para discriminarlos. El algoritmo en sí no decide."', label: 'A favor de: IA SÍ es neutral' },
+    { text: '"Si tenemos buenos datos representativos, podemos entrenar una IA sin sesgos. El problema es corregible sin cuestionar la tecnología misma."', label: 'A favor de: IA SÍ es neutral' },
+    { text: '"Una hammer no es pro-violencia aunque pueda usarse para dañar. La IA tampoco tiene intenciones."', label: 'A favor de: IA SÍ es neutral' },
+  ];
+  function toggleCard(header) { header.classList.toggle('open'); header.nextElementSibling.classList.toggle('open'); }
+  function selectPosition(pos) {
+    selectedPosition = pos;
+    document.getElementById('card-pro').classList.remove('selected-pro', 'selected-con');
+    document.getElementById('card-con').classList.remove('selected-pro', 'selected-con');
+    document.getElementById('card-' + pos).classList.add('selected-' + pos);
+    const fb = document.getElementById('positionFeedback');
+    const title = document.getElementById('positionTitle');
+    const desc = document.getElementById('positionDesc');
+    fb.style.display = 'block';
+    if (pos === 'pro') {
+      title.textContent = '✅ Defenderás: La IA SÍ es neutral';
+      desc.textContent = ' Prepárate para argumentar que los sesgos y problemas éticos son responsabilidad humana, no de la tecnología.';
+    } else {
+      title.textContent = '❌ Defenderás: La IA NO es neutral';
+      desc.textContent = ' Prepárate para argumentar que los sistemas de IA incorporan valores, sesgos y decisiones políticas desde su diseño.';
+    }
+    document.getElementById('toStep3Btn').disabled = false;
+  }
+  function buildCounterArgs() {
+    const container = document.getElementById('counterArgsContainer');
+    container.innerHTML = '';
+    const args = selectedPosition === 'pro' ? counterArgsCon : counterArgsPro;
+    args.forEach((arg, i) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'argument-check';
+      wrapper.innerHTML = `
+        <p>${arg.text}</p>
+        <small style="color:var(--muted); font-size:0.78rem;">${arg.label}</small>
+        <div class="check-buttons" style="margin-top:10px;">
+          <button class="check-btn" onclick="checkArg(this, ${i}, 'a')">💪 Puedo refutarlo</button>
+          <button class="check-btn" onclick="checkArg(this, ${i}, 'b')">😬 Me cuesta refutarlo</button>
+          <button class="check-btn" onclick="checkArg(this, ${i}, 'c')">🤔 Parcialmente</button>
+        </div>
+        <div class="feedback-box" id="feedback-${i}"></div>
+      `;
+      container.appendChild(wrapper);
+    });
+  }
+  function checkArg(btn, idx, choice) {
+    const parent = btn.closest('.check-buttons');
+    parent.querySelectorAll('.check-btn').forEach(b => b.classList.remove('selected-a','selected-b','selected-c'));
+    btn.classList.add('selected-' + choice);
+    const fb = document.getElementById('feedback-' + idx);
+    fb.className = 'feedback-box show';
+    if (choice === 'a') {
+      fb.classList.add('ok');
+      fb.textContent = '✅ Bien. Anota tu refutación en el paso siguiente.';
+    } else if (choice === 'b') {
+      fb.classList.add('warn');
+      fb.textContent = '⚠️ Valioso reconocerlo. Los mejores argumentos reconocen sus límites. ¡Inclúyelo en tu párrafo!';
+    } else {
+      fb.style.background = '#e8eef5';
+      fb.style.color = '#1a3a54';
+      fb.textContent = '🤔 Interesante. ¿Qué parte refutarías y qué concederías?';
+    }
+  }
+  function goToStep(step) {
+    if (step === 4 && !selectedPosition) {
+      alert('Por favor, elige una posición en el paso 2 antes de continuar.');
+      return;
+    }
+    document.querySelectorAll('.activity-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel' + step).classList.add('active');
+    document.querySelectorAll('.step-item').forEach((item, i) => {
+      item.classList.remove('active', 'done');
+      if (i + 1 < step) item.classList.add('done');
+      if (i + 1 === step) item.classList.add('active');
+    });
+    const progress = [12, 30, 50, 70, 90];
+    document.getElementById('progressBar').style.width = progress[step-1] + '%';
+    if (step === 4) buildCounterArgs();
+    currentStep = step;
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  document.getElementById('myArguments').addEventListener('input', function() {
+    const words = this.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+    document.getElementById('argsCount').textContent = words + ' palabras';
+  });
+  function updateFinalCount() {
+    const text = document.getElementById('finalParagraph').value;
+    const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+    const color = words >= 150 ? 'var(--success)' : 'var(--muted)';
+    document.getElementById('finalCount').style.color = color;
+    document.getElementById('finalCount').textContent = words + ' / 150 palabras mínimo' + (words >= 150 ? ' ✅' : '');
+  }
+  function generateOutput() {
+    const paragraph = document.getElementById('finalParagraph').value.trim();
+    if (!paragraph) { alert('Por favor escribe tu párrafo argumentativo antes de generar la entrega.'); return; }
+    const words = paragraph.split(/\s+/).filter(w => w.length > 0).length;
+    if (words < 150) { alert('Tu párrafo debe tener al menos 150 palabras.'); return; }
+    const position = selectedPosition === 'pro' ? 'La IA SÍ es neutral' : 'La IA NO es neutral';
+    const meta = document.getElementById('metaReflection').value.trim();
+    const now = new Date().toLocaleDateString('es-CO', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    let output = `ACTIVIDAD 3 — ¿LA IA ES NEUTRAL? | DEBATE ESTRUCTURADO\nÉtica de la IA · Licenciatura en Física · UDFJC\nFecha: ${now}\n\nPOSICIÓN DEFENDIDA: ${position}\n\nPÁRRAFO ARGUMENTATIVO:\n${paragraph}`;
+    if (meta) output += `\n\nREFLEXIÓN METACOGNITIVA:\n${meta}`;
+    document.getElementById('outputPreview').textContent = output;
+    document.getElementById('outputCard').style.display = 'block';
+    document.getElementById('successBanner').classList.add('show');
+    document.getElementById('progressBar').style.width = '100%';
+    document.querySelectorAll('.step-item').forEach(item => { item.classList.remove('active'); item.classList.add('done'); });
+    document.getElementById('outputCard').scrollIntoView({behavior:'smooth'});
+  }
+  function copyOutput() { const text = document.getElementById('outputPreview').textContent; navigator.clipboard.writeText(text).then(() => alert('✅ Texto copiado al portapapeles')); }
+  function printOutput() { window.print(); }
+</script>
+</body>
+</html>

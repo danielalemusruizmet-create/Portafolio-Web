@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #4c1d95; --gold: #f97316; --teal: #2563eb;
+    --cream: #eef2ff; --paper: #ffffff; --ink: #111827;
+    --muted: #334155; --border: #c7d2fe;
+    --success: #16a34a; --danger: #dc2626; --warn: #d97706;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Libre Baskerville', Georgia, serif; background: var(--cream); color: var(--ink); line-height: 1.75; }
+ 
+  .site-header { background: linear-gradient(135deg, rgba(76,29,149,0.94) 0%, rgba(37,99,235,0.88) 100%); color: white; padding: 0; position: relative; overflow: hidden; }
+  .site-header::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(249,115,22,0.25) 0%, transparent 38%);
+  }
+  .header-inner { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 48px 32px 40px; }
+  .unit-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .unit-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+  h1 { font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 4.5vw, 2.8rem); font-weight: 900; line-height: 1.15; margin-bottom: 14px; }
+  h1 em { color: var(--gold); font-style: italic; }
+  .header-desc { color: rgba(255,255,255,0.72); font-size: 0.93rem; max-width: 560px; margin-bottom: 20px; }
+  .header-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.8rem; color: rgba(255,255,255,0.55); }
+  .badge { display: inline-block; padding: 3px 10px; background: rgba(200,149,58,0.2); border: 1px solid rgba(200,149,58,0.4); border-radius: 2px; font-size: 0.73rem; color: var(--gold); letter-spacing: 0.08em; }
+  .back-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; padding: 12px 18px; border-radius: 8px; background: white; color: var(--navy); text-decoration: none; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); }
+  .back-link:hover { background: rgba(255,255,255,0.95); }
+ 
+  .main-content { max-width: 860px; margin: 0 auto; padding: 48px 32px 80px; }
+  .section { margin-bottom: 48px; }
+  .section-title { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 600; color: var(--navy); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .num-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--navy); color: var(--gold); font-family: 'Fraunces', serif; font-size: 0.9rem; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+ 
+  .objectives-box { background: var(--paper); border-left: 4px solid var(--gold); padding: 22px 26px; border-radius: 0 8px 8px 0; margin-bottom: 32px; }
+  .objectives-box p { font-size: 0.93rem; color: var(--muted); margin-bottom: 8px; }
+  .objectives-box p:last-child { margin: 0; }
+  .objectives-box strong { color: var(--ink); }
+ 
+  .info-box { background: #e8f0f7; border-left: 3px solid var(--teal); padding: 14px 18px; border-radius: 0 8px 8px 0; font-size: 0.87rem; color: #1a3a54; margin-bottom: 20px; }
+  .info-box strong { display: block; margin-bottom: 4px; }
+  .warn-box { background: #fef6e8; border-left: 3px solid var(--gold); padding: 14px 18px; border-radius: 0 8px 8px 0; font-size: 0.87rem; color: #5a3a08; margin-bottom: 20px; }
+ 
+  .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; margin-bottom: 28px; }
+  .platform-card { border: 2px solid var(--border); border-radius: 10px; padding: 18px 14px; text-align: center; cursor: pointer; background: white; transition: all 0.2s; }
+  .platform-card:hover { border-color: var(--teal); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+  .platform-card.selected { border-color: var(--navy); background: #eef1f7; }
+  .platform-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+  .platform-name { font-size: 0.82rem; font-weight: 700; color: var(--navy); }
+  .platform-type { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
+ 
+  .audit-section { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+  .audit-section-header { background: var(--navy); color: white; padding: 14px 20px; display: flex; align-items: center; gap: 10px; }
+  .audit-section-header h3 { font-family: 'Fraunces', serif; font-size: 0.95rem; font-weight: 600; }
+  .audit-section-body { padding: 20px; }
+  .audit-question { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
+  .audit-question:last-child { margin: 0; padding: 0; border: none; }
+  .audit-question label { display: block; font-size: 0.88rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .audit-question .hint { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-bottom: 8px; }
+  .radio-group { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .radio-option { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .radio-option input { accent-color: var(--navy); }
+  .radio-option span { font-size: 0.84rem; }
+  textarea, select, input[type=text] {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px;
+    font-family: 'Libre Baskerville', serif; font-size: 0.88rem; line-height: 1.6;
+    background: white; color: var(--ink); resize: vertical; transition: border-color 0.2s;
+  }
+  textarea:focus, select:focus, input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(61,122,138,0.1); }
+  textarea { min-height: 90px; }
+ 
+  .rights-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 20px; }
+  .rights-table th { background: var(--navy); color: white; padding: 12px 14px; text-align: left; font-weight: 600; font-family: 'Fraunces', serif; }
+  .rights-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .rights-table tr:nth-child(even) td { background: #f8f5ef; }
+  .rights-table tr:last-child td { border-bottom: none; }
+  .right-tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 0.73rem; font-weight: 700; letter-spacing: 0.05em; }
+  .rt-access { background: #e8f5ee; color: var(--success); }
+  .rt-rect { background: #e8eef5; color: var(--teal); }
+  .rt-cancel { background: #f5e8e8; color: var(--danger); }
+  .rt-oppose { background: #fef3e2; color: var(--warn); }
+ 
+  .check-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .check-item:last-child { border: none; }
+  .check-item input[type=checkbox] { accent-color: var(--navy); width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+  .check-item span { font-size: 0.87rem; }
+ 
+  .score-box { background: var(--paper); border: 2px solid var(--gold); border-radius: 10px; padding: 24px; text-align: center; margin-bottom: 24px; }
+  .score-number { font-family: 'Fraunces', serif; font-size: 3rem; font-weight: 900; color: var(--navy); }
+  .score-label { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+  .score-bar { height: 10px; background: var(--border); border-radius: 99px; margin: 14px 0; overflow: hidden; }
+  .score-bar-fill { height: 100%; border-radius: 99px; transition: width 0.6s ease; }
+ 
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 6px; font-family: 'Libre Baskerville', serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; }
+  .btn-primary { background: var(--navy); color: white; }
+  .btn-primary:hover { background: #243559; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,39,68,0.25); }
+  .btn-gold { background: var(--gold); color: white; }
+  .btn-gold:hover { background: #b0832e; }
+  .btn-secondary { background: white; color: var(--navy); border: 2px solid var(--navy); }
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+ 
+  .output-card { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-top: 24px; display: none; }
+  .output-card-header { background: var(--teal); color: white; padding: 14px 20px; font-family: 'Fraunces', serif; font-size: 0.95rem; font-weight: 600; }
+  .output-preview { padding: 20px; background: var(--cream); font-size: 0.84rem; white-space: pre-wrap; font-family: 'Courier New', monospace; line-height: 1.6; max-height: 500px; overflow-y: auto; }
+ 
+  .nav-footer { background: var(--navy); color: white; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .nav-footer a { color: var(--gold); text-decoration: none; font-size: 0.85rem; }
+  .nav-footer span { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+ 
+  .tab-nav { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 24px; overflow-x: auto; }
+  .tab-btn { padding: 10px 18px; background: none; border: none; font-family: 'Libre Baskerville', serif; font-size: 0.85rem; cursor: pointer; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; transition: all 0.2s; }
+  .tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); font-weight: 700; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+ 
+  .highlight-tag { display: inline-block; background: #fff3cd; border: 1px solid #ffc107; border-radius: 3px; padding: 1px 6px; font-size: 0.78rem; color: #856404; margin-left: 6px; }
+</style>
+</head>
+<body>
+ 
+<header class="site-header">
+<div class="header-inner">
+<h1>Auditoría de mis<br><em>datos personales</em></h1>
+<div class="header-desc">Revisamos de forma crítica qué datos recopilan las plataformas de IA que usamos, cómo los utilizan y cuáles son nuestros derechos como titulares de esos datos.</div>
+<a class="back-link" href="index.html">← Regresar al portafolio</a>
+</div>
+</header>
+ 
+<main class="main-content">
+ 
+  <div class="objectives-box">
+<p><strong>🎯 Propósito:</strong> Analizar críticamente los términos y condiciones de una plataforma de IA que uses habitualmente, identificando qué datos recopilan, para qué los usan y qué derechos tienes como usuario según la Ley 1581 de 2012.</p>
+<p><strong>📦 Producto:</strong> Formato de auditoría de datos completado + reflexión sobre tus derechos digitales.</p>
+</div>
+ 
+  <!-- CONTEXTO -->
+<div class="section">
+<div class="section-title"><div class="num-icon">I</div> Contexto — Lo que nadie lee</div>
+<div class="warn-box">
+<strong>⚠️ ¿Sabías que…?</strong> Un estudio de la Carnegie Mellon University estimó que leer todos los términos y condiciones de los servicios que usamos tomaría <strong>76 días al año</strong>. Sin embargo, al hacer clic en "Acepto", damos consentimiento legal a condiciones que raramente comprendemos.
+</div>
+<p style="margin-bottom:14px; font-size:0.93rem;">Las plataformas de IA como ChatGPT, Gemini o TikTok recopilan enormes cantidades de datos sobre ti: no solo lo que escribes, sino cómo lo escribes, cuánto tiempo pasas en cada pantalla, qué dispositivo usas, tu ubicación aproximada, y mucho más. Estos datos se usan para:</p>
+<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; margin-bottom:20px;">
+<div style="background:white;border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+<div style="font-size:1.5rem;margin-bottom:6px;">🎯</div>
+<div style="font-size:0.82rem;font-weight:700;color:var(--navy);">Personalización</div>
+<div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Adaptar respuestas y recomendaciones a tu perfil</div>
+</div>
+<div style="background:white;border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+<div style="font-size:1.5rem;margin-bottom:6px;">🔬</div>
+<div style="font-size:0.82rem;font-weight:700;color:var(--navy);">Entrenamiento</div>
+<div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Usar tus conversaciones para mejorar los modelos</div>
+</div>
+<div style="background:white;border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+<div style="font-size:1.5rem;margin-bottom:6px;">💰</div>
+<div style="font-size:0.82rem;font-weight:700;color:var(--navy);">Publicidad</div>
+<div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Crear perfiles para anunciantes o socios comerciales</div>
+</div>
+<div style="background:white;border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;">
+<div style="font-size:1.5rem;margin-bottom:6px;">📊</div>
+<div style="font-size:0.82rem;font-weight:700;color:var(--navy);">Análisis</div>
+<div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Estudiar patrones de uso para decisiones de negocio</div>
+</div>
+</div>
+</div>
+ 
+  <!-- MARCO NORMATIVO -->
+<div class="section">
+<div class="section-title"><div class="num-icon">II</div> Tu escudo legal — Ley 1581 de 2012</div>
+<div class="info-box">
+<strong>📜 Ley 1581 de 2012 — Protección de Datos Personales en Colombia</strong>
+      Esta ley establece los principios y derechos que protegen tus datos personales. Como ciudadano colombiano, tienes derechos exigibles incluso frente a empresas con sede en otros países si tratan tus datos.
+</div>
+ 
+    <table class="rights-table">
+<thead>
+<tr><th>Derecho</th><th>¿Qué significa?</th><th>¿Cómo ejercerlo?</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="right-tag rt-access">ACCESO</span></td>
+<td>Conocer qué datos tienen sobre ti y cómo los usan.</td>
+<td>Solicitar un "informe de datos" en la plataforma (ej: ChatGPT → Settings → Data Controls → Export data)</td>
+</tr>
+<tr>
+<td><span class="right-tag rt-rect">RECTIFICACIÓN</span></td>
+<td>Corregir datos incorrectos o desactualizados.</td>
+<td>Editar tu perfil o enviar solicitud al área de privacidad de la empresa.</td>
+</tr>
+<tr>
+<td><span class="right-tag rt-cancel">SUPRESIÓN</span></td>
+<td>Pedir que eliminen tus datos ("derecho al olvido").</td>
+<td>Solicitar eliminación de cuenta o de datos específicos según la política de la plataforma.</td>
+</tr>
+<tr>
+<td><span class="right-tag rt-oppose">OPOSICIÓN</span></td>
+<td>Oponerte a ciertos usos de tus datos (ej: para publicidad).</td>
+<td>Desactivar opciones de "Mejorar el modelo con mis datos" en configuración.</td>
+</tr>
+</tbody>
+</table>
+<div class="info-box">
+<strong>🌍 Referente internacional: RGPD Europeo</strong>
+      El Reglamento General de Protección de Datos europeo (2018) es el estándar más sólido del mundo en protección de datos. Aunque eres colombiano, si usas plataformas que tratan datos de europeos, el RGPD les aplica. Sirve como punto de comparación para evaluar qué tan bien te protege la ley colombiana.
+</div>
+</div>
+ 
+  <!-- AUDITORÍA INTERACTIVA -->
+<div class="section">
+<div class="section-title"><div class="num-icon">III</div> Mi auditoría de datos</div>
+<p style="margin-bottom:20px; font-size:0.93rem; color:var(--muted);">Selecciona la plataforma de IA que quieres auditar hoy. Responde todas las preguntas del formulario basándote en los términos y condiciones de esa plataforma. Puedes abrir la plataforma en otra pestaña para consultarlos.</p>
+ 
+    <div style="margin-bottom:20px;">
+<label style="display:block;font-size:0.88rem;font-weight:700;color:var(--navy);margin-bottom:10px;">1. Selecciona la plataforma a auditar:</label>
+<div class="platform-grid" id="platformGrid">
+<div class="platform-card" onclick="selectPlatform(this,'ChatGPT')"><span class="platform-icon">🤖</span><div class="platform-name">ChatGPT</div><div class="platform-type">OpenAI · IA conversacional</div></div>
+<div class="platform-card" onclick="selectPlatform(this,'Gemini')"><span class="platform-icon">✨</span><div class="platform-name">Gemini</div><div class="platform-type">Google · IA conversacional</div></div>
+<div class="platform-card" onclick="selectPlatform(this,'Claude')"><span class="platform-icon">🧠</span><div class="platform-name">Claude</div><div class="platform-type">Anthropic · IA conversacional</div></div>
+<div class="platform-card" onclick="selectPlatform(this,'TikTok')"><span class="platform-icon">🎵</span><div class="platform-name">TikTok</div><div class="platform-type">ByteDance · Red social + IA</div></div>
+<div class="platform-card" onclick="selectPlatform(this,'Copilot')"><span class="platform-icon">💼</span><div class="platform-name">Copilot</div><div class="platform-type">Microsoft · IA integrada</div></div>
+<div class="platform-card" onclick="selectPlatform(this,'Otra')"><span class="platform-icon">➕</span><div class="platform-name">Otra</div><div class="platform-type">Especificar</div></div>
+</div>
+<div id="otherPlatformInput" style="display:none;">
+<input type="text" id="otherPlatformName" placeholder="Nombre de la plataforma..." style="max-width:300px;">
+</div>
+</div>
+ 
+    <div class="tab-nav">
+<button class="tab-btn active" onclick="switchTab('datos')">📊 Datos que recopilan</button>
+<button class="tab-btn" onclick="switchTab('uso')">🔄 Cómo los usan</button>
+<button class="tab-btn" onclick="switchTab('derechos')">⚖️ Mis derechos</button>
+<button class="tab-btn" onclick="switchTab('riesgos')">⚠️ Riesgos y hallazgos</button>
+</div>
+ 
+    <!-- TAB 1: DATOS -->
+<div class="tab-panel active" id="tab-datos">
+<div class="audit-section">
+<div class="audit-section-header"><h3>📊 ¿Qué datos recopila la plataforma?</h3></div>
+<div class="audit-section-body">
+<div class="audit-question">
+<label>¿Qué tipos de datos personales recopila esta plataforma? (Marca todos los que apliquen)</label>
+<div class="hint">Revisa la sección "Datos que recopilamos" o "Information we collect" en la política de privacidad.</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+<label class="check-item"><input type="checkbox" id="d1"> <span>Nombre y email (datos de cuenta)</span></label>
+<label class="check-item"><input type="checkbox" id="d2"> <span>Contenido de conversaciones</span></label>
+<label class="check-item"><input type="checkbox" id="d3"> <span>Dirección IP y ubicación aproximada</span></label>
+<label class="check-item"><input type="checkbox" id="d4"> <span>Dispositivo y navegador usado</span></label>
+<label class="check-item"><input type="checkbox" id="d5"> <span>Historial de uso y navegación</span></label>
+<label class="check-item"><input type="checkbox" id="d6"> <span>Datos de pago (si aplica)</span></label>
+<label class="check-item"><input type="checkbox" id="d7"> <span>Preferencias y configuraciones</span></label>
+<label class="check-item"><input type="checkbox" id="d8"> <span>Datos de terceros (redes sociales vinculadas)</span></label>
+</div>
+</div>
+<div class="audit-question">
+<label>¿Recopilan datos de menores de edad? ¿Qué restricciones tienen?</label>
+<div class="radio-group">
+<label class="radio-option"><input type="radio" name="minors" value="si"> <span>Sí, con restricciones especiales</span></label>
+<label class="radio-option"><input type="radio" name="minors" value="no"> <span>No se permite el uso de menores</span></label>
+<label class="radio-option"><input type="radio" name="minors" value="nc"> <span>No encontré información clara</span></label>
+</div>
+<textarea id="minorsDetail" placeholder="Describe qué dice la política sobre menores de edad y qué implicaciones tiene para el aula..." style="min-height:70px;"></textarea>
+</div>
+<div class="audit-question">
+<label>¿La plataforma usa cookies o rastreadores de terceros?</label>
+<div class="radio-group">
+<label class="radio-option"><input type="radio" name="cookies" value="si"> <span>Sí</span></label>
+<label class="radio-option"><input type="radio" name="cookies" value="no"> <span>No</span></label>
+<label class="radio-option"><input type="radio" name="cookies" value="nc"> <span>No encontré información</span></label>
+</div>
+</div>
+</div>
+</div>
+</div>
+ 
+    <!-- TAB 2: USO -->
+<div class="tab-panel" id="tab-uso">
+<div class="audit-section">
+<div class="audit-section-header"><h3>🔄 ¿Para qué usan mis datos?</h3></div>
+<div class="audit-section-body">
+<div class="audit-question">
+<label>¿Usan tus conversaciones para entrenar sus modelos de IA?</label>
+<div class="radio-group">
+<label class="radio-option"><input type="radio" name="train" value="si"> <span>Sí, por defecto</span></label>
+<label class="radio-option"><input type="radio" name="train" value="opt"> <span>Sí, pero puedes desactivarlo</span></label>
+<label class="radio-option"><input type="radio" name="train" value="no"> <span>No usan datos para entrenamiento</span></label>
+<label class="radio-option"><input type="radio" name="train" value="nc"> <span>No encontré información clara</span></label>
+</div>
+<textarea id="trainDetail" placeholder="¿Dónde encontraste esta información? ¿Qué pasos hay que seguir para desactivarlo?" style="min-height:70px;"></textarea>
+</div>
+<div class="audit-question">
+<label>¿Comparten o venden tus datos a terceros?</label>
+<div class="radio-group">
+<label class="radio-option"><input type="radio" name="share" value="si"> <span>Sí, los venden o comparten con socios comerciales</span></label>
+<label class="radio-option"><input type="radio" name="share" value="anon"> <span>Comparten datos anonimizados</span></label>
+<label class="radio-option"><input type="radio" name="share" value="no"> <span>No venden datos</span></label>
+<label class="radio-option"><input type="radio" name="share" value="nc"> <span>No encontré información clara</span></label>
+</div>
+</div>
+<div class="audit-question">
+<label>¿En qué países se almacenan y procesan tus datos?</label>
+<textarea id="dataLocation" placeholder="Según la política de privacidad, ¿dónde están los servidores? ¿Qué implica eso para la protección bajo la ley colombiana?"></textarea>
+</div>
+<div class="audit-question">
+<label>¿Por cuánto tiempo conservan tus datos?</label>
+<div class="radio-group">
+<label class="radio-option"><input type="radio" name="retention" value="account"> <span>Mientras tengas cuenta activa</span></label>
+<label class="radio-option"><input type="radio" name="retention" value="limited"> <span>Tiempo limitado definido</span></label>
+<label class="radio-option"><input type="radio" name="retention" value="forever"> <span>Indefinidamente</span></label>
+<label class="radio-option"><input type="radio" name="retention" value="nc"> <span>No especificado</span></label>
+</div>
+</div>
+</div>
+</div>
+</div>
+ 
+    <!-- TAB 3: DERECHOS -->
+<div class="tab-panel" id="tab-derechos">
+<div class="audit-section">
+<div class="audit-section-header"><h3>⚖️ ¿Puedo ejercer mis derechos?</h3></div>
+<div class="audit-section-body">
+<div class="audit-question">
+<label>¿La plataforma permite exportar o descargar tus datos? <span class="highlight-tag">Pruébalo en vivo</span></label>
+<div class="hint">Busca en la configuración opciones como "Export data", "Download my data", "Datos de mi cuenta".</div>
+<div class="radio-group">
+<label class="radio-option"><input type="radio" name="export" value="si"> <span>Sí, lo encontré fácilmente</span></label>
+<label class="radio-option"><input type="radio" name="export" value="dificil"> <span>Sí, pero es difícil de encontrar</span></label>
+<label class="radio-option"><input type="radio" name="export" value="no"> <span>No existe esa opción</span></label>
+</div>
+<textarea id="exportDetail" placeholder="Describe dónde encontraste la opción y qué tipo de datos puedes exportar..." style="min-height:70px;"></textarea>
+</div>
+<div class="audit-question">
+<label>¿Puedes eliminar tu cuenta y tus datos permanentemente?</label>
+<div class="radio-group">
+<label class="radio-option"><input type="radio" name="delete" value="si"> <span>Sí, hay opción clara de eliminar cuenta</span></label>
+<label class="radio-option"><input type="radio" name="delete" value="parcial"> <span>Parcialmente (algunos datos persisten)</span></label>
+<label class="radio-option"><input type="radio" name="delete" value="no"> <span>No es posible o es muy difícil</span></label>
+</div>
+</div>
+<div class="audit-question">
+<label>¿Hay una dirección de contacto para ejercer derechos de protección de datos?</label>
+<textarea id="contactInfo" placeholder="Copia aquí el email o enlace de contacto para privacidad (ej: privacy@openai.com). Si no lo encuentras, anótalo también."></textarea>
+</div>
+<div class="audit-question">
+<label>En tu opinión, ¿qué tan fácil es ejercer tus derechos en esta plataforma? (1 = muy difícil, 5 = muy fácil)</label>
+<div class="radio-group">
+<label class="radio-option"><input type="radio" name="ease" value="1"> <span>1 — Muy difícil</span></label>
+<label class="radio-option"><input type="radio" name="ease" value="2"> <span>2</span></label>
+<label class="radio-option"><input type="radio" name="ease" value="3"> <span>3 — Regular</span></label>
+<label class="radio-option"><input type="radio" name="ease" value="4"> <span>4</span></label>
+<label class="radio-option"><input type="radio" name="ease" value="5"> <span>5 — Muy fácil</span></label>
+</div>
+</div>
+</div>
+</div>
+</div>
+ 
+    <!-- TAB 4: RIESGOS -->
+<div class="tab-panel" id="tab-riesgos">
+<div class="audit-section">
+<div class="audit-section-header"><h3>⚠️ Hallazgos y reflexión crítica</h3></div>
+<div class="audit-section-body">
+<div class="audit-question">
+<label>¿Cuál fue el hallazgo que más te sorprendió o preocupó de la auditoría?</label>
+<textarea id="surprise" placeholder="Describe el hallazgo más relevante. Por ejemplo: no sabías que tus conversaciones se usan para entrenamiento, o que no puedes eliminar tus datos fácilmente..."></textarea>
+</div>
+<div class="audit-question">
+<label>¿Identificas alguna posible violación a los principios de la Ley 1581? ¿Cuál?</label>
+<div class="hint">Principios de la Ley 1581: Legalidad, Finalidad, Libertad, Veracidad, Transparencia, Acceso restringido, Seguridad, Confidencialidad.</div>
+<textarea id="lawViolation" placeholder="Ejemplo: El principio de finalidad establece que los datos solo pueden usarse para el fin para el que fueron recopilados. Sin embargo, esta plataforma..."></textarea>
+</div>
+<div class="audit-question">
+<label>Como futuro/a docente, ¿qué implicaciones tiene esto para el uso de esta plataforma en el aula?</label>
+<textarea id="teacherImplications" placeholder="Piensa en: ¿Recomendarías esta plataforma a tus estudiantes? ¿Qué precauciones tomarías? ¿Cómo explicarías esto a los estudiantes o a sus familias?"></textarea>
+</div>
+<div class="audit-question">
+<label>¿Qué cambio inmediato vas a hacer en tu uso de esta plataforma tras esta auditoría?</label>
+<textarea id="myCommitment" placeholder="Ej: Activaré la opción de no usar mis datos para entrenamiento / Dejaré de compartir información personal sensible / Exportaré mis datos esta semana..."></textarea>
+</div>
+</div>
+</div>
+ 
+      <button class="btn btn-gold" onclick="generateAudit()" style="margin-top:8px;">📋 Generar mi reporte de auditoría →</button>
+</div>
+ 
+    <div class="output-card" id="outputCard">
+<div class="output-card-header">📋 Reporte de Auditoría — Listo para entregar</div>
+<div class="output-preview" id="outputPreview"></div>
+<div style="padding:16px; display:flex; gap:10px; flex-wrap:wrap;">
+<button class="btn btn-primary" onclick="copyOutput()">📋 Copiar reporte</button>
+<button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimir / PDF</button>
+</div>
+</div>
+</div>
+ 
+</main>
+ 
+<div class="nav-footer">
+<a href="#">← Actividad 3: ¿La IA es neutral?</a>
+<span>Actividad 4 de 9 · Ética de la IA</span>
+<a href="#">Actividad 5: Casos colombianos →</a>
+</div>
+ 
+<script>
+  let selectedPlatform = '';
+ 
+  function selectPlatform(card, name) {
+    document.querySelectorAll('.platform-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedPlatform = name;
+    if (name === 'Otra') {
+      document.getElementById('otherPlatformInput').style.display = 'block';
+    } else {
+      document.getElementById('otherPlatformInput').style.display = 'none';
+    }
+  }
+ 
+  function switchTab(name) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
+  }
+ 
+  function getRadioValue(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    return el ? el.value : 'No respondido';
+  }
+ 
+  function getCheckboxes() {
+    const dataTypes = [];
+    const labels = ['Nombre y email', 'Contenido de conversaciones', 'Dirección IP y ubicación', 'Dispositivo y navegador', 'Historial de uso', 'Datos de pago', 'Preferencias', 'Datos de terceros'];
+    for (let i = 1; i <= 8; i++) {
+      if (document.getElementById('d' + i).checked) dataTypes.push(labels[i-1]);
+    }
+    return dataTypes.length > 0 ? dataTypes.join(', ') : 'No se seleccionó ninguno';
+  }
+ 
+  function generateAudit() {
+    const platform = selectedPlatform === 'Otra' ? (document.getElementById('otherPlatformName').value || 'Otra') : (selectedPlatform || 'No seleccionada');
+    const now = new Date().toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+ 
+    const minorsMap = { si: 'Sí, con restricciones', no: 'No se permite', nc: 'No encontré información' };
+    const trainMap = { si: 'Sí, por defecto', opt: 'Sí, pero desactivable', no: 'No usan datos', nc: 'No especificado' };
+    const shareMap = { si: 'Sí, venden/comparten', anon: 'Comparten anonimizados', no: 'No venden datos', nc: 'No especificado' };
+    const retentionMap = { account: 'Mientras cuenta activa', limited: 'Tiempo limitado', forever: 'Indefinidamente', nc: 'No especificado' };
+    const exportMap = { si: 'Sí, fácilmente', dificil: 'Sí, pero difícil', no: 'No existe opción' };
+    const deleteMap = { si: 'Sí, claramente', parcial: 'Parcialmente', no: 'Muy difícil/imposible' };
+    const easeMap = { '1': '1/5 — Muy difícil', '2': '2/5', '3': '3/5 — Regular', '4': '4/5', '5': '5/5 — Muy fácil' };
+ 
+    const report = `REPORTE DE AUDITORÍA DE DATOS PERSONALES
+Actividad 4 — Ética de la IA · Licenciatura en Física · UDFJC
+Fecha: ${now}
+${'═'.repeat(60)}
+ 
+SECCIÓN 1 — DATOS QUE RECOPILA LA PLATAFORMA
+────────────────────────────────────────────
+Tipos de datos: ${getCheckboxes()}
+Datos de menores: ${minorsMap[getRadioValue('minors')] || 'No respondido'}
+${document.getElementById('minorsDetail').value ? 'Detalle menores: ' + document.getElementById('minorsDetail').value : ''}
+Cookies/rastreadores: ${getRadioValue('cookies')}
+ 
+SECCIÓN 2 — USO DE MIS DATOS
+────────────────────────────
+Entrenamiento de modelos: ${trainMap[getRadioValue('train')] || 'No respondido'}
+${document.getElementById('trainDetail').value ? 'Detalle: ' + document.getElementById('trainDetail').value : ''}
+Compartir con terceros: ${shareMap[getRadioValue('share')] || 'No respondido'}
+Ubicación de servidores: ${document.getElementById('dataLocation').value || 'No especificado'}
+Retención de datos: ${retentionMap[getRadioValue('retention')] || 'No respondido'}
+ 
+SECCIÓN 3 — MIS DERECHOS
+────────────────────────
+Exportar mis datos: ${exportMap[getRadioValue('export')] || 'No respondido'}
+${document.getElementById('exportDetail').value ? 'Detalle: ' + document.getElementById('exportDetail').value : ''}
+Eliminar cuenta/datos: ${deleteMap[getRadioValue('delete')] || 'No respondido'}
+Contacto de privacidad: ${document.getElementById('contactInfo').value || 'No encontrado'}
+Facilidad de ejercer derechos: ${easeMap[getRadioValue('ease')] || 'No respondido'}
+ 
+SECCIÓN 4 — REFLEXIÓN CRÍTICA
+──────────────────────────────
+Hallazgo más relevante:
+${document.getElementById('surprise').value || '[Sin respuesta]'}
+ 
+Posible conflicto con Ley 1581:
+${document.getElementById('lawViolation').value || '[Sin respuesta]'}
+ 
+Implicaciones para mi práctica docente:
+${document.getElementById('teacherImplications').value || '[Sin respuesta]'}
+ 
+Mi compromiso de cambio:
+${document.getElementById('myCommitment').value || '[Sin respuesta]'}
+ 
+${'═'.repeat(60)}
+Auditoría realizada con fines formativos — Uso ético de la IA · UDFJC`;
+ 
+    document.getElementById('outputPreview').textContent = report;
+    document.getElementById('outputCard').style.display = 'block';
+    document.getElementById('outputCard').scrollIntoView({ behavior: 'smooth' });
+  }
+ 
+  function copyOutput() {
+    navigator.clipboard.writeText(document.getElementById('outputPreview').textContent)
+      .then(() => alert('✅ Reporte copiado al portapapeles'));
+  }
+</script>
+</body>
+</html>

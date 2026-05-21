@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actividad 5 — Casos Colombianos: Datos y Ley | Ética de la IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744; --gold: #c8953a; --teal: #3d7a8a;
+    --cream: #f5f0e8; --paper: #faf7f2; --ink: #2c2416;
+    --muted: #7a6e5f; --border: #ddd5c2;
+    --success: #3a7a5a; --danger: #7a3030; --warn: #7a5a10;
+    --red-bg: #fdf0f0; --green-bg: #f0faf4; --amber-bg: #fef9ec;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Libre Baskerville', Georgia, serif; background: var(--cream); color: var(--ink); line-height: 1.75; }
+
+  .site-header { background: #1e1a2e; color: white; padding: 0; position: relative; overflow: hidden; }
+  .site-header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(200,149,58,0.04) 60px, rgba(200,149,58,0.04) 61px); }
+  .header-inner { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 48px 32px 40px; }
+  .unit-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  .unit-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+  h1 { font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 900; line-height: 1.15; margin-bottom: 12px; }
+  h1 em { color: var(--gold); font-style: italic; }
+  .header-desc { color: rgba(255,255,255,0.72); font-size: 0.93rem; max-width: 580px; margin-bottom: 20px; }
+  .header-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.8rem; color: rgba(255,255,255,0.55); }
+  .badge { display: inline-block; padding: 3px 10px; background: rgba(200,149,58,0.2); border: 1px solid rgba(200,149,58,0.4); border-radius: 2px; font-size: 0.73rem; color: var(--gold); letter-spacing: 0.08em; }
+
+  .main-content { max-width: 900px; margin: 0 auto; padding: 48px 32px 80px; }
+  .section { margin-bottom: 52px; }
+  .section-title { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 600; color: var(--navy); margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .num-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--navy); color: var(--gold); font-family: 'Fraunces', serif; font-size: 0.9rem; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  .objectives-box { background: var(--paper); border-left: 4px solid var(--gold); padding: 22px 26px; border-radius: 0 8px 8px 0; margin-bottom: 32px; }
+  .objectives-box p { font-size: 0.93rem; color: var(--muted); margin-bottom: 8px; }
+  .objectives-box p:last-child { margin: 0; }
+  .objectives-box strong { color: var(--ink); }
+
+  /* CASE CARDS */
+  .cases-list { display: flex; flex-direction: column; gap: 28px; }
+  .case-card { background: white; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: box-shadow 0.2s; }
+  .case-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
+  .case-header { padding: 20px 24px; display: flex; align-items: flex-start; gap: 16px; cursor: pointer; }
+  .case-number { width: 44px; height: 44px; border-radius: 10px; font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .case-1 .case-number { background: #fde8e8; color: var(--danger); }
+  .case-2 .case-number { background: #fff0d4; color: #8a4a00; }
+  .case-3 .case-number { background: #e8f0fd; color: #2a3a7a; }
+  .case-4 .case-number { background: #f0fde8; color: #3a6a10; }
+  .case-title-group { flex: 1; }
+  .case-title-group h3 { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .case-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .case-tag { font-size: 0.73rem; padding: 2px 8px; border-radius: 3px; letter-spacing: 0.04em; font-weight: 700; }
+  .tag-sector { background: #e8eef5; color: #1a3a6a; }
+  .tag-year { background: var(--cream); color: var(--muted); }
+  .tag-severity { background: #fde8e8; color: var(--danger); }
+  .tag-severity-med { background: #fff0d4; color: #8a4a00; }
+  .expand-btn { font-size: 1.1rem; color: var(--muted); transition: transform 0.3s; flex-shrink: 0; padding-top: 2px; }
+  .case-card.open .expand-btn { transform: rotate(180deg); }
+
+  .case-body { display: none; border-top: 1px solid var(--border); }
+  .case-card.open .case-body { display: block; }
+  .case-narrative { padding: 24px; background: var(--paper); border-bottom: 1px solid var(--border); font-size: 0.9rem; line-height: 1.8; }
+  .case-narrative h4 { font-family: 'Fraunces', serif; font-size: 0.95rem; color: var(--navy); margin-bottom: 10px; margin-top: 16px; }
+  .case-narrative h4:first-child { margin-top: 0; }
+  .case-narrative p { margin-bottom: 12px; }
+  .case-narrative p:last-child { margin: 0; }
+
+  /* ANALYSIS FORM */
+  .case-analysis { padding: 24px; }
+  .case-analysis h4 { font-family: 'Fraunces', serif; font-size: 0.95rem; color: var(--navy); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  @media (max-width: 600px) { .analysis-grid { grid-template-columns: 1fr; } }
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 0.84rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .form-hint { font-size: 0.77rem; color: var(--muted); font-style: italic; margin-bottom: 6px; }
+  textarea, select { width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: 6px; font-family: 'Libre Baskerville', serif; font-size: 0.86rem; line-height: 1.6; background: white; color: var(--ink); resize: vertical; }
+  textarea:focus, select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(61,122,138,0.1); }
+  textarea { min-height: 80px; }
+
+  /* LAW SELECTOR */
+  .law-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .law-chip { padding: 6px 12px; border: 1px solid var(--border); border-radius: 20px; font-size: 0.78rem; cursor: pointer; background: white; color: var(--muted); transition: all 0.15s; user-select: none; }
+  .law-chip:hover { border-color: var(--navy); color: var(--navy); }
+  .law-chip.selected { background: var(--navy); color: white; border-color: var(--navy); }
+
+  /* VERDICT */
+  .verdict-box { background: var(--cream); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-top: 14px; }
+  .verdict-options { display: flex; gap: 10px; flex-wrap: wrap; }
+  .verdict-btn { padding: 9px 16px; border: 2px solid var(--border); border-radius: 6px; font-family: 'Libre Baskerville', serif; font-size: 0.82rem; cursor: pointer; background: white; transition: all 0.15s; }
+  .verdict-btn:hover { border-color: var(--navy); }
+  .verdict-btn.selected-grave { background: var(--red-bg); border-color: var(--danger); color: var(--danger); font-weight: 700; }
+  .verdict-btn.selected-mod { background: var(--amber-bg); border-color: var(--warn); color: var(--warn); font-weight: 700; }
+  .verdict-btn.selected-leve { background: var(--green-bg); border-color: var(--success); color: var(--success); font-weight: 700; }
+
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 6px; font-family: 'Libre Baskerville', serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; }
+  .btn-primary { background: var(--navy); color: white; }
+  .btn-primary:hover { background: #243559; transform: translateY(-1px); }
+  .btn-gold { background: var(--gold); color: white; }
+  .btn-gold:hover { background: #b0832e; }
+  .btn-secondary { background: white; color: var(--navy); border: 2px solid var(--navy); }
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+
+  /* LAW REFERENCE */
+  .law-reference { background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+  .law-ref-header { background: #1e1a2e; color: white; padding: 14px 20px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .law-ref-header h3 { font-family: 'Fraunces', serif; font-size: 0.93rem; font-weight: 600; flex: 1; }
+  .law-ref-body { padding: 20px; display: none; font-size: 0.86rem; }
+  .law-ref-body.open { display: block; }
+  .principle-row { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .principle-row:last-child { border: none; }
+  .principle-name { font-weight: 700; color: var(--navy); min-width: 130px; flex-shrink: 0; font-size: 0.83rem; }
+  .principle-desc { color: var(--muted); font-size: 0.82rem; line-height: 1.55; }
+
+  /* OUTPUT */
+  .output-section { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-top: 32px; display: none; }
+  .output-header { background: var(--teal); color: white; padding: 14px 20px; font-family: 'Fraunces', serif; font-size: 0.95rem; font-weight: 600; }
+  .output-body { padding: 20px; }
+  .output-preview { background: var(--cream); border: 1px dashed var(--border); border-radius: 6px; padding: 16px; font-size: 0.82rem; white-space: pre-wrap; font-family: 'Courier New', monospace; max-height: 500px; overflow-y: auto; }
+
+  .nav-footer { background: var(--navy); color: white; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .nav-footer a { color: var(--gold); text-decoration: none; font-size: 0.85rem; }
+  .nav-footer span { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+
+  .progress-bar-wrap { background: var(--border); border-radius: 99px; height: 4px; margin-bottom: 28px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--gold); border-radius: 99px; transition: width 0.5s; }
+
+  .info-box { background: #e8f0f7; border-left: 3px solid var(--teal); padding: 13px 17px; border-radius: 0 8px 8px 0; font-size: 0.86rem; color: #1a3a54; margin-bottom: 18px; }
+  .info-box strong { display: block; margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="unit-label">Unidad 2 · Semana 5</div>
+    <h1>Casos colombianos:<br><em>Datos y Ley</em></h1>
+    <div class="header-desc">Analizamos casos reales de manejo de datos en Colombia, identificamos qué normas fueron vulneradas y construimos propuestas de actuación ética.</div>
+    <div class="header-meta">
+      <span>⏱ 2 horas</span>
+      <span>⚖️ Análisis de casos + informe</span>
+      <span class="badge">Grupal / Individual</span>
+    </div>
+  </div>
+</header>
+
+<main class="main-content">
+
+  <div class="objectives-box">
+    <p><strong>🎯 Propósito:</strong> Analizar casos concretos de vulneración de datos en Colombia, relacionar cada caso con los principios de la Ley 1581 de 2012, y proponer acciones éticas alternativas que empresas y usuarios podrían haber tomado.</p>
+    <p><strong>📦 Producto:</strong> Análisis escrito de al menos 2 casos con identificación de la norma vulnerada y propuesta de actuación ética.</p>
+  </div>
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:5%"></div></div>
+
+  <!-- MARCO LEGAL EXPANDIBLE -->
+  <div class="section">
+    <div class="section-title"><div class="num-icon">I</div> Marco legal de referencia</div>
+    <div class="info-box">
+      <strong>📌 Antes de analizar los casos, familiarízate con los principios de la Ley 1581 de 2012</strong>
+      Haz clic en la tarjeta de abajo para expandir el resumen de los principios más relevantes.
+    </div>
+
+    <div class="law-reference">
+      <div class="law-ref-header" onclick="toggleLawRef(this)">
+        <h3>⚖️ Ley 1581 de 2012 — Principios del tratamiento de datos personales (clic para expandir)</h3>
+        <span>▼</span>
+      </div>
+      <div class="law-ref-body" id="lawRefBody">
+        <div class="principle-row"><div class="principle-name">🔒 Legalidad</div><div class="principle-desc">El tratamiento de datos debe tener fundamento jurídico. No se pueden recopilar datos sin base legal.</div></div>
+        <div class="principle-row"><div class="principle-name">🎯 Finalidad</div><div class="principle-desc">Los datos solo pueden usarse para el propósito para el que fueron recopilados, claramente informado al titular.</div></div>
+        <div class="principle-row"><div class="principle-name">📐 Proporcionalidad</div><div class="principle-desc">Solo se pueden recopilar los datos estrictamente necesarios para la finalidad declarada.</div></div>
+        <div class="principle-row"><div class="principle-name">🗣️ Libertad</div><div class="principle-desc">El tratamiento de datos requiere el consentimiento libre, previo, expreso e informado del titular.</div></div>
+        <div class="principle-row"><div class="principle-name">✅ Veracidad</div><div class="principle-desc">Los datos deben ser veraces, exactos y actualizados. No se pueden tratar datos falsos.</div></div>
+        <div class="principle-row"><div class="principle-name">🔍 Transparencia</div><div class="principle-desc">El titular tiene derecho a conocer quién trata sus datos, para qué y de qué manera.</div></div>
+        <div class="principle-row"><div class="principle-name">🛡️ Seguridad</div><div class="principle-desc">El responsable debe garantizar medidas técnicas para proteger los datos de acceso no autorizado.</div></div>
+        <div class="principle-row"><div class="principle-name">🤫 Confidencialidad</div><div class="principle-desc">Quienes acceden a datos personales están obligados a guardar reserva de la información.</div></div>
+        <div class="principle-row"><div class="principle-name">📡 Acceso restringido</div><div class="principle-desc">Solo pueden acceder a los datos las personas autorizadas por el titular o la ley.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASOS -->
+  <div class="section">
+    <div class="section-title"><div class="num-icon">II</div> Casos para analizar</div>
+    <p style="margin-bottom:22px; font-size:0.92rem; color:var(--muted);">Selecciona al menos 2 casos. Expande cada uno, lee la descripción y completa el formulario de análisis. Los casos están basados en situaciones reales o representativas del contexto colombiano.</p>
+
+    <div class="cases-list">
+
+      <!-- CASO 1 -->
+      <div class="case-card case-1" id="case1">
+        <div class="case-header" onclick="toggleCase('case1')">
+          <div class="case-number">C1</div>
+          <div class="case-title-group">
+            <h3>Filtración de datos de pacientes en clínica privada con sistema de IA diagnóstica</h3>
+            <div class="case-meta">
+              <span class="case-tag tag-sector">Salud</span>
+              <span class="case-tag tag-year">2022</span>
+              <span class="case-tag tag-severity">Gravedad alta</span>
+            </div>
+          </div>
+          <span class="expand-btn">▼</span>
+        </div>
+        <div class="case-body">
+          <div class="case-narrative">
+            <h4>📋 Descripción del caso</h4>
+            <p>Una clínica privada de Bogotá implementó un sistema de IA para apoyar el diagnóstico de imágenes médicas (radiografías y tomografías). El sistema, desarrollado por una empresa de tecnología estadounidense, requería subir las imágenes a servidores en la nube para su procesamiento.</p>
+            <p>En 2022, una vulnerabilidad en los servidores del proveedor expuso aproximadamente 45.000 registros médicos de pacientes colombianos, incluyendo nombres, documentos de identidad, diagnósticos, imágenes y datos de historia clínica. Los datos estuvieron accesibles en internet durante 3 semanas antes de que la clínica se diera cuenta.</p>
+            <h4>❓ Preguntas que guían el análisis</h4>
+            <p>¿Los pacientes sabían que sus imágenes se enviaban a servidores en el exterior? ¿La clínica tenía autorización expresa de los pacientes para usar esta plataforma? ¿Qué medidas de seguridad deberían haber existido? ¿Quién es responsable: la clínica, el proveedor tecnológico o ambos?</p>
+          </div>
+          <div class="case-analysis">
+            <h4>✍️ Tu análisis del caso</h4>
+            <div class="form-group">
+              <label class="form-label">¿Qué principios de la Ley 1581 fueron vulnerados? (Selecciona todos los que apliquen)</label>
+              <div class="law-chips" id="chips-c1">
+                <span class="law-chip" onclick="toggleChip(this,'c1')">Legalidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c1')">Finalidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c1')">Proporcionalidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c1')">Libertad/Consentimiento</span>
+                <span class="law-chip" onclick="toggleChip(this,'c1')">Transparencia</span>
+                <span class="law-chip" onclick="toggleChip(this,'c1')">Seguridad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c1')">Confidencialidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c1')">Acceso restringido</span>
+              </div>
+            </div>
+            <div class="analysis-grid">
+              <div class="form-group">
+                <label class="form-label">¿Cómo se vulneró cada principio seleccionado?</label>
+                <textarea id="c1-vuln" placeholder="Explica cómo ocurrió la vulneración de cada principio que marcaste..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">¿Quiénes son responsables y por qué?</label>
+                <textarea id="c1-resp" placeholder="La clínica, el proveedor tecnológico, el médico que usó el sistema..."></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">¿Qué debería haber hecho la clínica ANTES de implementar este sistema?</label>
+              <div class="form-hint">Piensa en: consentimiento informado, contratos con proveedores, política de datos, ubicación de servidores, plan de respuesta a incidentes.</div>
+              <textarea id="c1-should" placeholder="La clínica debería haber..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">¿Qué implicaciones tiene este caso para el uso de IA en educación y salud en Colombia?</label>
+              <textarea id="c1-impl" placeholder="Como futuro docente, ¿qué lección extraes de este caso para el uso de plataformas educativas con IA?"></textarea>
+            </div>
+            <div class="verdict-box">
+              <label class="form-label" style="margin-bottom:10px;">¿Qué tan grave consideras la violación en este caso?</label>
+              <div class="verdict-options">
+                <button class="verdict-btn" onclick="setVerdict(this,'grave')">🔴 Muy grave</button>
+                <button class="verdict-btn" onclick="setVerdict(this,'mod')">🟡 Moderada</button>
+                <button class="verdict-btn" onclick="setVerdict(this,'leve')">🟢 Leve</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASO 2 -->
+      <div class="case-card case-2" id="case2">
+        <div class="case-header" onclick="toggleCase('case2')">
+          <div class="case-number">C2</div>
+          <div class="case-title-group">
+            <h3>Plataforma educativa con IA usa datos de estudiantes menores para publicidad</h3>
+            <div class="case-meta">
+              <span class="case-tag tag-sector">Educación</span>
+              <span class="case-tag tag-year">2023</span>
+              <span class="case-tag tag-severity">Gravedad alta</span>
+            </div>
+          </div>
+          <span class="expand-btn">▼</span>
+        </div>
+        <div class="case-body">
+          <div class="case-narrative">
+            <h4>📋 Descripción del caso</h4>
+            <p>Un colegio de Medellín adoptó una plataforma de aprendizaje adaptativo con IA para matemáticas, ampliamente usada en Colombia. La plataforma recopilaba datos de desempeño, tiempo de uso, respuestas incorrectas y patrones de aprendizaje de estudiantes entre 8 y 15 años.</p>
+            <p>Una investigación periodística reveló que los términos de servicio —que los rectores firmaron sin leer en detalle— autorizaban a la empresa a compartir datos anonimizados con "socios educativos" que resultaron ser empresas de publicidad educativa. Los niños comenzaron a recibir publicidad de cursos y materiales dirigida según sus debilidades académicas detectadas por la IA.</p>
+            <h4>❓ Preguntas que guían el análisis</h4>
+            <p>¿Los padres dieron consentimiento para este uso? ¿Es válido que el rector firme en nombre de los menores? ¿Puede una empresa usar debilidades académicas de niños para publicidad? ¿Cuál es la diferencia entre "datos anonimizados" y datos protegidos?</p>
+          </div>
+          <div class="case-analysis">
+            <h4>✍️ Tu análisis del caso</h4>
+            <div class="form-group">
+              <label class="form-label">¿Qué principios de la Ley 1581 fueron vulnerados?</label>
+              <div class="law-chips" id="chips-c2">
+                <span class="law-chip" onclick="toggleChip(this,'c2')">Legalidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c2')">Finalidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c2')">Proporcionalidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c2')">Libertad/Consentimiento</span>
+                <span class="law-chip" onclick="toggleChip(this,'c2')">Transparencia</span>
+                <span class="law-chip" onclick="toggleChip(this,'c2')">Seguridad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c2')">Confidencialidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c2')">Acceso restringido</span>
+              </div>
+            </div>
+            <div class="analysis-grid">
+              <div class="form-group">
+                <label class="form-label">¿Cómo se vulneró cada principio?</label>
+                <textarea id="c2-vuln" placeholder="Explica la vulneración en el contexto educativo con menores..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">¿Qué responsabilidad tiene el colegio?</label>
+                <textarea id="c2-resp" placeholder="¿El rector tenía facultades para firmar ese contrato? ¿Qué debió verificar?"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Como futuro docente, ¿cómo evaluarías una plataforma educativa con IA antes de recomendarla en tu colegio?</label>
+              <div class="form-hint">Este es el corazón de la actividad para tu formación docente. Sé específico/a.</div>
+              <textarea id="c2-teacher" placeholder="Yo verificaría: 1) quién tiene acceso a los datos de mis estudiantes... 2) si hay cláusulas sobre publicidad... 3) si se requiere consentimiento de los padres..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">¿Qué debería decir un protocolo de uso ético de plataformas con IA en un colegio colombiano?</label>
+              <textarea id="c2-protocol" placeholder="Propón al menos 4 puntos de ese protocolo..."></textarea>
+            </div>
+            <div class="verdict-box">
+              <label class="form-label" style="margin-bottom:10px;">¿Qué tan grave consideras esta violación?</label>
+              <div class="verdict-options">
+                <button class="verdict-btn" onclick="setVerdict(this,'grave')">🔴 Muy grave</button>
+                <button class="verdict-btn" onclick="setVerdict(this,'mod')">🟡 Moderada</button>
+                <button class="verdict-btn" onclick="setVerdict(this,'leve')">🟢 Leve</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASO 3 -->
+      <div class="case-card case-3" id="case3">
+        <div class="case-header" onclick="toggleCase('case3')">
+          <div class="case-number">C3</div>
+          <div class="case-title-group">
+            <h3>Sistema de vigilancia facial en transporte público de ciudad colombiana</h3>
+            <div class="case-meta">
+              <span class="case-tag tag-sector">Seguridad pública</span>
+              <span class="case-tag tag-year">2021–2023</span>
+              <span class="case-tag tag-severity-med">Gravedad media-alta</span>
+            </div>
+          </div>
+          <span class="expand-btn">▼</span>
+        </div>
+        <div class="case-body">
+          <div class="case-narrative">
+            <h4>📋 Descripción del caso</h4>
+            <p>Varias ciudades colombianas instalaron sistemas de reconocimiento facial en estaciones de transporte público con el objetivo declarado de "mejorar la seguridad". Los ciudadanos que usaban el sistema de transporte eran registrados sin que se les informara claramente ni se les pidiera consentimiento.</p>
+            <p>La empresa proveedora del sistema era de origen chino y los datos faciales se almacenaban en servidores fuera de Colombia. No existía una política pública clara sobre quiénes podían acceder a esa base de datos ni por cuánto tiempo se conservarían. Organizaciones de derechos digitales en Colombia denunciaron la situación ante la Superintendencia de Industria y Comercio.</p>
+            <h4>❓ Preguntas que guían el análisis</h4>
+            <p>¿Un ciudadano puede negar el uso del transporte público para evitar ser registrado? ¿Es válido el argumento de "seguridad pública" para recopilar datos biométricos sin consentimiento? ¿Qué riesgos tiene almacenar datos faciales de colombianos en servidores extranjeros?</p>
+          </div>
+          <div class="case-analysis">
+            <h4>✍️ Tu análisis del caso</h4>
+            <div class="form-group">
+              <label class="form-label">¿Qué principios de la Ley 1581 fueron vulnerados?</label>
+              <div class="law-chips" id="chips-c3">
+                <span class="law-chip" onclick="toggleChip(this,'c3')">Legalidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c3')">Finalidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c3')">Proporcionalidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c3')">Libertad/Consentimiento</span>
+                <span class="law-chip" onclick="toggleChip(this,'c3')">Transparencia</span>
+                <span class="law-chip" onclick="toggleChip(this,'c3')">Seguridad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c3')">Confidencialidad</span>
+                <span class="law-chip" onclick="toggleChip(this,'c3')">Acceso restringido</span>
+              </div>
+            </div>
+            <div class="analysis-grid">
+              <div class="form-group">
+                <label class="form-label">¿Cómo se vulneró cada principio?</label>
+                <textarea id="c3-vuln" placeholder="Ten en cuenta que los datos biométricos (cara, huella) son datos sensibles con mayor protección en la ley..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">¿Puede justificarse el uso de IA de vigilancia en nombre de la seguridad?</label>
+                <textarea id="c3-justify" placeholder="Argumenta desde los derechos ciudadanos y los principios éticos de la IA..."></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">¿Qué debería haber hecho el ente público antes de implementar este sistema?</label>
+              <textarea id="c3-should" placeholder="Piensa en: consulta ciudadana, marco legal, política de retención de datos, auditorías independientes..."></textarea>
+            </div>
+            <div class="verdict-box">
+              <label class="form-label" style="margin-bottom:10px;">¿Qué tan grave consideras esta violación?</label>
+              <div class="verdict-options">
+                <button class="verdict-btn" onclick="setVerdict(this,'grave')">🔴 Muy grave</button>
+                <button class="verdict-btn" onclick="setVerdict(this,'mod')">🟡 Moderada</button>
+                <button class="verdict-btn" onclick="setVerdict(this,'leve')">🟢 Leve</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASO 4 -->
+      <div class="case-card case-4" id="case4">
+        <div class="case-header" onclick="toggleCase('case4')">
+          <div class="case-number">C4</div>
+          <div class="case-title-group">
+            <h3>Estudiante usa IA para generar examen: ¿violación de datos o de integridad académica?</h3>
+            <div class="case-meta">
+              <span class="case-tag tag-sector">Educación superior</span>
+              <span class="case-tag tag-year">2024</span>
+              <span class="case-tag tag-severity-med">Dilema ético</span>
+            </div>
+          </div>
+          <span class="expand-btn">▼</span>
+        </div>
+        <div class="case-body">
+          <div class="case-narrative">
+            <h4>📋 Descripción del caso</h4>
+            <p>Una estudiante de licenciatura en una universidad colombiana copia el enunciado completo de un examen parcial —incluyendo datos del docente y del curso— y lo pega en ChatGPT para obtener las respuestas. Al subir esa información, la plataforma puede usarla para entrenamiento de sus modelos.</p>
+            <p>El docente, usando una herramienta de detección de IA, identifica que las respuestas son generadas por IA. Se abre un proceso disciplinario. La estudiante argumenta que no sabía que estaba violando alguna norma, y que la universidad no tiene una política explícita sobre el uso de IA en evaluaciones.</p>
+            <h4>❓ Preguntas que guían el análisis</h4>
+            <p>¿Se violó la privacidad del docente al subir sus preguntas a una plataforma externa? ¿Quién es titular de los datos del examen? ¿Es ético usar IA en evaluaciones si no hay política institucional? ¿Qué responsabilidad tiene la institución por no tener normas claras?</p>
+          </div>
+          <div class="case-analysis">
+            <h4>✍️ Tu análisis del caso</h4>
+            <div class="form-group">
+              <label class="form-label">¿Qué dimensiones éticas y legales están en juego aquí? (Marca las que apliquen)</label>
+              <div class="law-chips" id="chips-c4">
+                <span class="law-chip" onclick="toggleChip(this,'c4')">Propiedad intelectual del docente</span>
+                <span class="law-chip" onclick="toggleChip(this,'c4')">Privacidad de datos del examen</span>
+                <span class="law-chip" onclick="toggleChip(this,'c4')">Integridad académica</span>
+                <span class="law-chip" onclick="toggleChip(this,'c4')">Transparencia en uso de IA</span>
+                <span class="law-chip" onclick="toggleChip(this,'c4')">Responsabilidad institucional</span>
+                <span class="law-chip" onclick="toggleChip(this,'c4')">Consentimiento informado</span>
+              </div>
+            </div>
+            <div class="analysis-grid">
+              <div class="form-group">
+                <label class="form-label">¿Fue la actuación de la estudiante una violación ética? ¿Por qué?</label>
+                <textarea id="c4-student" placeholder="Considera que la estudiante puede no haber actuado de mala fe, pero las consecuencias son reales..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">¿Qué responsabilidad tiene la universidad?</label>
+                <textarea id="c4-uni" placeholder="¿Las instituciones tienen la obligación de comunicar políticas claras antes de sancionar?"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Como futuro/a docente, ¿cómo diseñarías una política de uso de IA en tus evaluaciones?</label>
+              <div class="form-hint">Este es tu producto docente más valioso de esta actividad. Sé concreto/a y contextualizado/a en física.</div>
+              <textarea id="c4-policy" placeholder="En mi asignatura de física, la política de uso de IA sería: 1)... 2)... 3)... Informaría a mis estudiantes mediante..."></textarea>
+            </div>
+            <div class="verdict-box">
+              <label class="form-label" style="margin-bottom:10px;">¿A quién consideras principalmente responsable en este caso?</label>
+              <div class="verdict-options">
+                <button class="verdict-btn" onclick="setVerdict(this,'grave')">👩‍🎓 La estudiante</button>
+                <button class="verdict-btn" onclick="setVerdict(this,'mod')">🏛️ La institución</button>
+                <button class="verdict-btn" onclick="setVerdict(this,'leve')">🤝 Ambas</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SÍNTESIS -->
+  <div class="section">
+    <div class="section-title"><div class="num-icon">III</div> Síntesis y reflexión final</div>
+    <div class="form-group">
+      <label class="form-label">¿Qué patrón común identificas en los casos que analizaste?</label>
+      <textarea id="pattern" placeholder="En los casos que analicé, hay un patrón común: ..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">¿Qué le recomendarías a un docente colombiano sobre el uso de plataformas con IA en su práctica pedagógica?</label>
+      <textarea id="recommendation" placeholder="Mi recomendación principal sería..."></textarea>
+    </div>
+    <button class="btn btn-gold" onclick="generateReport()" style="margin-top:8px;">📋 Generar mi informe de análisis →</button>
+  </div>
+
+  <div class="output-section" id="outputSection">
+    <div class="output-header">📋 Informe de Análisis de Casos — Listo para entregar</div>
+    <div class="output-body">
+      <div class="output-preview" id="outputPreview"></div>
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="copyOutput()">📋 Copiar informe</button>
+        <button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimir / PDF</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="nav-footer">
+  <a href="#">← Actividad 4: Auditoría de datos</a>
+  <span>Actividad 5 de 9 · Ética de la IA</span>
+  <a href="#">Actividad 6: Huella digital →</a>
+</div>
+
+<script>
+  function toggleCase(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+    updateProgress();
+  }
+  function toggleLawRef(header) {
+    const body = document.getElementById('lawRefBody');
+    body.classList.toggle('open');
+    header.querySelector('span').textContent = body.classList.contains('open') ? '▲' : '▼';
+  }
+  function toggleChip(chip, caseId) {
+    chip.classList.toggle('selected');
+  }
+  function setVerdict(btn, type) {
+    const parent = btn.closest('.verdict-options');
+    parent.querySelectorAll('.verdict-btn').forEach(b => b.classList.remove('selected-grave','selected-mod','selected-leve'));
+    btn.classList.add('selected-' + type);
+    updateProgress();
+  }
+  function getSelectedChips(id) {
+    const chips = document.querySelectorAll(`#chips-${id} .selected`);
+    return Array.from(chips).map(c => c.textContent).join(', ') || 'Ninguno seleccionado';
+  }
+  function getVerdict(container) {
+    const btn = container.querySelector('.selected-grave, .selected-mod, .selected-leve');
+    return btn ? btn.textContent.trim() : 'Sin calificar';
+  }
+  function updateProgress() {
+    const openCases = document.querySelectorAll('.case-card.open').length;
+    const w = Math.min(20 + openCases * 20, 90);
+    document.getElementById('progressBar').style.width = w + '%';
+  }
+  function generateReport() {
+    const now = new Date().toLocaleDateString('es-CO', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    let report = `INFORME DE ANÁLISIS DE CASOS — DATOS Y LEY EN COLOMBIA
+Actividad 5 — Ética de la IA · Licenciatura en Física · UDFJC
+Fecha: ${now}
+${'═'.repeat(60)}\n`;
+
+    const cases = [
+      { id: 'c1', title: 'CASO 1: Filtración de datos médicos con IA diagnóstica', fields: [
+        ['Principios vulnerados', () => getSelectedChips('c1')],
+        ['Cómo se vulneraron', () => document.getElementById('c1-vuln').value],
+        ['Responsabilidad', () => document.getElementById('c1-resp').value],
+        ['Qué debió hacerse', () => document.getElementById('c1-should').value],
+        ['Implicaciones educativas', () => document.getElementById('c1-impl').value],
+      ]},
+      { id: 'c2', title: 'CASO 2: Plataforma educativa y datos de menores', fields: [
+        ['Principios vulnerados', () => getSelectedChips('c2')],
+        ['Cómo se vulneraron', () => document.getElementById('c2-vuln').value],
+        ['Responsabilidad del colegio', () => document.getElementById('c2-resp').value],
+        ['Evaluación de plataformas como docente', () => document.getElementById('c2-teacher').value],
+        ['Propuesta de protocolo', () => document.getElementById('c2-protocol').value],
+      ]},
+      { id: 'c3', title: 'CASO 3: Vigilancia facial en transporte público', fields: [
+        ['Principios vulnerados', () => getSelectedChips('c3')],
+        ['Cómo se vulneraron', () => document.getElementById('c3-vuln').value],
+        ['¿Puede justificarse por seguridad?', () => document.getElementById('c3-justify').value],
+        ['Qué debió hacerse', () => document.getElementById('c3-should').value],
+      ]},
+      { id: 'c4', title: 'CASO 4: IA en evaluaciones académicas', fields: [
+        ['Dimensiones en juego', () => getSelectedChips('c4')],
+        ['Actuación de la estudiante', () => document.getElementById('c4-student').value],
+        ['Responsabilidad institucional', () => document.getElementById('c4-uni').value],
+        ['Mi política docente de IA', () => document.getElementById('c4-policy').value],
+      ]},
+    ];
+
+    cases.forEach(c => {
+      const card = document.getElementById(c.id);
+      const hasContent = c.fields.some(([, fn]) => fn().trim().length > 0);
+      if (hasContent || card.classList.contains('open')) {
+        report += `\n${c.title}\n${'─'.repeat(50)}\n`;
+        c.fields.forEach(([label, fn]) => {
+          const val = fn();
+          if (val) report += `${label}:\n${val}\n\n`;
+        });
+      }
+    });
+
+    const pattern = document.getElementById('pattern').value;
+    const recommendation = document.getElementById('recommendation').value;
+    if (pattern || recommendation) {
+      report += `\nSÍNTESIS FINAL\n${'─'.repeat(50)}\n`;
+      if (pattern) report += `Patrón común:\n${pattern}\n\n`;
+      if (recommendation) report += `Recomendación para docentes:\n${recommendation}\n\n`;
+    }
+    report += `${'═'.repeat(60)}\nAnálisis realizado con fines formativos — Ética de la IA · UDFJC`;
+
+    document.getElementById('outputPreview').textContent = report;
+    document.getElementById('outputSection').style.display = 'block';
+    document.getElementById('progressBar').style.width = '100%';
+    document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+  }
+  function copyOutput() {
+    navigator.clipboard.writeText(document.getElementById('outputPreview').textContent)
+      .then(() => alert('✅ Informe copiado'));
+  }
+</script>
+</body>
+</html>

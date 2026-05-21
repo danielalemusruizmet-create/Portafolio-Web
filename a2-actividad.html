@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A2 · Teachable Machine — Sesgo en IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface2: #e0f2fe;
+  --border: rgba(56, 189, 248, 0.35);
+  --text: #0f172a;
+  --muted: #475569;
+  --blue: #0284c7;
+  --blue-light: #2563eb;
+  --blue-glow: rgba(37, 99, 235, 0.18);
+  --accent: #f97316;
+  --alert-blue-bg: #eff6ff;
+  --alert-blue-border: #60a5fa;
+  --alert-blue-text: #1d4ed8;
+  --alert-amber-bg: #fffbeb;
+  --alert-amber-border: #f97316;
+  --alert-amber-text: #b45309;
+  --alert-green-bg: #ecfdf5;
+  --alert-green-border: #22c55e;
+  --alert-green-text: #166534;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+  color: var(--text);
+  font-family: 'Libre Baskerville', Georgia, serif;
+  min-height: 100vh;
+}
+.site-header {
+  background: linear-gradient(135deg, rgba(37,99,235,0.94) 0%, rgba(249,115,22,0.88) 100%);
+  color: white;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(249,115,22,0.25) 0%, transparent 38%);
+}
+.header-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 32px 40px;
+}
+.unit-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: white;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.unit-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: rgba(255,255,255,0.5);
+}
+.header-desc {
+  color: rgba(255,255,255,0.82);
+  font-size: 0.93rem;
+  max-width: 560px;
+  margin-bottom: 20px;
+}
+.header-meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 20px;
+}
+.header-meta span { display:flex; align-items:center; gap:6px; }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: white;
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.back-link:hover {
+  background: rgba(255,255,255,0.95);
+}
+main { max-width: 860px; margin: 0 auto; padding: 48px 32px 80px; }
+.badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #ffffff; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 16px 30px rgba(37, 99, 235, 0.22); }
+.tag-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: linear-gradient(135deg, #0ea5e9, #22d3ee); color: #041c32; border: 1px solid rgba(56, 189, 248, 0.35); }
+.ml { margin-left: auto; font-size: 13px; color: var(--muted); }
+.btn-back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--blue-light); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+.btn-back:hover { color: var(--accent); }
+h1 { font-size: 2rem; font-weight: 600; margin-bottom: .4rem; line-height: 1.2; }
+.subtitle { font-size: 14px; color: var(--muted); margin-bottom: 2.5rem; }
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+.tab { padding: .75rem 1.25rem; font-size: .9rem; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; color: var(--muted); transition: all .2s; background: none; border-top: none; border-left: none; border-right: none; font-family: 'Space Mono', monospace; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.panel { display: none; }
+.panel.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.card { background: var(--surface); border: 1px solid rgba(37, 99, 235, 0.16); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: 0 18px 35px rgba(37, 99, 235, 0.08); }
+.card h3 { font-size: 1rem; font-weight: 500; margin-bottom: .75rem; color: var(--blue); }
+.card p { font-size: .9rem; color: var(--muted); line-height: 1.7; margin-bottom: .75rem; }
+.card p:last-child { margin-bottom: 0; }
+.checklist { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+.checklist li { display: flex; align-items: flex-start; gap: .75rem; font-size: .9rem; color: var(--muted); line-height: 1.5; }
+.checklist li input[type=checkbox] { accent-color: var(--blue); margin-top: 3px; flex-shrink: 0; width: 16px; height: 16px; }
+textarea, input[type=text] { width: 100%; padding: .75rem 1rem; background: #ffffff; border: 1px solid rgba(37, 99, 235, 0.16); border-radius: 12px; color: var(--text); font-family: 'Space Mono', monospace; font-size: .9rem; resize: vertical; transition: border .2s; }
+textarea:focus, input[type=text]:focus { outline: none; border-color: var(--blue-light); }
+.field-label { font-size: 12px; color: var(--muted); margin-bottom: .4rem; display: block; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; }
+.field-group { margin-bottom: 1.25rem; }
+.alert { padding: 1rem; border-radius: 6px; font-size: .9rem; line-height: 1.6; margin-bottom: 1.25rem; }
+.alert-blue { background: var(--alert-blue-bg); border: 1px solid var(--alert-blue-border); color: var(--alert-blue-text); }
+.alert-amber { background: var(--alert-amber-bg); border: 1px solid var(--alert-amber-border); color: var(--alert-amber-text); }
+.alert-green { background: var(--alert-green-bg); border: 1px solid var(--alert-green-border); color: var(--alert-green-text); }
+.slider-container { margin-bottom: 1.5rem; }
+.slider-row { display: flex; align-items: center; gap: 1rem; margin-bottom: .6rem; }
+.slider-label { font-size: .85rem; color: var(--muted); min-width: 180px; }
+input[type=range] { flex: 1; accent-color: var(--blue); height: 4px; background: var(--surface2); border: none; }
+.slider-val { font-family: 'Space Mono', monospace; font-size: .85rem; color: var(--blue-light); min-width: 40px; text-align: right; }
+.gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin-bottom: 1.5rem; }
+.gal-card { background: linear-gradient(180deg, #ffffff, #dbeafe); border: 1px solid rgba(37, 99, 235, 0.18); border-radius: 16px; padding: 1rem; cursor: pointer; transition: all .2s; text-align: center; box-shadow: 0 20px 35px rgba(37, 99, 235, 0.12); }
+.gal-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+.gal-card.voted { border-color: var(--blue); background: rgba(56, 189, 248, 0.14); }
+.gal-icon { font-size: 2rem; margin-bottom: .5rem; }
+.gal-team { font-size: .85rem; font-weight: 500; margin-bottom: .3rem; }
+.gal-desc { font-size: .75rem; color: var(--muted); line-height: 1.4; }
+.gal-votes { font-size: 11px; color: var(--blue-light); margin-top: .5rem; font-family: 'Space Mono', monospace; }
+.btn { padding: .7rem 1.4rem; border-radius: 6px; font-family: 'Space Mono', monospace; font-size: .9rem; font-weight: 500; cursor: pointer; border: 1px solid; transition: all .2s; display: inline-flex; align-items: center; gap: .5rem; }
+.btn-primary { background: linear-gradient(135deg, var(--accent), #38bdf8); color: #ffffff; border-color: transparent; box-shadow: 0 18px 35px rgba(56, 189, 248, 0.25); }
+.btn-primary:hover { background: linear-gradient(135deg, #fb923c, #60a5fa); }
+.btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--muted); background: var(--surface2); }
+.btn-green { background: #22c55e; color: #ffffff; border-color: #22c55e; box-shadow: 0 16px 30px rgba(34, 197, 94, 0.25); }
+.btn-green:hover { background: #16a34a; }
+.btn-row { display: flex; gap: .75rem; margin-top: 1.5rem; flex-wrap: wrap; }
+code { font-family: 'Space Mono', monospace; font-size: .85rem; background: var(--surface2); padding: 2px 6px; border-radius: 4px; color: var(--blue-light); }
+.progress { height: 3px; background: var(--surface2); border-radius: 2px; margin-bottom: 2rem; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--blue-light)); border-radius: 2px; transition: width .4s; }
+.nav-footer { background: var(--blue); color: white; padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-radius: 16px; margin: 3rem auto 0; max-width: 860px; }
+.nav-footer a { color: #f8fafc; text-decoration: none; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.nav-footer span { font-size: 0.84rem; color: rgba(248,250,252,0.82); }
+footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 2rem; }
+.gallery { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 720px) { .gallery { grid-template-columns: 1fr; } .header-inner { padding: 32px 24px 32px; } main { padding: 36px 24px 64px; } .nav-footer { padding: 18px 24px; } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <h1>Entrena tu modelo.<br>Descubre su sesgo.</h1>
+    <div class="header-desc">Taller práctico con Teachable Machine y análisis de sesgos éticos en datos de entrenamiento.</div>
+    <div class="tag-badge" style="margin-bottom:18px; display:inline-flex;">Teachable Machine · Datos sesgados</div>
+    <a href="index.html" class="back-link">← Regresar al portafolio</a>
+  </div>
+</header>
+
+<main class="main-content">
+  <div style="display:inline-block;font-size:12px;padding:4px 12px;border-radius:20px;background:linear-gradient(135deg, #2563eb, #7c3aed);color:#ffffff;border:1px solid rgba(255,255,255,0.18);margin-bottom:1.5rem">
+    ⚖️ Tema ético: Transparencia algorítmica y sesgo en datos de entrenamiento
+  </div>
+  <p class="subtitle">Taller práctico con Teachable Machine · Análisis de sesgos en imágenes de laboratorio.</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('guia')">📋 Guía del taller</button>
+    <button class="tab" onclick="showTab('reflexion')">🔍 Mi reflexión</button>
+    <button class="tab" onclick="showTab('sesgo')">📊 Análisis de sesgo</button>
+    <button class="tab" onclick="showTab('galeria')">🖼️ A2b · Galería</button>
+  </div>
+
+  <div class="panel active" id="panel-guia">
+    <div class="alert alert-blue">
+      <strong>Herramienta principal:</strong> Teachable Machine de Google — accede en <code>teachablemachine.withgoogle.com</code> · No necesitas cuenta, funciona en el navegador.
+    </div>
+
+    <div class="card">
+      <h3>🎯 ¿Qué vas a hacer?</h3>
+      <p>Entrenarás un modelo de reconocimiento de imágenes para clasificar objetos físicos de laboratorio (ej. prisma, lente, imán). Pero con un giro: una clase estará <strong>intencionalmente sesgada</strong> — solo imágenes tomadas bajo ciertas condiciones (mismo ángulo, misma iluminación). Luego comprobarás cómo esto afecta la predicción.</p>
+    </div>
+
+    <div class="card">
+      <h3>📌 Paso a paso</h3>
+      <ul class="checklist" id="steps">
+        <li><input type="checkbox" onchange="markStep(this)"> <span><strong>Paso 1:</strong> Abre Teachable Machine → selecciona "Image Project" → "Standard image model"</span></li>
+        <li><input type="checkbox" onchange="markStep(this)"> <span><strong>Paso 2:</strong> Crea 3 clases: <em>Clase A (prisma)</em>, <em>Clase B (imán)</em>, <em>Clase C (lente)</em></span></li>
+        <li><input type="checkbox" onchange="markStep(this)"> <span><strong>Paso 3:</strong> Para Clase A: toma 30+ fotos con cámara frontal, <u>siempre mismo ángulo y fondo blanco</u></span></li>
+        <li><input type="checkbox" onchange="markStep(this)"> <span><strong>Paso 4:</strong> Para Clase B y C: toma fotos desde ángulos variados, distintos fondos, distintas iluminaciones</span></li>
+        <li><input type="checkbox" onchange="markStep(this)"> <span><strong>Paso 5:</strong> Entrena el modelo (botón "Train Model") — espera hasta que el indicador llegue a 100%</span></li>
+        <li><input type="checkbox" onchange="markStep(this)"> <span><strong>Paso 6:</strong> Prueba el modelo: muestra el objeto de Clase A desde ángulos distintos a los de entrenamiento. ¿Lo reconoce?</span></li>
+        <li><input type="checkbox" onchange="markStep(this)"> <span><strong>Paso 7:</strong> Exporta tu modelo (Export Model → "Download my model") y guarda el link</span></li>
+        <li><input type="checkbox" onchange="markStep(this)"> <span><strong>Paso 8:</strong> Completa la pestaña "Mi reflexión"</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>💡 Preguntas orientadoras mientras trabajas</h3>
+      <p>• ¿Por qué el modelo entrenado solo con un ángulo falla cuando el ángulo cambia?</p>
+      <p>• ¿Qué pasaría si entrenáramos un modelo de reconocimiento facial solo con fotos de personas de un grupo étnico?</p>
+      <p>• ¿Quién es responsable de los errores del modelo: el algoritmo, los datos, o quien diseñó el experimento?</p>
+    </div>
+
+    <div id="stepProgress" style="margin-top:1rem">
+      <span class="field-label">Tu progreso: <span id="stepCount">0/8</span> pasos completados</span>
+      <div class="progress"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-reflexion">
+    <div class="alert alert-amber">
+      Completa esta sección <strong>después</strong> de haber entrenado y probado tu modelo en Teachable Machine.
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">¿Qué clases entrenaste y cuántas imágenes usaste por clase?</label>
+      <textarea rows="3" id="r1" placeholder="Clase A: prisma (35 imágenes, mismo ángulo)\nClase B: imán (40 imágenes, ángulos variados)\n..."></textarea>
+    </div>
+    <div class="field-group">
+      <label class="field-label">¿Cómo se comportó el modelo cuando probaste con condiciones distintas a las de entrenamiento?</label>
+      <textarea rows="4" id="r2" placeholder="Describe qué pasó cuando cambias el ángulo, iluminación o fondo..."></textarea>
+    </div>
+    <div class="field-group">
+      <label class="field-label">¿Qué tipo de sesgo introdujiste intencionalmente? ¿Por qué ese sesgo produce errores?</label>
+      <textarea rows="4" id="r3" placeholder="Explica el sesgo de ángulo/iluminación y sus consecuencias..."></textarea>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Analogía con el mundo real: da un ejemplo de cómo un sesgo similar afectaría a personas en un contexto real</label>
+      <textarea rows="4" id="r4" placeholder="Ej: reconocimiento facial entrenado solo con ciertos grupos étnicos..."></textarea>
+    </div>
+    <div class="field-group">
+      <label class="field-label">¿Qué haría diferente si entrenara este modelo para usarlo con estudiantes en el aula?</label>
+      <textarea rows="4" id="r5" placeholder="Describe estrategias para reducir el sesgo..."></textarea>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Link de tu modelo exportado (opcional)</label>
+      <input type="text" id="modelLink" placeholder="https://teachablemachine.withgoogle.com/models/...">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveReflection()">💾 Guardar reflexión</button>
+    </div>
+    <div id="saveMsg" style="display:none;margin-top:.75rem;font-size:.85rem;color:var(--blue-light)">✓ Reflexión guardada en sesión</div>
+  </div>
+
+  <div class="panel" id="panel-sesgo">
+    <div class="card">
+      <h3>📊 Mide el sesgo de tu modelo</h3>
+      <p>Después de probar tu modelo, evalúa qué tan sesgado quedó en cada dimensión. Mueve los sliders según tu observación real.</p>
+    </div>
+
+    <div class="slider-container">
+      <div class="slider-row">
+        <span class="slider-label">Variabilidad de datos de entrenamiento</span>
+        <input type="range" min="0" max="100" value="30" oninput="updateSlider(this,'v-variabilidad')" id="s1">
+        <span class="slider-val" id="v-variabilidad">30%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">Precisión en condiciones similares</span>
+        <input type="range" min="0" max="100" value="80" oninput="updateSlider(this,'v-precision')" id="s2">
+        <span class="slider-val" id="v-precision">80%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">Precisión en condiciones distintas</span>
+        <input type="range" min="0" max="100" value="25" oninput="updateSlider(this,'v-precision2')" id="s3">
+        <span class="slider-val" id="v-precision2">25%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">Nivel de sesgo general del modelo</span>
+        <input type="range" min="0" max="100" value="70" oninput="updateSlider(this,'v-sesgo')" id="s4">
+        <span class="slider-val" id="v-sesgo">70%</span>
+      </div>
+    </div>
+
+    <div class="card" id="sesgoAnalysis">
+      <h3>📝 Tu análisis de sesgo</h3>
+      <p id="sesgoText">Ajusta los sliders para ver tu análisis...</p>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">¿Qué estrategias propondrías para reducir el sesgo en un modelo real de IA educativa?</label>
+      <textarea rows="5" id="estrategias" placeholder="1. Diversificar los datos de entrenamiento incluyendo...\n2. Establecer métricas de equidad como...\n3. Involucrar a distintas comunidades en el proceso de..."></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="descargarTodo()">⬇ Descargar toda mi evidencia</button>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-galeria">
+    <div class="alert alert-green">
+      <strong>Sub-actividad A2b · Galería de modelos con sesgos intencionales</strong><br>
+      Aquí cada grupo publica su modelo sesgado y la clase vota cuál cometió el sesgo más problemático. Esta actividad simula una revisión de modelos de IA en contexto real.
+    </div>
+
+    <div class="card">
+      <h3>📤 Publicar mi modelo</h3>
+      <div class="field-group" style="margin-bottom:.75rem">
+        <label class="field-label">Nombre del grupo / equipo</label>
+        <input type="text" id="g_team" placeholder="ej. Grupo Ondas">
+      </div>
+      <div class="field-group" style="margin-bottom:.75rem">
+        <label class="field-label">Tipo de sesgo que introdujeron</label>
+        <input type="text" id="g_sesgo" placeholder="ej. Solo imágenes con luz natural, sin luz artificial">
+      </div>
+      <div class="field-group" style="margin-bottom:.75rem">
+        <label class="field-label">¿Por qué ese sesgo es problemático en un contexto real?</label>
+        <textarea rows="2" id="g_problema" placeholder="Si este modelo se usara para..."></textarea>
+      </div>
+      <button class="btn btn-ghost" onclick="publicarModelo()">📌 Publicar en galería</button>
+    </div>
+
+    <div id="galeria" style="margin-top:1.5rem"></div>
+
+    <div id="debateSection" style="display:none">
+      <div class="card" style="margin-top:1.5rem">
+        <h3>🗣️ Debate guiado</h3>
+        <p>Después de votar, responde: ¿Por qué el sesgo más votado es el más problemático?</p>
+        <textarea rows="4" id="debateText" placeholder="El sesgo del grupo ganador es el más problemático porque..." style="margin-top:.75rem"></textarea>
+        <div class="btn-row">
+          <button class="btn btn-green" onclick="cerrarDebate()">Registrar conclusión del debate</button>
+        </div>
+        <div id="debateResult" style="display:none;margin-top:.75rem;padding:.75rem;background:var(--surface2);border-radius:6px;font-size:.9rem;color:var(--alert-green-text)"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="nav-footer">
+  <a href="a1-actividad.html">← Actividad 1</a>
+  <span>Actividad A2 de 9 · Ética de la IA</span>
+  <a href="a3-actividad.html">Actividad 3 →</a>
+</div>
+
+<footer>
+  <p>2026 • Actividad A2 · Teachable Machine — Ética de la IA</p>
+</footer>
+
+<script>
+  function showTab(tabId) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.textContent.toLowerCase().includes(tabId)));
+    document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + tabId));
+  }
+
+  function markStep(checkbox) {
+    const total = document.querySelectorAll('#steps input[type=checkbox]').length;
+    const done = document.querySelectorAll('#steps input[type=checkbox]:checked').length;
+    document.getElementById('stepCount').textContent = done + '/' + total;
+    document.getElementById('progressFill').style.width = `${(done / total) * 100}%`;
+  }
+
+  function updateSlider(input, id) {
+    document.getElementById(id).textContent = input.value + '%';
+    const values = [
+      Number(document.getElementById('s1').value),
+      Number(document.getElementById('s2').value),
+      Number(document.getElementById('s3').value),
+      Number(document.getElementById('s4').value)
+    ];
+    const score = Math.round(values.reduce((sum, v) => sum + v, 0) / values.length);
+    const summary = score > 65 ? 'Tu modelo muestra un sesgo moderado a bajo.' : 'El modelo presenta un sesgo alto que limita su generalización.';
+    document.getElementById('sesgoText').textContent = `Resumen: ${summary} Para mejorar, busca mayor variabilidad de datos y prueba con condiciones diferentes.`;
+  }
+
+  function saveReflection() {
+    const data = {
+      r1: document.getElementById('r1').value,
+      r2: document.getElementById('r2').value,
+      r3: document.getElementById('r3').value,
+      r4: document.getElementById('r4').value,
+      r5: document.getElementById('r5').value,
+      modelLink: document.getElementById('modelLink').value
+    };
+    sessionStorage.setItem('a2Reflection', JSON.stringify(data));
+    document.getElementById('saveMsg').style.display = 'block';
+  }
+
+  function publicarModelo() {
+    const team = document.getElementById('g_team').value.trim();
+    const sesgo = document.getElementById('g_sesgo').value.trim();
+    const problema = document.getElementById('g_problema').value.trim();
+    if (!team || !sesgo || !problema) {
+      alert('Completa todos los campos para publicar tu modelo.');
+      return;
+    }
+    const card = document.createElement('div');
+    card.className = 'gal-card';
+    card.innerHTML = `
+      <div class="gal-icon">📌</div>
+      <div class="gal-team">${team}</div>
+      <div class="gal-desc">${sesgo}</div>
+      <div class="gal-votes">${problema}</div>
+    `;
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.gal-card').forEach(c => c.classList.remove('voted'));
+      card.classList.add('voted');
+      document.getElementById('debateSection').style.display = 'block';
+    });
+    document.getElementById('galeria').appendChild(card);
+    document.getElementById('g_team').value = '';
+    document.getElementById('g_sesgo').value = '';
+    document.getElementById('g_problema').value = '';
+  }
+
+  function cerrarDebate() {
+    const texto = document.getElementById('debateText').value.trim();
+    if (!texto) {
+      alert('Escribe una conclusión del debate antes de continuar.');
+      return;
+    }
+    document.getElementById('debateResult').textContent = 'Tu conclusión ha sido registrada. Buen trabajo al articular por qué el sesgo más votado es el más problemático.';
+    document.getElementById('debateResult').style.display = 'block';
+  }
+
+  function descargarTodo() {
+    alert('Simulación: toda tu evidencia está lista para descarga.');
+  }
+</script>
+</body>
+</html>

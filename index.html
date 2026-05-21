@@ -1,175 +1,666 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Portafolio Académico - IA en Física</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-IGoo1xT+ddpr3u0xxVrQevsUxj9a5tgbacU1hq3dgIFyq6wo4YgB1DzVZ8yWv9RY" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/styles.css">
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-      <div class="container">
-        <a class="navbar-brand" href="#inicio">IA Física UDFJC</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacion" aria-controls="menuNavegacion" aria-expanded="false" aria-label="Alternar navegación">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="menuNavegacion">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" href="#recursos">Recursos</a></li>
-            <li class="nav-item"><a class="nav-link" href="#datos">Datos</a></li>
-            <li class="nav-item"><a class="nav-link" href="#multimedia">Multimedia</a></li>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portafolio Educativo | Uso Ético de la IA en Física</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary-dark: #4c1d95;   /* Púrpura Intenso */
+      --primary-medium: #2563eb; /* Azul Eléctrico */
+      --primary-accent: #f97316; /* Naranja Vibrante */
+      --primary-light: #eef2ff;  /* Lavanda Muy Suave */
+      --accent-soft: #fde68a;    /* Amarillo Brillante */
+      --text-dark: #111827;      /* Gris Muy Oscuro */
+      --text-muted: #334155;     /* Azul Grisáceo */
+      --white: #ffffff;
+      --border-color: #c7d2fe;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      background-color: var(--white);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    /* Jerarquía Tipográfica Solicitada (Títulos 3x el texto base) */
+    h1, .display-titles {
+      font-size: 48px; /* 16px * 3 */
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--primary-dark);
+    }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+    }
+
+    h5 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    p, li {
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    /* Navegación */
+    .header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-size: 1.25rem;
+    }
+
+    .navbar-nav {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--primary-medium);
+    }
+
+    /* Sección Hero (Inicio) */
+    .hero {
+      background: linear-gradient(135deg, rgba(76, 29, 149, 0.88) 0%, rgba(37, 99, 235, 0.80) 100%),
+                  url("img/banner-ia.png") center/cover no-repeat;
+      color: var(--white);
+      text-align: center;
+      padding: 6rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.18);
+      pointer-events: none;
+    }
+
+    .hero > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, 0.95);
+      max-width: 800px;
+      margin: 0 auto 2.5rem auto;
+      font-size: 1.25rem;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #93c5fd;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Botones */
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+
+    .btn-light {
+      background: #fff;
+      color: var(--primary-dark);
+      border: 2px solid rgba(76, 29, 149, 0.12);
+      box-shadow: 0 18px 35px rgba(76, 29, 149, 0.12);
+    }
+
+    .btn-light:hover {
+      background: var(--accent-soft);
+      color: var(--primary-dark);
+    }
+
+    .btn-outline-light {
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      color: var(--white);
+    }
+
+    .btn-outline-light:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-primary-blue {
+      background: var(--primary-accent);
+      color: var(--white);
+      box-shadow: 0 18px 30px rgba(249, 115, 22, 0.25);
+    }
+
+    .btn-primary-blue:hover {
+      background: #ea580c;
+    }
+
+    /* Secciones Generales */
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .bg-light-section {
+      background: linear-gradient(180deg, var(--primary-light) 0%, #fff7ed 100%);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    /* Tarjetas */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--primary-accent), #fbbf24);
+      color: var(--white);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      width: fit-content;
+      box-shadow: 0 10px 25px rgba(249, 115, 22, 0.2);
+    }
+
+    /* Listas */
+    .custom-list {
+      margin-top: 1rem;
+      padding-left: 1.25rem;
+    }
+
+    .custom-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Miniatura Visual Fija para el Recurso de Gamma */
+    .preview-box {
+      width: 100%;
+      height: 150px;
+      background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      text-align: center;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 25px 45px rgba(39, 83, 223, 0.22);
+    }
+
+    .preview-box i {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .preview-box span {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    /* Botón interno para las tarjetas de recursos */
+    .btn-card-action {
+      display: block;
+      text-align: center;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 0.6rem;
+      border-radius: 6px;
+      margin-top: 1.25rem;
+      transition: all 0.2s;
+    }
+
+    .btn-card-action:hover {
+      background: var(--primary-medium);
+      color: var(--white);
+    }
+
+    /* Contenedores para Recursos Visuales (Placeholders standard) */
+    .visual-resource-box {
+      width: 100%;
+      height: 150px;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.18) 0%, rgba(37, 99, 235, 0.16) 100%);
+      border: 2px dashed rgba(37, 99, 235, 0.45);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-dark);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      backdrop-filter: blur(2px);
+    }
+
+    .visual-resource-box i {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.7;
+    }
+
+    /* Modal simple para ampliar mapas mentales */
+    .mm-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 16, 16, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 1rem;
+    }
+    .mm-modal.show { display: flex; }
+    .mm-modal-content { width: 100%; max-width: 1100px; max-height: 92vh; background: #fff; border-radius: 10px; padding: 1rem; overflow: auto; }
+    .mm-modal-close { position: absolute; right: 12px; top: 8px; background: transparent; border: none; font-size: 1.6rem; cursor: pointer; }
+    .mm-modal-body svg { width: 100%; height: auto; display: block; }
+
+    /* Texto blanco para el primer mapa mental */
+    .mermaid.map-1 svg text,
+    .mermaid.map-1 svg tspan,
+    .mermaid.map-1 svg .label {
+      fill: #ffffff !important;
+      color: #ffffff !important;
+    }
+
+    /* Cuando el SVG se clona al modal, aplicar también color blanco */
+    .mm-modal-body svg.from-map-1 text,
+    .mm-modal-body svg.from-map-1 tspan,
+    .mm-modal-body svg.from-map-1 .label {
+      fill: #ffffff !important;
+      color: #ffffff !important;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <nav class="navbar">
+      <a class="navbar-brand" href="#inicio">ÉTICA EN EDUCACIÓN</a>
+      <ul class="navbar-nav">
+        <li><a class="nav-link" href="#inicio">Inicio</a></li>
+        <li><a class="nav-link" href="#objetivo">Objetivo</a></li>
+        <li><a class="nav-link" href="#recursos">Recursos</a></li>
+        <li><a class="nav-link" href="#actividad">Actividades</a></li>
+        <li><a class="nav-link" href="#creditos">Créditos</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <span class="eyebrow">Portafolio Académico</span>
+      <h1>Uso Ético de la Inteligencia Artificial en el Aula</h1>
+      <p>Guía visual y recursos interactivos para estudiantes de séptimo semestre de Licenciatura en Física, Universidad Distrital Francisco José de Caldas.</p>
+      <div class="btn-container">
+        <a href="#recursos" class="btn btn-light">Ver recursos</a>
+        <a href="#actividad" class="btn btn-outline-light">Explorar actividades</a>
+      </div>
+    </section>
+
+    <section id="objetivo" class="section">
+      <div class="grid-2">
+        <div>
+          <h2>¿Por qué la ética en IA es importante para tu formación?</h2>
+          <p>El uso de herramientas de inteligencia artificial puede transformar la práctica académica, pero también exige responsabilidad, transparencia y respeto por la integridad de los datos, la autoría y los modelos algorítmicos.</p>
+          <ul class="custom-list">
+            <li>Comprender cuándo una herramienta es apoyo matemático y cuándo sustitución de pensamiento.</li>
+            <li>Aplicar IA con honestidad en informes de laboratorio, simulación de datos y resolución de problemas.</li>
+            <li>Reconocer sesgos y limitaciones físicas en los resultados generados por modelos de lenguaje.</li>
           </ul>
         </div>
-      </div>
-    </nav>
-
-    <header id="inicio" class="hero bg-body-tertiary py-5">
-      <div class="container py-5">
-        <div class="row align-items-center gy-4">
-          <div class="col-lg-6">
-            <p class="text-uppercase text-secondary mb-2">Recursos académicos</p>
-            <h1 class="display-5 fw-bold">IA con sentido crítico, ético y reflexivo</h1>
-            <p class="lead text-muted">Un portafolio diseñado para estudiantes de física de la Universidad Distrital Francisco José de Caldas que desean comprender el uso responsable de la inteligencia artificial y el valor de los datos personales.</p>
-            <div class="d-flex flex-column flex-sm-row gap-3 mt-4">
-              <a class="btn btn-primary btn-lg" href="#recursos">Explorar recursos</a>
-              <a class="btn btn-outline-secondary btn-lg" href="#datos">Protección de datos</a>
+        <div>
+          <div class="card">
+            <div>
+              <span class="badge">Educación + Ética + IA</span>
+              <h3>Público objetivo</h3>
+              <p style="margin-bottom: 1rem;">Estudiantes de séptimo semestre de la Licenciatura en Física, Universidad Distrital Francisco José de Caldas.</p>
             </div>
-          </div>
-          <div class="col-lg-6 text-center">
-            <img src="assets/images/hero-illustration.svg" alt="Ilustración de enseñanza de IA" class="img-fluid hero-graphic">
+            <div style="margin-top: 1rem;">
+              <h5>Temas clave</h5>
+              <p>Análisis de simulaciones, validación de leyes universales, colaboración con modelos generativos y referencias computacionales.</p>
+            </div>
           </div>
         </div>
       </div>
-    </header>
+    </section>
 
-    <main>
-      <section id="recursos" class="py-5">
-        <div class="container">
-          <div class="row align-items-end mb-4">
-            <div class="col-lg-8">
-              <h2>Recursos educativos inclusivos</h2>
-              <p class="text-muted">Contenido con apoyo visual, audio, gráficos y guías para fortalecer una comprensión crítica de la IA aplicada a la ciencia.</p>
+    <section id="recursos" class="section bg-light-section" style="max-width: 100%;">
+      <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+          <h2>Recursos clave</h2>
+          <p>Material seleccionado para apoyar tus actividades en el aula y fomentar el análisis ético.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <div>
+              <div class="preview-box">
+                <i class="fa-solid fa-window-restore"></i>
+                <span>Presentación Digital</span>
+              </div>
+              <h5>Guía rápida de buenas prácticas</h5>
+              <p>Consejos para usar IAs en clases, reportes de laboratorio mecánico o cuántico y presentaciones sin comprometer tu integridad académica.</p>
+            </div>
+            <a href="guia-ia.html" class="btn btn-card-action"><i class="fa-solid fa-expand" style="margin-right: 0.4rem;"></i> Abrir Guía Completa</a>
+          </div>
+
+          <div class="card">
+            <div>
+              <h5>Mapa Mental · Ética Algorítmica</h5>
+              <div class="mermaid map-1" style="background: #fff; padding:0.75rem; border-radius:8px; margin:0.5rem 0; cursor:zoom-in;">
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#8E44AD',
+    'edgeColor': '#8E44AD',
+    'lineColor': '#8E44AD',
+    'tertiaryColor': '#ABEBC6',
+    'secondaryColor': '#F5B7B1'
+  }
+} }%%
+mindmap
+  root((Ética Algorítmica))
+    Transparencia
+      Explicabilidad
+      Auditoría
+    Justicia
+      Mitigación de sesgos
+      Diversidad
+    Privacidad
+      Datos personales
+      Seguridad
+    Responsabilidad
+      Supervisión humana
+      Impacto social
+              </div>
+
+              <div class="mermaid" style="background: #fff; padding:0.75rem; border-radius:8px; margin:0.5rem 0; cursor:zoom-in;">
+mindmap
+  root((Ética Algorítmica))
+    Transparencia
+      ::icon(fa fa-eye)
+      Explicabilidad
+      Evitar cajas negras
+      Auditoría abierta
+    Justicia y Equidad
+      ::icon(fa fa-balance-scale)
+      Mitigación de sesgos
+      Diversidad de datos
+      Inclusión social
+    Privacidad
+      ::icon(fa fa-lock)
+      Protección de datos
+      Consentimiento
+      Seguridad robusta
+    Responsabilidad
+      ::icon(fa fa-user-check)
+      Supervisión humana
+      Rendición de cuentas
+      Impacto social
+              </div>
             </div>
           </div>
-          <div class="row g-4">
-            <div class="col-md-6 col-xl-4">
-              <article class="card h-100 shadow-sm border-0 resource-card">
-                <div class="card-body">
-                  <span class="badge bg-primary mb-3">Ética</span>
-                  <h3 class="h5">Ética en algoritmos</h3>
-                  <p class="text-muted">Explora casos prácticos sobre sesgo, transparencia y responsabilidad en el uso de IA en investigaciones científicas.</p>
-                </div>
-              </article>
-            </div>
-            <div class="col-md-6 col-xl-4">
-              <article class="card h-100 shadow-sm border-0 resource-card">
-                <div class="card-body">
-                  <span class="badge bg-success mb-3">Reflexión</span>
-                  <h3 class="h5">Reflexión crítica</h3>
-                  <p class="text-muted">Encuentra preguntas clave para evaluar si un resultado generado por IA es confiable y cómo influye en tu investigación.</p>
-                </div>
-              </article>
-            </div>
-            <div class="col-md-6 col-xl-4">
-              <article class="card h-100 shadow-sm border-0 resource-card">
-                <div class="card-body">
-                  <span class="badge bg-warning mb-3">Práctica</span>
-                  <h3 class="h5">Uso de datos personales</h3>
-                  <p class="text-muted">Aprende cómo proteger datos personales cuando trabajas con conjuntos de datos de simulaciones, registros experimentales y redes sociales.</p>
-                </div>
-              </article>
+          <div class="card">
+            <div>
+              <div class="visual-resource-box">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>[Espacio reservado para:<br><strong>Diagrama de Flujo / Casos</strong>]</span>
+              </div>
+              <h5>Ejemplos de casos</h5>
+              <p>Situaciones reales de clase y análisis de datos donde la IA apoya la resolución de problemas abstractos en física con criterios éticos rigurosos.</p>
             </div>
           </div>
         </div>
-      </section>
-
-      <section id="datos" class="py-5 bg-dark text-white">
-        <div class="container">
-          <div class="row align-items-center gy-4">
-            <div class="col-lg-7">
-              <h2>Datos personales y privacidad</h2>
-              <p class="lead text-white-75">Comprende los derechos, los riesgos y las buenas prácticas para manejar datos en proyectos que involucren inteligencia artificial.</p>
-              <ul class="list-unstyled text-white-75 lh-lg">
-                <li>• Minimiza la recolección de datos sensibles.</li>
-                <li>• Busca consentimientos claros y específicos.</li>
-                <li>• Guarda solo los datos necesarios para el propósito académico.</li>
-              </ul>
-            </div>
-            <div class="col-lg-5 text-center">
-              <img src="assets/images/privacy-illustration.svg" alt="Ilustración de protección de datos" class="img-fluid">
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="multimedia" class="py-5">
-        <div class="container">
-          <div class="row mb-4">
-            <div class="col-lg-8">
-              <h2>Multimedia para el aprendizaje</h2>
-              <p class="text-muted">El contenido combina audio, gráficos interactivos, texto y actividades visuales para que todos los estilos de aprendizaje estén incluidos.</p>
-            </div>
-          </div>
-          <div class="row gy-4">
-            <div class="col-md-6">
-              <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
-                  <h3 class="h5">Audio guía</h3>
-                  <p class="text-muted">Escucha una reflexión breve sobre la aplicación responsable de IA y el uso ético de datos personales.</p>
-                  <audio controls class="w-100 mt-3" preload="none">
-                    <source src="assets/audio/reflexion-ai.wav" type="audio/wav">
-                    Tu navegador no soporta audio HTML5.
-                  </audio>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card h-100 shadow-sm border-0 p-4 chart-card">
-                <h3 class="h5">Gráfico interactivo</h3>
-                <p class="text-muted">Observa cómo varía la percepción de la ética, privacidad y confianza en la IA.</p>
-                <canvas id="ethicsChart" width="400" height="280"></canvas>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="py-5 bg-secondary bg-opacity-10">
-        <div class="container">
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="feature-card p-4 h-100 rounded-4 shadow-sm">
-                <h3 class="h6">Aplicación en física</h3>
-                <p class="mb-0">Relación entre IA y análisis de datos en física experimental, simulaciones y modelado teórico.</p>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="feature-card p-4 h-100 rounded-4 shadow-sm">
-                <h3 class="h6">Diseño de preguntas</h3>
-                <p class="mb-0">Guía para formular preguntas críticas antes de aceptar un resultado generado por IA.</p>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="feature-card p-4 h-100 rounded-4 shadow-sm">
-                <h3 class="h6">Uso responsable</h3>
-                <p class="mb-0">Recomendaciones para preservar la privacidad y evitar el mal uso de datos en actividades académicas.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="py-4 bg-dark text-white-50">
-      <div class="container text-center">
-        <p class="mb-1">Portafolio educativo para estudiantes de física de la Universidad Distrital Francisco José de Caldas.</p>
-        <p class="small mb-0">Diseñado con Bootstrap, HTML, CSS y JavaScript.</p>
       </div>
-    </footer>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qmIVFKEk3/XVf9ZzudIwkZsYvGF+pTD4A7OIAjOxWKRhBY8tlFWZfn0OjPR1Shv6" crossorigin="anonymous"></script>
-    <script src="assets/js/script.js"></script>
-  </body>
+    <section id="actividad" class="section">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <h2>Actividades interactivas</h2>
+        <p>Practica con propuestas diseñadas para desarrollar tu criterio ético en el uso de IA.</p>
+      </div>
+      
+      <div style="max-width: 750px; margin: 0 auto; display: grid; gap: 1.5rem;">
+        <div class="card" style="border: 2px solid var(--primary-medium); padding: 2.5rem;">
+          <div>
+            <span class="badge" style="background-color: var(--primary-medium); color: white;">Módulo Habilitado</span>
+            <h3 style="font-size: 28px; margin-bottom: 1rem;">Actividad A1 Diagnóstica</h3>
+            <p style="margin-bottom: 2rem;">Explora tus hábitos de uso actuales, realiza un experimento de control conceptual en tiempo real y evalúa tus resultados de forma crítica frente a las leyes de la física.</p>
+          </div>
+          <a href="a1-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A1</a>
+        </div>
+        <div class="card" style="border: 2px solid #0f172a; padding: 2.5rem; background: #f8fafc;">
+          <div>
+            <span class="badge" style="background-color: #2563eb; color: white;">Nueva Actividad</span>
+            <h3 style="font-size: 28px; margin-bottom: 1rem; color: #1e3a8a;">Actividad A2 · Sesgo en IA</h3>
+            <p style="margin-bottom: 2rem; color: #4b5563;">Practica con Teachable Machine y explora cómo un sesgo de datos afecta la generalización del modelo. Incluye guía, reflexión, análisis y galería de votación.</p>
+          </div>
+          <a href="a2-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A2</a>
+        </div>
+        <div class="card" style="border: 2px solid #0f172a; padding: 2.5rem; background: #f8fafc;">
+          <div>
+            <span class="badge" style="background-color: #2563eb; color: white;">Nueva Actividad</span>
+            <h3 style="font-size: 28px; margin-bottom: 1rem; color: #1e3a8a;">Actividad A3 · ¿La IA es neutral?</h3>
+            <p style="margin-bottom: 2rem; color: #475569;">Debate estructurado y redacción argumentativa sobre si los sistemas de IA pueden considerarse neutrales o si siempre llevan carga de valores y sesgos.</p>
+          </div>
+          <a href="a3-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A3</a>
+        </div>
+        <div class="card" style="border: 2px solid #057a55; padding: 2.5rem; background: #ecfdf5;">
+          <div>
+            <span class="badge" style="background-color: #059669; color: white;">Nueva Actividad</span>
+            <h3 style="font-size: 28px; margin-bottom: 1rem; color: #047857;">Actividad A4 · Auditoría de mis datos</h3>
+            <p style="margin-bottom: 2rem; color: #475569;">Realiza una auditoría crítica de los datos que recopila una plataforma de IA y evalúa tus derechos digitales según la Ley 1581 de 2012.</p>
+          </div>
+          <a href="a4-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A4</a>
+        </div>
+        <div class="card" style="border: 2px solid #be185d; padding: 2.5rem; background: #fff1f2;">
+          <div>
+            <span class="badge" style="background-color: #db2777; color: white;">Nueva Actividad</span>
+            <h3 style="font-size: 28px; margin-bottom: 1rem; color: #9d174d;">Actividad A5 · Casos Colombianos: Datos y Ley</h3>
+            <p style="margin-bottom: 2rem; color: #475569;">Analiza casos reales de manejo de datos en Colombia, relaciona cada situación con la Ley 1581 y propone soluciones éticas para proteger a los titulares.</p>
+          </div>
+          <a href="a5-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A5</a>
+        </div>
+        <div class="card" style="border: 2px solid #047857; padding: 2.5rem; background: #ecfdf5;">
+          <div>
+            <span class="badge" style="background-color: #059669; color: white;">Nueva Actividad</span>
+            <h3 style="font-size: 28px; margin-bottom: 1rem; color: #047857;">Actividad A6 · Mi huella digital</h3>
+            <p style="margin-bottom: 2rem; color: #475569;">Descubre qué datos generas diariamente, evalúa tu exposición digital y construye un plan de higiene de datos para proteger tu información.</p>
+          </div>
+          <a href="a6-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A6</a>
+        </div>
+        <div class="card" style="border: 2px solid #831843; padding: 2.5rem; background: #fdf2f8;">
+          <div>
+            <span class="badge" style="background-color: #c026d3; color: white;">Nueva Actividad</span>
+            <h3 style="font-size: 28px; margin-bottom: 1rem; color: #831843;">Actividad A7 · Evaluación Integradora</h3>
+            <p style="margin-bottom: 2rem; color: #475569;">Integra todo lo aprendido en una evaluación con clasificación de solicitudes, análisis de riesgos, reflexión crítica y autoevaluación ética.</p>
+          </div>
+          <a href="a7-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A7</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="creditos" class="section bg-light-section" style="max-width: 100%;">
+      <div class="grid-2" style="max-width: 1200px; margin: 0 auto;">
+        <div>
+          <h2>Fuentes y créditos</h2>
+          <p>Herramientas y recursos disponibles para el desarrollo del portafolio enfocado en la excelencia académica y la investigación científica.</p>
+        </div>
+        <div class="card">
+          <div>
+            <h5>Contacto Académico</h5>
+            <p>Universidad Distrital Francisco José de Caldas</p>
+            <p>Facultad de Ciencias y Educación</p>
+            <p>Licenciatura en Física • Séptimo semestre</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>2026 • Portafolio sobre Uso Ético de IA en el Aula de Física • Universidad Distrital</p>
+  </footer>
+
+  <!-- Modal para ver mapas mentales en grande -->
+  <div id="mm-modal" class="mm-modal" aria-hidden="true">
+    <div class="mm-modal-content">
+      <button class="mm-modal-close" aria-label="Cerrar">&times;</button>
+      <div class="mm-modal-body"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    if (typeof mermaid !== 'undefined') {
+      mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      const modal = document.getElementById('mm-modal');
+      const body = modal.querySelector('.mm-modal-body');
+      const closeBtn = modal.querySelector('.mm-modal-close');
+
+      function openFrom(el) {
+        body.innerHTML = '';
+        const svg = el.querySelector('svg');
+        if (svg) {
+          const clone = svg.cloneNode(true);
+          // si el contenedor original tiene clase map-1, marcar el svg clonado
+          if (el.classList && el.classList.contains('map-1')) {
+            clone.classList.add('from-map-1');
+          }
+          body.appendChild(clone);
+        } else {
+          // fallback: render text
+          const pre = document.createElement('pre');
+          pre.textContent = el.textContent || '';
+          body.appendChild(pre);
+        }
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+      }
+
+      document.querySelectorAll('.mermaid').forEach(function (el) {
+        el.addEventListener('click', function () { openFrom(el); });
+      });
+
+      closeBtn.addEventListener('click', function () { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); body.innerHTML=''; });
+      modal.addEventListener('click', function (e) { if (e.target === modal) { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); body.innerHTML=''; } });
+      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); body.innerHTML=''; } });
+    });
+  </script>
+
+</body>
 </html>
