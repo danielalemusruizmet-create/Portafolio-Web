@@ -74,6 +74,11 @@
     .bg-light-section { background: linear-gradient(180deg, var(--primary-light) 0%, #fff7ed 100%); }
     .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; align-items: center; }
     .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+    .activity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.6rem; align-items: start; }
+    .activity-grid .card { transition: transform 0.35s ease, box-shadow 0.35s ease; }
+    .activity-grid .card:nth-child(odd) { transform: translateY(10px); }
+    .activity-grid .card:nth-child(even) { transform: translateY(-8px); }
+    .activity-grid .card:hover { transform: translateY(0); box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12); }
 
     .card { background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
     .badge { display: inline-block; background: linear-gradient(135deg, var(--primary-accent), #fbbf24); color: var(--white); padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; width: fit-content; box-shadow: 0 10px 25px rgba(249, 115, 22, 0.2); }
@@ -95,6 +100,18 @@
     .mm-modal-content { width: 100%; max-width: 1100px; max-height: 92vh; background: #fff; border-radius: 10px; padding: 1rem; overflow: auto; }
     .mm-modal-close { position: absolute; right: 12px; top: 8px; background: transparent; border: none; font-size: 1.6rem; cursor: pointer; }
     .mm-modal-body svg { width: 100%; height: auto; display: block; }
+    /* FEATURED VIDEO (recursos) */
+    .featured-video { display: grid; grid-template-columns: 1fr 420px; gap: 1.6rem; align-items: center; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-color); }
+    .featured-video .desc h3 { margin: 0 0 0.6rem 0; color: var(--primary-dark); }
+    .featured-video .desc p { color: var(--text-muted); line-height: 1.5; }
+    .featured-video video { width: 100%; height: auto; max-height: 360px; border-radius: 8px; box-shadow: 0 12px 30px rgba(2,6,23,0.12); background: #000; display: block; }
+    @media (max-width: 880px) { .featured-video { grid-template-columns: 1fr; } .featured-video .media { order: -1; } }
+
+    /* SOLO VIDEO: sección independiente sin contenido adicional */
+    .solo-video-section { padding-top: 0; padding-bottom: 3rem; }
+    .solo-video-wrapper { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; }
+    .solo-video-wrapper video { width: 90%; max-width: 980px; height: auto; border-radius: 8px; box-shadow: 0 12px 30px rgba(2,6,23,0.12); background: #000; }
+    @media (max-width: 880px) { .solo-video-wrapper video { width: 100%; } }
 
     .mermaid.map-1 svg text, .mermaid.map-1 svg tspan, .mermaid.map-1 svg .label { fill: #ffffff !important; color: #ffffff !important; }
     .mm-modal-body svg.from-map-1 text, .mm-modal-body svg.from-map-1 tspan, .mm-modal-body svg.from-map-1 .label { fill: #ffffff !important; color: #ffffff !important; }
@@ -127,6 +144,7 @@
       <div class="btn-container">
         <a href="#recursos" class="btn btn-light">Ver recursos</a>
         <a href="#actividad" class="btn btn-outline-light">Explorar actividades</a>
+        <a href="#PROYECTO" class="btn btn-outline-light">EXPLORAR PROYECTO</a>
       </div>
     </section>
 
@@ -154,6 +172,9 @@
             </div>
           </div>
         </div>
+
+        
+
       </div>
     </section>
 
@@ -164,17 +185,23 @@
           <p>Material seleccionado para apoyar tus actividades en el aula y fomentar el análisis ético.</p>
         </div>
         <div class="grid-3">
-          <div class="card">
-            <div>
-              <div class="preview-box">
-                <i class="fa-solid fa-window-restore"></i>
-                <span>Presentación Digital</span>
-              </div>
-              <h5>Guía rápida de buenas prácticas</h5>
-              <p>Consejos para usar IAs en clases, reportes de laboratorio mecánico o cuántico y presentaciones sin comprometer tu integridad académica.</p>
-            </div>
-            <a href="guia-ia.html" class="btn btn-card-action"><i class="fa-solid fa-expand" style="margin-right: 0.4rem;"></i> Abrir Guía Completa</a>
-          </div>
+         <div class="card">
+  <div>
+    <div class="preview-box">
+      <i class="fa-solid fa-window-restore"></i>
+      <span>Presentación Digital</span>
+    </div>
+    
+    <div class="image-container" style="text-align: center; margin: 15px 0;">
+      <img src="assets/images/IMAGEN INICIAL.jpg" alt="Descripción de la imagen" style="max-width: 100%; height: auto; border-radius: 8px;">
+    </div>
+    <h5>Guía rápida de buenas prácticas</h5>
+    <p>Consejos para usar IAs en clases, reportes de laboratorio mecánico o cuántico y presentaciones sin comprometer tu integridad académica.</p>
+  </div>
+  <a href="guia-ia.html" class="btn btn-card-action">
+    <i class="fa-solid fa-expand" style="margin-right: 0.4rem;"></i> Abrir Guía Completa
+  </a>
+</div>
 
           <div class="card">
             <div>
@@ -232,9 +259,23 @@ mindmap
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </div>      </div>    </section>
+
+   <section id="video" class="section solo-video-section" style="padding: 40px 20px; text-align: center;">
+  <h2 style="margin-bottom: 20px; font-family: sans-serif; color: #333;">Ética de la IA en la Educación</h2>
+  
+  <div class="solo-video-wrapper" style="display: flex; justify-content: center;">
+    <video 
+      controls 
+      preload="metadata" 
+      poster="assets/images/ÉTICA DE LA IA.jpg" 
+      style="max-width: 100%; width: 800px; height: auto; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+      
+      <source src="assets/images/Ética_de_la_IA_en_Educación.mp4" type="video/mp4">
+      Tu navegador no soporta video HTML5.
+    </video>
+  </div>
+</section>
 
     <section id="actividad" class="section">
       <div style="text-align: center; margin-bottom: 3rem;">
@@ -242,7 +283,7 @@ mindmap
         <p>Practica con propuestas diseñadas para desarrollar tu criterio ético en el uso de IA.</p>
       </div>
       
-      <div style="max-width: 750px; margin: 0 auto; display: grid; gap: 1.5rem;">
+      <div class="activity-grid" style="max-width: 1100px; margin: 0 auto;">
         <div class="card" style="border: 2px solid var(--primary-medium); padding: 2.5rem;">
           <div>
             <span class="badge" style="background-color: var(--primary-medium); color: white;">Módulo Habilitado</span>
@@ -294,18 +335,18 @@ mindmap
         <div class="card" style="border: 2px solid #057a55; padding: 2.5rem; background: #ecfdf5;">
           <div>
             <span class="badge" style="background-color: #059669; color: white;">Nueva Actividad</span>
-            <h3 style="font-size: 28px; margin-bottom: 1rem; color: #047857;">Actividad A7 · Evaluación Integradora</h3>
-            <p style="margin-bottom: 2rem; color: #475569;">Integra todo lo aprendido en una evaluación con clasificación de solicitudes, análisis de riesgos, reflexión crítica y autoevaluación ética.</p>
+            <h3 style="font-size: 28px; margin-bottom: 1rem; color: #047857;">Actividad A7 · Co-diseño Humano</h3>
+            <p style="margin-bottom: 2rem; color: #475569;">Crea un recurso didáctico usando IA como colaboradora, dejando visible qué decidiste tú y qué propuso la máquina. La transparencia en la co-creación es parte del aprendizaje/p>
           </div>
-          <a href=".vscode/a8-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A7</a>
+          <a href="a7-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A7</a>
         </div>
         <div class="card" style="border: 2px solid #057a55; padding: 2.5rem; background: #ecfdf5;">
           <div>
             <span class="badge" style="background-color: #059669; color: white;">Nueva Actividad</span>
-            <h3 style="font-size: 28px; margin-bottom: 1rem; color: #047857;">Actividad A8 · Evaluación Integradora</h3>
-            <p style="margin-bottom: 2rem; color: #475569;">Integra todo lo aprendido en una evaluación con clasificación de solicitudes, análisis de riesgos, reflexión crítica y autoevaluación ética.</p>
+            <h3 style="font-size: 28px; margin-bottom: 1rem; color: #047857;">Actividad A8 · Mi diario metacognitivo de uso responsable de la IA</h3>
+            <p style="margin-bottom: 2rem; color: #475569;">Registra cómo usas la IA durante una semana, evalúa tu autonomía, reflexiona sobre riesgos de dependencia y decide compromisos éticos concretos.</p>
           </div>
-          <a href=".vscode/a9-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A7</a>
+          <a href="a8-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A8</a>
         </div>
         <div class="card" style="border: 2px solid #057a55; padding: 2.5rem; background: #ecfdf5;">
           <div>
@@ -313,7 +354,7 @@ mindmap
             <h3 style="font-size: 28px; margin-bottom: 1rem; color: #047857;">Evaluación Integradora</h3>
             <p style="margin-bottom: 2rem; color: #475569;">Integra todo lo aprendido en una evaluación con clasificación de solicitudes, análisis de riesgos, reflexión crítica y autoevaluación ética.</p>
           </div>
-          <a href="a7-actividad.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Actividad A7</a>
+          <a href="A9-evaluación.html" class="btn btn-primary-blue" style="width: 100%; text-align: center; font-weight: 600;">Ir a la Evaluación Integradora</a>
         </div>
       </div>
     </section>
@@ -326,10 +367,12 @@ mindmap
         </div>
         <div class="card">
           <div>
-            <h5>Contacto Académico</h5>
+                          <h5>Contacto Académico</h5>
             <p>Universidad Distrital Francisco José de Caldas</p>
-            <p>Maestría en Educación en Tecnología</p>
-            <p>Elaborado por: María Alejandra Cuadros Cetina y Daniela Lemus Ruiz</p>
+                    <p>Maestría en Educación en Tecnología</p>
+                       <p>Seminario de IA en educación</p>
+                              <p>Elaborado por: 
+              María Alejandra Cuadros Cetina y Daniela Lemus Ruiz</p>
           </div>
         </div>
       </div>

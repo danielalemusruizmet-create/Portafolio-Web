@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A8 · Diario Metacognitivo — Ética en IA</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #7696ff;
+    --amber: #c97c2e;
+    --amber-light: #fdf3e7;
+    --amber-mid: #f0d4a0;
+    --teal: #0f7c6e;
+    --teal-light: #e1f5f2;
+    --teal-mid: #c5ede7;
+    --green: #2e7d52;
+    --green-light: #e8f5ee;
+    --red: #c0392b;
+    --red-light: #fdecea;
+    --purple: #5b3fa6;
+    --purple-light: #f0edfb;
+    --gray: #f5f4f0;
+    --gray-mid: #dddbd3;
+    --text: #1c1b18;
+    --text-muted: #6b6960;
+    --border: #dddbd3;
+    --white: #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #f8f7f3; color: var(--text); min-height: 100vh; }
+
+  nav {
+    background: var(--navy);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+  nav a:hover { color: #fff; }
+  nav .nav-title { color: #fff; font-size: 13px; font-weight: 500; }
+
+  .hero {
+    background: linear-gradient(135deg, #1a2340 0%, #2a1d4a 100%);
+    color: #fff;
+    padding: 56px 32px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(201,124,46,0.15);
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,124,46,0.25);
+    border: 1px solid rgba(201,124,46,0.45);
+    color: #f5c87a;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(26px, 5vw, 40px);
+    line-height: 1.15;
+    max-width: 640px;
+    margin-bottom: 14px;
+  }
+  .hero h1 em { font-style: italic; color: #f5c87a; }
+  .hero p { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,0.72); max-width: 560px; margin-bottom: 28px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 20px; }
+  .hero-meta-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: rgba(255,255,255,0.6); }
+  .hero-meta-item span { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+  /* WEEK TABS */
+  .week-nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .week-tab {
+    padding: 14px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .week-tab:hover { color: var(--amber); }
+  .week-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+  .week-tab .badge {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gray-mid);
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .week-tab .badge.done { background: var(--teal); }
+
+  main { max-width: 820px; margin: 0 auto; padding: 36px 24px 80px; }
+
+  /* INTRO BOX */
+  .intro-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .intro-box h2 { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 10px; color: var(--navy); }
+  .intro-box p { font-size: 14px; line-height: 1.7; color: var(--text-muted); }
+
+  /* HOW IT WORKS */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .timeline-step {
+    background: var(--gray);
+    border-radius: 12px;
+    padding: 16px 14px;
+    text-align: center;
+    position: relative;
+  }
+  .timeline-step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--amber);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+  }
+  .timeline-step-label { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .timeline-step-when { font-size: 11px; color: var(--text-muted); }
+
+  /* DAY ENTRY */
+  .day-panel { display: none; }
+  .day-panel.active { display: block; }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .day-title { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--navy); }
+  .day-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+  /* DIARY CARD */
+  .diary-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .diary-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: var(--gray);
+    border-bottom: 1px solid var(--border);
+  }
+  .diary-phase {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .phase-before { background: #e8f5ee; color: #2e7d52; }
+  .phase-during { background: var(--amber-light); color: #7a4b10; }
+  .phase-after { background: var(--teal-light); color: var(--teal); }
+  .phase-weekly { background: var(--purple-light); color: var(--purple); }
+  .diary-phase-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .diary-card-body { padding: 18px 20px; }
+
+  .field-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .field-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.5; }
+  textarea, input[type="text"], input[type="range"] {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--gray);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 13px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    resize: vertical;
+  }
+  textarea:focus, input[type="text"]:focus {
+    border-color: var(--amber);
+    background: var(--white);
+  }
+  .field-group { margin-bottom: 18px; }
+  .word-count { font-size: 11px; color: var(--text-muted); margin-top: 5px; text-align: right; }
+  .word-count.ok { color: var(--green); font-weight: 600; }
+
+  /* METER */
+  .meter-group { margin: 12px 0; }
+  .meter-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .meter-label { font-size: 13px; flex: 1; min-width: 160px; }
+  input[type="range"] {
+    flex: 1;
+    min-width: 100px;
+    height: 5px;
+    padding: 0;
+    border: none;
+    background: var(--gray-mid);
+    border-radius: 3px;
+    accent-color: var(--amber);
+    cursor: pointer;
+  }
+  .meter-val { font-size: 13px; font-weight: 700; color: var(--amber); min-width: 24px; text-align: right; }
+
+  /* DEPENDENCY ALERT */
+  .dep-check {
+    background: var(--red-light);
+    border: 1px solid #f5c0bb;
+    border-left: 4px solid var(--red);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #7a1e1e;
+    display: none;
+  }
+  .dep-check.show { display: block; }
+
+  /* RADIO BUTTONS */
+  .radio-group { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .radio-btn {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--gray);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text);
+  }
+  .radio-btn:hover { border-color: var(--amber); background: var(--amber-light); }
+  .radio-btn.selected { border-color: var(--amber); background: var(--amber-light); color: #7a4b10; font-weight: 600; }
+
+  /* AI TOOLS USED */
+  .tools-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .tool-chip {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--gray);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text-muted);
+  }
+  .tool-chip:hover { border-color: var(--navy); color: var(--navy); }
+  .tool-chip.selected { border-color: var(--navy); background: var(--navy); color: #fff; }
+
+  /* SUMMARY PANEL */
+  .summary-panel {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 24px;
+    display: none;
+  }
+  .summary-panel.visible { display: block; }
+  .summary-panel h3 { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--navy); margin-bottom: 16px; }
+
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .week-stat {
+    background: var(--gray);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .week-stat-val { font-size: 22px; font-weight: 700; color: var(--navy); }
+  .week-stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+  /* BTN */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-amber { background: var(--amber); color: #fff; }
+  .btn-amber:hover { background: #b06a20; }
+  .btn-secondary { background: var(--gray); color: var(--text); border: 1.5px solid var(--border); }
+  .btn-secondary:hover { background: var(--gray-mid); }
+  .btn-navy { background: var(--navy); color: #fff; }
+  .btn-navy:hover { background: #131929; }
+
+  /* EVIDENCE */
+  .evidence-box {
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    display: none;
+    color: var(--text);
+  }
+  .evidence-box.visible { display: block; }
+  .evidence-header {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .footer-nav {
+    border-top: 1px solid var(--border);
+    background: var(--white);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+  .footer-nav a { color: var(--teal); text-decoration: none; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .footer-nav a:hover { color: var(--navy); }
+  .footer-center { font-size: 12px; color: var(--text-muted); text-align: center; }
+
+  @media (max-width: 600px) {
+    .hero, nav, .week-nav { padding-left: 20px; padding-right: 20px; }
+    main { padding: 20px 16px 60px; }
+    .footer-nav { padding: 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+<a class="back-link" href="index.html">← Regresar al portafolio</a> 
+  <span class="nav-title">Actividad A8 · Diario Metacognitivo</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Nueva actividad · A8 · Transversal</div>
+  <h1>Mi diario de <em>uso responsable</em><br>de la IA</h1>
+</div>
+
+<div class="week-nav" id="weekNav">
+  <div class="week-tab active" onclick="showDay(0)">Cómo funciona <span class="badge" id="b-intro"></span></div>
+  <div class="week-tab" onclick="showDay(1)">Día 1 <span class="badge" id="b-1"></span></div>
+  <div class="week-tab" onclick="showDay(2)">Día 2 <span class="badge" id="b-2"></span></div>
+  <div class="week-tab" onclick="showDay(3)">Día 3 <span class="badge" id="b-3"></span></div>
+  <div class="week-tab" onclick="showDay(4)">Día 4 <span class="badge" id="b-4"></span></div>
+  <div class="week-tab" onclick="showDay(5)">Día 5 <span class="badge" id="b-5"></span></div>
+  <div class="week-tab" onclick="showDay(6)">Cierre semanal <span class="badge" id="b-6"></span></div>
+</div>
+
+<main>
+
+  <!-- PANEL 0: INTRO -->
+  <div class="day-panel active" id="panel-0">
+    <div class="intro-box">
+      <h2>¿Qué es el diario metacognitivo?</h2>
+      <p>La metacognición es la capacidad de pensar sobre tu propio pensamiento. Este diario te invita a detenerte, tres veces al día, para observar <em>cómo interactúas con la IA</em> y qué efecto tiene esa interacción en tu aprendizaje real.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-step">
+        <div class="timeline-step-num">A</div>
+        <div class="timeline-step-label">Antes de usar la IA</div>
+        <div class="timeline-step-when">¿Qué sé? ¿Qué necesito?</div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-step-num">D</div>
+        <div class="timeline-step-label">Durante el uso</div>
+        <div class="timeline-step-when">¿Qué pregunté? ¿Qué fue útil?</div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-step-num">P</div>
+        <div class="timeline-step-label">Después del uso</div>
+        <div class="timeline-step-when">¿Qué aprendí realmente?</div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-step-num">S</div>
+        <div class="timeline-step-label">Cierre semanal</div>
+        <div class="timeline-step-when">Patrones + compromisos</div>
+      </div>
+    </div>
+
+    <div class="intro-box" style="margin-top:16px">
+      <h2>Énfasis ético de esta actividad</h2>
+      <p>Responsabilidad personal · Uso equilibrado de la tecnología · Honestidad sobre tu propio proceso · Fortalecimiento del pensamiento propio. La autorregulación no es un destino; es una práctica diaria.</p>
+    </div>
+
+    <button class="btn btn-amber" onclick="showDay(1)" style="margin-top:8px">Comenzar Día 1 →</button>
+  </div>
+
+  <!-- DÍAS 1-5 -->
+  <div id="day-panels"></div>
+
+  <!-- PANEL 6: CIERRE SEMANAL -->
+  <div class="day-panel" id="panel-6">
+    <div class="day-header">
+      <div>
+        <div class="day-title">Cierre semanal</div>
+        <div class="day-subtitle">Reflexión integradora · Al finalizar los 5 días de registro</div>
+      </div>
+    </div>
+
+    <div class="diary-card">
+      <div class="diary-card-header">
+        <span class="diary-phase phase-weekly">Síntesis semanal</span>
+        <span class="diary-phase-title">Patrones, aprendizajes y compromisos</span>
+      </div>
+      <div class="diary-card-body">
+
+        <div class="field-group">
+          <label class="field-label">Mirando toda la semana: ¿cuándo fue la IA más útil para tu aprendizaje?</label>
+          <p class="field-hint">Describe una situación concreta en que la IA funcionó como aliada genuina de tu pensamiento (no como sustituta).</p>
+          <textarea id="w-util" rows="3" placeholder="Ej: El día 3, cuando tenía claro el problema de mecánica cuántica pero no recordaba cómo plantear la ecuación de onda. La IA me mostró el camino, yo lo seguí y verifiqué cada paso. Aprendí el procedimiento porque ya tenía el marco conceptual..." oninput="countWords(this,'wc-wutil',50)"></textarea>
+          <div class="word-count" id="wc-wutil">0 palabras · mínimo 50</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">¿En qué momento la IA estuvo a punto de reemplazar tu esfuerzo cognitivo?</label>
+          <p class="field-hint">Sé honesto/a. La dependencia no es un fracaso; reconocerla es el primer paso.</p>
+          <textarea id="w-depend" rows="3" placeholder="Ej: El día 2 copié casi íntegra la introducción de un ensayo que generó la IA porque tenía afán. Me di cuenta cuando el docente preguntó sobre el argumento y no supe defenderlo con mis propias palabras..." oninput="countWords(this,'wc-wdepend',40)"></textarea>
+          <div class="word-count" id="wc-wdepend">0 palabras · mínimo 40</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">¿Qué patrón de uso de IA identificas en ti mismo/a después de esta semana?</label>
+          <div class="radio-group" id="patternGroup">
+            <div class="radio-btn" onclick="selectPattern(this,'Exploradora: uso la IA para abrir caminos que luego recorro solo/a')">🔭 Exploradora</div>
+            <div class="radio-btn" onclick="selectPattern(this,'Verificadora: consulto la IA para contrastar lo que ya sé')">✅ Verificadora</div>
+            <div class="radio-btn" onclick="selectPattern(this,'Aceleradora: la IA me ayuda a hacer más rápido lo que ya sé hacer')">⚡ Aceleradora</div>
+            <div class="radio-btn" onclick="selectPattern(this,'Delegadora: tiendo a dejar que la IA decida por mí cuando tengo dudas')">🤖 Delegadora</div>
+            <div class="radio-btn" onclick="selectPattern(this,'Evitadora: evito la IA por desconfianza o desconocimiento')">🚫 Evitadora</div>
+            <div class="radio-btn" onclick="selectPattern(this,'Otro patrón')">💡 Otro</div>
+          </div>
+          <input type="hidden" id="w-pattern" value="">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Como futuro/a docente de Física: ¿qué conversación tendrías con tus estudiantes sobre el uso de IA?</label>
+          <p class="field-hint">Basándote en lo que viviste esta semana, ¿qué les dirías que nadie te dijo a ti? Mínimo 60 palabras.</p>
+          <textarea id="w-docente" rows="4" placeholder="Ej: Les diría que la IA no sabe física, sabe patrones de texto sobre física. La diferencia importa cuando el experimento no sale como predijo el modelo. Por eso el pensamiento crítico no es solo una competencia ética, es una necesidad técnica: si no entiendes qué hizo la IA, no puedes detectar cuándo se equivocó..." oninput="countWords(this,'wc-wdocente',60)"></textarea>
+          <div class="word-count" id="wc-wdocente">0 palabras · mínimo 60</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Tres compromisos concretos y verificables para el próximo mes</label>
+          <p class="field-hint">No "usar la IA responsablemente". Compromisos específicos, medibles, del tipo: "Antes de consultar la IA para un problema de [X], primero haré [Y]".</p>
+          <textarea id="w-compromisos" rows="4" placeholder="1. Antes de consultar la IA para problemas de mecánica, intentaré resolverlos al menos 20 minutos por mi cuenta y registraré dónde me bloqueé.
+2. Cada vez que use IA para texto académico, citaré su uso en el pie de página del documento.
+3. Una vez por semana revisaré mis registros del diario para ver si mi patrón de uso cambió." oninput="countWords(this,'wc-wcomp',50)"></textarea>
+          <div class="word-count" id="wc-wcomp">0 palabras · mínimo 50</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-panel" id="summaryPanel">
+      <h3>Resumen de la semana</h3>
+      <div class="week-grid" id="weekStats"></div>
+    </div>
+
+    <button class="btn btn-navy" onclick="generateFullEvidence()">📋 Generar evidencia completa del diario</button>
+    <div id="evidenceBox" class="evidence-box">
+      <div class="evidence-header">Diario Metacognitivo — Actividad A8 · Evidencia completa</div>
+      <div id="evidenceContent"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+      <button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimir / PDF</button>
+      <button class="btn btn-secondary" onclick="copyEv()">📋 Copiar texto</button>
+    </div>
+
+  </div>
+</main>
+
+<div class="footer-nav">
+  <a href="a7-actividad.html">← Actividad 7</a>
+  <div class="footer-center">Actividad 8 de 10 · Ética de la IA</div>
+  <a href="a8-actividad.html">Actividad 9 →</a>
+</div>
+
+<script>
+const dayData = {
+  1: { title: 'Día 1', subtitle: 'Primera observación — sin presiones, solo observar', context: 'Elige una tarea académica de hoy en la que usarás (o ya usaste) alguna IA.' },
+  2: { title: 'Día 2', subtitle: 'Registro con atención al "por qué"', context: 'Hoy añade la pregunta: ¿por qué recurrí a la IA en ese momento? ¿Qué me faltaba o qué buscaba?' },
+  3: { title: 'Día 3', subtitle: 'Registro de una decisión de NO usar la IA', context: 'Hoy registra también un momento en que decidiste NO usar la IA. ¿Qué te llevó a esa decisión?' },
+  4: { title: 'Día 4', subtitle: 'Atención a los límites de la IA', context: 'Hoy documenta específicamente en qué falló o se quedó corta la respuesta de la IA.' },
+  5: { title: 'Día 5', subtitle: 'Síntesis parcial — ¿qué está cambiando?', context: 'Después de 4 días, ¿notas algún cambio en cómo usas la IA o en cómo evalúas sus respuestas?' }
+};
+
+function buildDayPanels() {
+  const container = document.getElementById('day-panels');
+  for (let d = 1; d <= 5; d++) {
+    const info = dayData[d];
+    const div = document.createElement('div');
+    div.className = 'day-panel';
+    div.id = 'panel-' + d;
+    div.innerHTML = `
+      <div class="day-header">
+        <div>
+          <div class="day-title">${info.title}</div>
+          <div class="day-subtitle">${info.subtitle}</div>
+        </div>
+        <button class="btn btn-secondary" onclick="showDay(${d-1})">← Anterior</button>
+      </div>
+      <div style="background:var(--amber-light);border:1px solid var(--amber-mid);border-radius:10px;padding:13px 16px;margin-bottom:20px;font-size:13px;line-height:1.6;color:#7a4b10">
+        <strong>Contexto del día ${d}:</strong> ${info.context}
+      </div>
+
+      <div class="diary-card">
+        <div class="diary-card-header">
+          <span class="diary-phase phase-before">Antes</span>
+          <span class="diary-phase-title">Antes de usar la IA</span>
+        </div>
+        <div class="diary-card-body">
+          <div class="field-group">
+            <label class="field-label">¿Qué ya sé sobre este tema? ¿Qué me falta?</label>
+            <textarea id="d${d}-before-know" rows="2" placeholder="Ej: Sé que la ecuación de Schrödinger describe la evolución del estado cuántico, pero no recuerdo cómo resolver el pozo infinito. Me falta el procedimiento..." oninput="countWords(this,'wc-d${d}-bk',20)"></textarea>
+            <div class="word-count" id="wc-d${d}-bk">0 palabras · mínimo 20</div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">¿Qué espero obtener de la IA?</label>
+            <div class="radio-group">
+              <div class="radio-btn" onclick="selectRadio(this,'d${d}-expect','Una respuesta directa que pueda usar')">Una respuesta directa</div>
+              <div class="radio-btn" onclick="selectRadio(this,'d${d}-expect','Una explicación para entender')">Una explicación</div>
+              <div class="radio-btn" onclick="selectRadio(this,'d${d}-expect','Ideas para empezar')">Ideas para empezar</div>
+              <div class="radio-btn" onclick="selectRadio(this,'d${d}-expect','Verificar lo que ya hice')">Verificar lo que hice</div>
+              <div class="radio-btn" onclick="selectRadio(this,'d${d}-expect','Ahorrar tiempo')">Ahorrar tiempo</div>
+            </div>
+            <input type="hidden" id="d${d}-expect" value="">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Herramientas de IA que planeas usar hoy</label>
+            <div class="tools-chips">
+              ${['ChatGPT','Gemini','Claude','Copilot','Perplexity','NotebookLM','Otra'].map(t =>
+                `<div class="tool-chip" onclick="toggleTool(this,'d${d}-tools','${t}')">${t}</div>`
+              ).join('')}
+            </div>
+            <input type="hidden" id="d${d}-tools" value="">
+          </div>
+        </div>
+      </div>
+
+      <div class="diary-card">
+        <div class="diary-card-header">
+          <span class="diary-phase phase-during">Durante</span>
+          <span class="diary-phase-title">Durante el uso de la IA</span>
+        </div>
+        <div class="diary-card-body">
+          <div class="field-group">
+            <label class="field-label">¿Qué le pregunté a la IA? (anota el prompt más importante)</label>
+            <textarea id="d${d}-during-prompt" rows="2" placeholder="Ej: 'Explícame cómo resolver el problema del pozo de potencial infinito con condiciones de frontera en x=0 y x=L'" oninput="countWords(this,'wc-d${d}-dp',0)"></textarea>
+            <div class="word-count" id="wc-d${d}-dp">0 palabras</div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">¿Qué parte de la respuesta fue genuinamente útil?</label>
+            <textarea id="d${d}-during-useful" rows="2" placeholder="Ej: La forma de plantear las condiciones de frontera y la derivación de los valores propios fue exactamente lo que necesitaba..." oninput="countWords(this,'wc-d${d}-du',15)"></textarea>
+            <div class="word-count" id="wc-d${d}-du">0 palabras · mínimo 15</div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">¿Qué decidí NO aceptar de la respuesta? ¿Por qué?</label>
+            <textarea id="d${d}-during-reject" rows="2" placeholder="Ej: La IA simplificó la notación de Dirac de una manera incorrecta para el nivel de física cuántica que estamos viendo, así que la reescribí en la notación del curso..." oninput="countWords(this,'wc-d${d}-dr',10)"></textarea>
+            <div class="word-count" id="wc-d${d}-dr">0 palabras · mínimo 10</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="diary-card">
+        <div class="diary-card-header">
+          <span class="diary-phase phase-after">Después</span>
+          <span class="diary-phase-title">Después del uso de la IA</span>
+        </div>
+        <div class="diary-card-body">
+          <div class="field-group">
+            <label class="field-label">¿Qué aprendí realmente (que pueda explicar con mis palabras)?</label>
+            <textarea id="d${d}-after-learn" rows="3" placeholder="Ej: Aprendí que las condiciones de frontera determinan los valores propios de energía. Ahora puedo derivar el espectro energético del pozo infinito partiendo de la ecuación de onda, sin necesidad de la IA..." oninput="countWords(this,'wc-d${d}-al',30)"></textarea>
+            <div class="word-count" id="wc-d${d}-al">0 palabras · mínimo 30</div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">¿Qué debo seguir estudiando sin IA?</label>
+            <textarea id="d${d}-after-pending" rows="2" placeholder="Ej: La interpretación física del cuadrado de la función de onda. La IA da la fórmula, pero entender qué significa la probabilidad de posición requiere que yo trabaje con los ejemplos del libro..." oninput="countWords(this,'wc-d${d}-ap',15)"></textarea>
+            <div class="word-count" id="wc-d${d}-ap">0 palabras · mínimo 15</div>
+          </div>
+
+          <label class="field-label" style="margin-bottom:10px">¿Cómo valoras tu nivel de autonomía hoy? (0 = total dependencia de la IA, 10 = total independencia)</label>
+          <div class="meter-group">
+            <div class="meter-row">
+              <span class="meter-label">Autonomía intelectual</span>
+              <input type="range" min="0" max="10" value="5" id="d${d}-auto" oninput="document.getElementById('v${d}-auto').textContent=this.value; checkDependency(${d})">
+              <span class="meter-val" id="v${d}-auto">5</span>
+            </div>
+            <div class="meter-row">
+              <span class="meter-label">Verificación crítica de la respuesta</span>
+              <input type="range" min="0" max="10" value="5" id="d${d}-verif" oninput="document.getElementById('v${d}-verif').textContent=this.value">
+              <span class="meter-val" id="v${d}-verif">5</span>
+            </div>
+          </div>
+
+          <div class="dep-check" id="dep-${d}">
+            ⚠️ <strong>Alerta de dependencia:</strong> Si tu autonomía fue baja hoy, no es motivo de culpa — es una señal valiosa. ¿Qué necesitarías para ser más autónomo/a en esta tarea mañana? Escríbelo abajo.
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Reflexión del día (cierre personal)</label>
+            <textarea id="d${d}-reflect" rows="3" placeholder="¿Cómo te sientes con respecto a tu uso de la IA hoy? ¿Algo te sorprendió? ¿Algo te preocupa? ¿Algo te da satisfacción?" oninput="countWords(this,'wc-d${d}-rf',20)"></textarea>
+            <div class="word-count" id="wc-d${d}-rf">0 palabras · mínimo 20</div>
+          </div>
+
+          <button class="btn btn-amber" onclick="saveDay(${d})">Guardar Día ${d} ✓</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  }
+}
+
+function showDay(n) {
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + n).classList.add('active');
+  document.querySelectorAll('.week-tab').forEach((t,i) => t.classList.toggle('active', i === n));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectRadio(el, fieldId, val) {
+  const group = el.closest('.radio-group');
+  group.querySelectorAll('.radio-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById(fieldId).value = val;
+}
+
+function selectPattern(el, val) {
+  const group = el.closest('.radio-group');
+  group.querySelectorAll('.radio-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('w-pattern').value = val;
+}
+
+function toggleTool(el, fieldId, tool) {
+  el.classList.toggle('selected');
+  const field = document.getElementById(fieldId);
+  const selected = new Set(field.value ? field.value.split(',') : []);
+  if (el.classList.contains('selected')) selected.add(tool);
+  else selected.delete(tool);
+  field.value = [...selected].join(',');
+}
+
+function countWords(el, wcId, min) {
+  const words = el.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+  const wcEl = document.getElementById(wcId);
+  if (!wcEl) return;
+  wcEl.textContent = words + ' palabras' + (min > 0 ? ' · mínimo ' + min : '');
+  wcEl.className = 'word-count' + (words >= min ? ' ok' : '');
+}
+
+function checkDependency(d) {
+  const val = parseInt(document.getElementById('d' + d + '-auto').value);
+  const alert = document.getElementById('dep-' + d);
+  if (alert) alert.classList.toggle('show', val <= 3);
+}
+
+function getVal(id) {
+  const el = document.getElementById(id);
+  return el ? el.value || '—' : '—';
+}
+
+const savedDays = {};
+function saveDay(d) {
+  savedDays[d] = {
+    auto: getVal('d' + d + '-auto'),
+    verif: getVal('d' + d + '-verif'),
+    expect: getVal('d' + d + '-expect'),
+    tools: getVal('d' + d + '-tools')
+  };
+  const badge = document.getElementById('b-' + d);
+  if (badge) badge.classList.add('done');
+  if (d < 5) {
+    setTimeout(() => showDay(d + 1), 300);
+  } else {
+    setTimeout(() => showDay(6), 300);
+  }
+}
+
+function generateFullEvidence() {
+  const now = new Date().toLocaleString('es-CO');
+  let text = 'Fecha: ' + now + '\n\n';
+
+  for (let d = 1; d <= 5; d++) {
+    text += `═══ DÍA ${d} ═══\n`;
+    text += 'Lo que ya sabía: ' + getVal('d' + d + '-before-know') + '\n';
+    text += 'Qué esperaba de la IA: ' + getVal('d' + d + '-expect') + '\n';
+    text += 'Herramientas usadas: ' + getVal('d' + d + '-tools') + '\n';
+    text += 'Prompt principal: ' + getVal('d' + d + '-during-prompt') + '\n';
+    text += 'Qué fue útil: ' + getVal('d' + d + '-during-useful') + '\n';
+    text += 'Qué rechacé: ' + getVal('d' + d + '-during-reject') + '\n';
+    text += 'Qué aprendí realmente: ' + getVal('d' + d + '-after-learn') + '\n';
+    text += 'Qué debo seguir sin IA: ' + getVal('d' + d + '-after-pending') + '\n';
+    text += 'Autonomía: ' + getVal('d' + d + '-auto') + '/10 · Verificación: ' + getVal('d' + d + '-verif') + '/10\n';
+    text += 'Reflexión del día: ' + getVal('d' + d + '-reflect') + '\n\n';
+  }
+
+  text += '═══ CIERRE SEMANAL ═══\n';
+  text += 'Cuándo fue más útil la IA: ' + getVal('w-util') + '\n';
+  text += 'Momento de riesgo de dependencia: ' + getVal('w-depend') + '\n';
+  text += 'Patrón de uso identificado: ' + getVal('w-pattern') + '\n';
+  text += 'Reflexión como futuro/a docente: ' + getVal('w-docente') + '\n';
+  text += 'Tres compromisos concretos:\n' + getVal('w-compromisos');
+
+  document.getElementById('evidenceContent').textContent = text;
+  const box = document.getElementById('evidenceBox');
+  box.classList.add('visible');
+  box.scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyEv() {
+  const text = document.getElementById('evidenceContent').textContent;
+  navigator.clipboard.writeText(text).then(() => alert('Diario copiado al portapapeles.'));
+}
+
+buildDayPanels();
+</script>
+</body>
+</html>

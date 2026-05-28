@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ACTIVIDAD FINAL — Evaluación Integradora | Ética de la IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+      --navy: #ffffff;
+      --gold: #f97316;
+      --teal: #0ea5e9;
+      --cream: #f8f8f8;
+      --paper: #ffffff;
+      --ink: #0f172a;
+      --text-dark: #0f172a;
+      --text-muted: #475569;
+      --border: #c7d2fe;
+      --success: #16a34a;
+      --danger: #be123c;
+      --primary-dark: #0f172a;
+      --primary-medium: #2563eb;
+      --white: #fcf4f4;
+      --accent-yellow: #fbbf24;
+      --text-yellow: #92400e;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ───────────────────────── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ───────────────────────────────────────── */
+  header {
+    background: linear-gradient(135deg, #0a1520 0%, #0d1f30 50%, #0f2235 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .logo-badge {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; color: var(--teal-lt);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal-lt); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+  .header-tag {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    color: var(--muted); letter-spacing: 0.05em;
+  }
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero {
+    padding: 5rem 2rem 4rem;
+    max-width: 860px; margin: 0 auto;
+    position: relative;
+  }
+  .back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 1.5rem; padding: 11px 18px; border-radius: 8px; background: #ff0000; color: #000000; text-decoration: none; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); transition: background 0.2s; }
+  .back-link:hover { background: #e60000; }
+  .activity-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(26,143,133,0.15);
+    border: 1px solid rgba(43,192,180,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--teal-lt); letter-spacing: 0.06em;
+    margin-bottom: 1.8rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    line-height: 1.12;
+    font-weight: 900;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 em { color: var(--teal-lt); font-style: italic; }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--muted);
+    max-width: 620px; margin-bottom: 2.4rem;
+    font-weight: 300; line-height: 1.7;
+  }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 1.2rem;
+    font-size: 0.8rem; color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 6px; }
+  .hero-meta .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--amber); }
+
+  /* ── PROGRESS BAR ─────────────────────────────────── */
+  .progress-wrap {
+    max-width: 860px; margin: 0 auto 2.5rem;
+    padding: 0 2rem;
+  }
+  .progress-header {
+    display: flex; justify-content: space-between;
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--teal), var(--teal-lt));
+    border-radius: 4px; width: 0%;
+    transition: width 0.5s ease;
+  }
+
+  /* ── MAIN LAYOUT ──────────────────────────────────── */
+  main {
+    max-width: 860px; margin: 0 auto;
+    padding: 0 2rem 6rem;
+    position: relative; z-index: 1;
+  }
+
+  /* ── SECTION CARDS ────────────────────────────────── */
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .section-card.active { border-color: var(--teal); }
+  .section-card.completed { border-color: var(--green); }
+
+  .section-header {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.6rem 1.8rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-num {
+    min-width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(26,143,133,0.15);
+    border: 1px solid rgba(43,192,180,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 0.85rem;
+    color: var(--teal-lt); font-weight: 500;
+    transition: all 0.3s;
+  }
+  .section-card.completed .section-num {
+    background: rgba(63,191,127,0.2);
+    border-color: rgba(63,191,127,0.4);
+    color: var(--green);
+  }
+  .section-title-wrap { flex: 1; }
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 700;
+    line-height: 1.2;
+  }
+  .section-desc {
+    font-size: 0.85rem; color: var(--muted);
+    margin-top: 4px; font-weight: 300;
+  }
+  .chevron {
+    color: var(--muted); font-size: 1.1rem;
+    transition: transform 0.3s; padding-top: 10px;
+  }
+  .section-card.open .chevron { transform: rotate(180deg); }
+
+  .section-body {
+    display: none;
+    padding: 0 1.8rem 1.8rem;
+    border-top: 1px solid var(--border);
+  }
+  .section-card.open .section-body { display: block; }
+
+  /* ── CRITERIA BANNER ──────────────────────────────── */
+  .criteria-box {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    font-size: 0.84rem; color: var(--muted); line-height: 1.6;
+  }
+  .criteria-box strong { color: var(--amber); display: block; margin-bottom: 4px; font-size: 0.78rem; font-family: 'DM Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ── SCENARIO CARDS (PART 1) ────────────────────── */
+  .scenarios-grid {
+    display: grid; gap: 1rem; margin: 1.2rem 0;
+  }
+  .scenario-card {
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    transition: border-color 0.25s, background 0.25s;
+  }
+  .scenario-card .sc-label {
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .scenario-card .sc-text {
+    font-size: 0.92rem; line-height: 1.55; margin-bottom: 1rem;
+    color: var(--text);
+  }
+  .sc-options {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .sc-btn {
+    border: 1.5px solid var(--border);
+    background: transparent;
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+    cursor: pointer; transition: all 0.2s;
+    color: var(--text);
+  }
+  .sc-btn:hover { background: rgba(255,255,255,0.05); }
+  .sc-btn.selected-adecuada { background: rgba(63,191,127,0.2); border-color: var(--green); color: var(--green); }
+  .sc-btn.selected-dudosa { background: rgba(242,169,59,0.2); border-color: var(--amber); color: var(--amber); }
+  .sc-btn.selected-riesgosa { background: rgba(232,93,117,0.2); border-color: var(--rose); color: var(--rose); }
+  .sc-feedback {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    display: none;
+  }
+  .sc-feedback.show { display: block; }
+  .sc-feedback.fb-adecuada { background: rgba(63,191,127,0.12); border: 1px solid rgba(63,191,127,0.3); color: var(--green); }
+  .sc-feedback.fb-dudosa   { background: rgba(242,169,59,0.12);  border: 1px solid rgba(242,169,59,0.3);  color: var(--amber); }
+  .sc-feedback.fb-riesgosa { background: rgba(232,93,117,0.12);  border: 1px solid rgba(232,93,117,0.3);  color: var(--rose); }
+
+  /* ── MULTI-CHOICE (PART 2) ────────────────────────── */
+  .mcq-wrap { margin: 1.2rem 0; display: grid; gap: 1.2rem; }
+  .mcq-item { }
+  .mcq-question {
+    font-size: 0.92rem; font-weight: 500;
+    margin-bottom: 0.7rem; line-height: 1.5;
+  }
+  .mcq-question .q-num {
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    color: var(--teal-lt); margin-right: 6px;
+  }
+  .mcq-options { display: grid; gap: 6px; }
+  .mcq-opt {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--card2); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 10px 14px;
+    cursor: pointer; transition: all 0.2s;
+    font-size: 0.85rem; line-height: 1.4;
+  }
+  .mcq-opt:hover { border-color: var(--teal); background: rgba(26,143,133,0.08); }
+  .mcq-opt.correct { border-color: var(--green); background: rgba(63,191,127,0.12); color: var(--green); }
+  .mcq-opt.wrong   { border-color: var(--rose);  background: rgba(232,93,117,0.12);  color: var(--rose); }
+  .mcq-opt .opt-letter {
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    min-width: 22px; height: 22px; border-radius: 6px;
+    background: var(--border); display: flex; align-items: center; justify-content: center;
+    color: var(--muted); transition: all 0.2s;
+  }
+  .mcq-opt.correct .opt-letter { background: var(--green); color: #fff; }
+  .mcq-opt.wrong   .opt-letter { background: var(--rose);  color: #fff; }
+  .mcq-explanation {
+    margin-top: 8px; padding: 10px 14px;
+    border-radius: 8px;
+    background: rgba(26,143,133,0.1); border: 1px solid rgba(43,192,180,0.2);
+    font-size: 0.8rem; color: var(--muted); line-height: 1.5;
+    display: none;
+  }
+  .mcq-explanation.show { display: block; }
+
+  /* ── REFLECTION (PART 3 & 4) ──────────────────────── */
+  .reflect-wrap { margin: 1.2rem 0; display: grid; gap: 1.2rem; }
+  .reflect-item label {
+    display: block;
+    font-size: 0.88rem; font-weight: 500;
+    margin-bottom: 8px; line-height: 1.5;
+    color: var(--text);
+  }
+  .reflect-item label .q-code {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    color: var(--teal-lt); display: block; margin-bottom: 2px;
+  }
+  .reflect-textarea {
+    width: 100%;
+    background: var(--card2); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 12px 16px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    line-height: 1.6; resize: vertical; min-height: 110px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .reflect-textarea:focus { border-color: var(--teal); }
+  .char-count { text-align: right; font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); margin-top: 4px; }
+  .char-count.warn { color: var(--amber); }
+  .char-count.ok   { color: var(--green); }
+
+  /* ── LIKERT SCALE (PART 4) ────────────────────────── */
+  .likert-wrap { margin: 1.2rem 0; display: grid; gap: 1.4rem; }
+  .likert-item label {
+    font-size: 0.88rem; font-weight: 500;
+    display: block; margin-bottom: 10px; line-height: 1.5;
+  }
+  .likert-scale {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .likert-btn {
+    flex: 1; min-width: 44px;
+    background: var(--card2); border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 8px 4px;
+    text-align: center;
+    font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    cursor: pointer; transition: all 0.2s; color: var(--muted);
+    line-height: 1.3;
+  }
+  .likert-btn:hover { border-color: var(--teal); color: var(--teal-lt); }
+  .likert-btn.selected { background: rgba(26,143,133,0.2); border-color: var(--teal-lt); color: var(--teal-lt); font-weight: 600; }
+  .likert-labels { display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--muted); margin-top: 4px; font-family: 'DM Mono', monospace; }
+
+  /* ── DIVIDER ──────────────────────────────────────── */
+  .divider { height: 1px; background: var(--border); margin: 1.4rem 0; }
+
+  /* ── CTA / NAV BUTTONS ────────────────────────────── */
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1.4rem; }
+  .btn-primary {
+    background: var(--teal);
+    border: none; border-radius: 10px;
+    padding: 12px 24px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    font-weight: 600;
+    color: #fff; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--teal-lt); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 12px 24px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    color: var(--muted); cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--teal); color: var(--teal-lt); }
+
+  /* ── SCORE PANEL ────────────────────────────────── */
+  #score-panel {
+    background: linear-gradient(135deg, #0d1f2e, #142535);
+    border: 1px solid var(--teal);
+    border-radius: var(--radius);
+    padding: 2.4rem;
+    text-align: center;
+    margin-top: 2rem;
+    display: none;
+    animation: fadeUp 0.6s ease both;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .score-ring {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: conic-gradient(var(--teal-lt) 0% var(--pct, 0%), var(--border) 0%);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.4rem;
+    position: relative;
+  }
+  .score-ring::before {
+    content: '';
+    position: absolute; inset: 10px;
+    border-radius: 50%; background: var(--navy2);
+  }
+  .score-num {
+    position: relative; z-index: 1;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 900; color: var(--teal-lt);
+  }
+  .score-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 700; margin-bottom: 0.6rem;
+  }
+  .score-msg { color: var(--muted); font-size: 0.9rem; max-width: 500px; margin: 0 auto 1.4rem; line-height: 1.6; }
+  .score-badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.4rem; }
+  .badge {
+    padding: 6px 14px;
+    border-radius: 100px; font-size: 0.75rem; font-family: 'DM Mono', monospace;
+    border: 1px solid;
+  }
+  .badge-green  { color: var(--green);  border-color: rgba(63,191,127,0.4);  background: rgba(63,191,127,0.1); }
+  .badge-amber  { color: var(--amber);  border-color: rgba(242,169,59,0.4);  background: rgba(242,169,59,0.1); }
+  .badge-rose   { color: var(--rose);   border-color: rgba(232,93,117,0.4);  background: rgba(232,93,117,0.1); }
+
+  /* ── EVIDENCE BOX ────────────────────────────────── */
+  #evidence-box {
+    background: var(--card2);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 1.6rem;
+    margin-top: 2rem;
+    display: none;
+    font-size: 0.82rem; line-height: 1.7;
+  }
+  #evidence-box h3 {
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    color: var(--teal-lt); letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .ev-row { display: flex; gap: 8px; margin-bottom: 6px; }
+  .ev-key { color: var(--muted); min-width: 140px; font-family: 'DM Mono', monospace; font-size: 0.75rem; }
+  .ev-val { color: var(--text); }
+
+  /* ── UTIL ────────────────────────────────────────── */
+  .info-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(242,169,59,0.1); border: 1px solid rgba(242,169,59,0.25);
+    border-radius: 8px; padding: 8px 14px;
+    font-size: 0.8rem; color: var(--amber);
+    margin: 0.8rem 0;
+  }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 0.8rem 0; }
+  .tag {
+    padding: 4px 12px; border-radius: 100px;
+    font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    border: 1px solid var(--border); color: var(--muted);
+  }
+  .tag.teal { border-color: rgba(43,192,180,0.3); color: var(--teal-lt); background: rgba(26,143,133,0.1); }
+
+  /* ── RESPONSIVE ────────────────────────────────── */
+  @media (max-width: 600px) {
+    .hero { padding: 3rem 0 2rem; }
+    main { padding: 0 1rem 5rem; }
+    .section-header { padding: 1.2rem; }
+    .section-body { padding: 0 1.2rem 1.4rem; }
+    .sc-options { flex-direction: column; }
+    .sc-btn { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-badge">
+    <span class="logo-dot"></span>
+    Ética de la IA · UDFJC
+  </div>
+  <span class="header-tag">Licenciatura en Física · 7° Semestre</span>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <a class="back-link" href="index.html">← Regresar al portafolio</a> 
+  <div class="activity-label">
+    <span>●</span> ACTIVIDAD FINAL — EVALUACIÓN INTEGRADORA
+  </div>
+  <h1>¿Cuándo, cómo y por qué<br/><em>usar la IA con ética?</em></h1>
+  <p class="hero-sub">
+    Esta actividad integra lo aprendido en las sesiones anteriores: diagnóstico, sesgos algorítmicos,
+    neutralidad, auditoría de datos, casos colombianos y huella digital. Demuestra tu pensamiento crítico,
+    conciencia ética y autonomía intelectual frente al uso de herramientas de IA.
+  </p>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-header">
+    <span>PROGRESO</span>
+    <span id="progress-label">0 / 4 partes</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+</div>
+
+<main>
+
+  <!-- ════════════════════════════════════════════════
+       PARTE 1 · CLASIFICADOR DE SOLICITUDES
+  ═════════════════════════════════════════════════ -->
+  <div class="section-card" id="card-1">
+    <div class="section-header" onclick="toggleCard('card-1')">
+      <div class="section-num">01</div>
+      <div class="section-title-wrap">
+        <div class="section-tag">Pensamiento crítico · Indicador (a)</div>
+        <div class="section-title">Clasificador de solicitudes a la IA</div>
+        <div class="section-desc">¿Esta solicitud es adecuada, dudosa o riesgosa?</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="criteria-box">
+        <strong>📌 Criterio evaluado</strong>
+        Desarrollo del pensamiento crítico: capacidad de reconocer cuándo una solicitud
+        dirigida a una herramienta de IA involucra riesgos de privacidad, seguridad digital
+        o afectación a terceros.
+      </div>
+
+      <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;line-height:1.6;">
+        Lee cada escenario y clasifica la solicitud según tres categorías:
+        <strong style="color:var(--green)">Adecuada</strong> (uso legítimo y seguro),
+        <strong style="color:var(--amber)">Dudosa</strong> (requiere precaución y reflexión), o
+        <strong style="color:var(--rose)">Riesgosa</strong> (implica riesgos éticos, legales o de privacidad).
+        Luego recibirás retroalimentación inmediata.
+      </p>
+
+      <div class="scenarios-grid" id="scenarios-container"></div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkPart1()">Verificar clasificaciones</button>
+        <button class="btn-secondary" onclick="resetPart1()">Reiniciar</button>
+      </div>
+      <div id="p1-score" style="margin-top:1rem;font-size:0.85rem;color:var(--muted);display:none;"></div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       PARTE 2 · RIESGOS ÉTICOS — PREGUNTAS
+  ═════════════════════════════════════════════════ -->
+  <div class="section-card" id="card-2">
+    <div class="section-header" onclick="toggleCard('card-2')">
+      <div class="section-num">02</div>
+      <div class="section-title-wrap">
+        <div class="section-tag">Conciencia ética · Indicador (b)</div>
+        <div class="section-title">Identificación de riesgos éticos de la IA</div>
+        <div class="section-desc">Preguntas de opción múltiple con retroalimentación</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="criteria-box">
+        <strong>📌 Criterio evaluado</strong>
+        Conciencia ética y manejo responsable de datos: el estudiante identifica riesgos
+        como exposición de datos personales, suplantación de identidad, plagio,
+        discriminación o daño a terceros en contextos escolares y cotidianos.
+      </div>
+
+      <div class="mcq-wrap" id="mcq-container"></div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkPart2()">Comprobar respuestas</button>
+        <button class="btn-secondary" onclick="resetPart2()">Reiniciar</button>
+      </div>
+      <div id="p2-score" style="margin-top:1rem;font-size:0.85rem;color:var(--muted);display:none;"></div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       PARTE 3 · REFLEXIÓN ESCRITA
+  ═════════════════════════════════════════════════ -->
+  <div class="section-card" id="card-3">
+    <div class="section-header" onclick="toggleCard('card-3')">
+      <div class="section-num">03</div>
+      <div class="section-title-wrap">
+        <div class="section-tag">Autonomía intelectual · Metacognición</div>
+        <div class="section-title">Reflexión crítica personal</div>
+        <div class="section-desc">Cuatro preguntas de reflexión abierta sobre tu relación con la IA</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="criteria-box">
+        <strong>📌 Criterio evaluado</strong>
+        Autonomía intelectual y autorregulación: el estudiante regula conscientemente su
+        interacción con herramientas de IA, reflexiona sobre cambios en sus actitudes y
+        hábitos, y argumenta con fundamentos éticos sus decisiones de uso.
+      </div>
+
+      <div class="info-pill">
+        ✏️ Mínimo 80 palabras por respuesta para que el campo quede registrado como completo.
+      </div>
+
+      <div class="reflect-wrap">
+
+        <div class="reflect-item">
+          <label>
+            <span class="q-code">REFLEXIÓN · 3.1</span>
+            Después de explorar los sesgos con Teachable Machine y los debates sobre neutralidad,
+            ¿cómo ha cambiado tu forma de interpretar las respuestas que te da una herramienta de IA?
+            Describe al menos un momento concreto de tu experiencia.
+          </label>
+          <textarea class="reflect-textarea" id="r1" oninput="countWords(this,'c1',80)" placeholder="Escribe tu reflexión aquí…" rows="5"></textarea>
+          <div class="char-count" id="c1">0 palabras · mínimo 80</div>
+        </div>
+
+        <div class="reflect-item">
+          <label>
+            <span class="q-code">REFLEXIÓN · 3.2</span>
+            Al realizar la auditoría de datos y revisar tu huella digital, ¿qué dato o hallazgo
+            te sorprendió más? ¿Qué medidas concretas vas a adoptar como futuro/a docente de física
+            para proteger los datos de tus estudiantes cuando uses herramientas de IA en el aula?
+          </label>
+          <textarea class="reflect-textarea" id="r2" oninput="countWords(this,'c2',80)" placeholder="Escribe tu reflexión aquí…" rows="5"></textarea>
+          <div class="char-count" id="c2">0 palabras · mínimo 80</div>
+        </div>
+
+        <div class="reflect-item">
+          <label>
+            <span class="q-code">REFLEXIÓN · 3.3</span>
+            Desde los casos colombianos analizados (Ley 1581 y otros), ¿qué responsabilidad ética
+            tiene un docente que pide a sus estudiantes usar plataformas de IA sin informarles sobre
+            el manejo de sus datos personales? Argumenta con referencia a la normativa.
+          </label>
+          <textarea class="reflect-textarea" id="r3" oninput="countWords(this,'c3',80)" placeholder="Escribe tu reflexión aquí…" rows="5"></textarea>
+          <div class="char-count" id="c3">0 palabras · mínimo 80</div>
+        </div>
+
+        <div class="reflect-item">
+          <label>
+            <span class="q-code">REFLEXIÓN · 3.4</span>
+            Imagina que un estudiante tuyo usa ChatGPT para escribir un informe de laboratorio de física
+            sin citar el uso de la IA. ¿Cómo abordarías esta situación pedagógicamente?
+            ¿Qué criterios éticos guiarían tu decisión?
+          </label>
+          <textarea class="reflect-textarea" id="r4" oninput="countWords(this,'c4',80)" placeholder="Escribe tu reflexión aquí…" rows="5"></textarea>
+          <div class="char-count" id="c4">0 palabras · mínimo 80</div>
+        </div>
+
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkPart3()">Guardar reflexiones</button>
+      </div>
+      <div id="p3-msg" style="margin-top:0.8rem;font-size:0.85rem;display:none;"></div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       PARTE 4 · AUTOEVALUACIÓN
+  ═════════════════════════════════════════════════ -->
+  <div class="section-card" id="card-4">
+    <div class="section-header" onclick="toggleCard('card-4')">
+      <div class="section-num">04</div>
+      <div class="section-title-wrap">
+        <div class="section-tag">Producción de evidencias · Autoevaluación</div>
+        <div class="section-title">Autoevaluación de competencias</div>
+        <div class="section-desc">Escala Likert + compromiso ético personal</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="criteria-box">
+        <strong>📌 Criterio evaluado</strong>
+        Participación activa y producción de evidencias: el estudiante valora honestamente
+        su nivel de apropiación de las competencias del microcurrículo y genera compromisos
+        verificables de cambio en sus prácticas con la IA.
+      </div>
+
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;line-height:1.5;">
+        Valora tu nivel de desarrollo en cada competencia del 1 (Muy bajo) al 5 (Muy alto),
+        siendo honesto/a contigo mismo/a.
+      </p>
+
+      <div class="likert-wrap" id="likert-container"></div>
+
+      <div class="divider"></div>
+
+      <div class="reflect-item">
+        <label>
+          <span class="q-code">COMPROMISO ÉTICO · 4.1</span>
+          A partir de todo lo vivido en estas 6 actividades, escribe <strong>tres compromisos concretos y verificables</strong>
+          que adoptarás como futuro/a docente de física en relación con el uso ético de la IA
+          (pueden ser hábitos, rutinas, acuerdos con tus futuros estudiantes, etc.).
+        </label>
+        <textarea class="reflect-textarea" id="r5" oninput="countWords(this,'c5',60)" placeholder="1. Me comprometo a…\n2. Me comprometo a…\n3. Me comprometo a…" rows="5"></textarea>
+        <div class="char-count" id="c5">0 palabras · mínimo 60</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkPart4()">Registrar autoevaluación</button>
+      </div>
+      <div id="p4-msg" style="margin-top:0.8rem;font-size:0.85rem;display:none;"></div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       RESULTADO FINAL
+  ═════════════════════════════════════════════════ -->
+  <div id="score-panel">
+    <div class="score-ring" id="score-ring">
+      <span class="score-num" id="score-num">—</span>
+    </div>
+    <div class="score-title" id="score-title">Resultado de la actividad</div>
+    <p class="score-msg" id="score-msg"></p>
+    <div class="score-badges" id="score-badges"></div>
+    <div class="btn-row" style="justify-content:center;">
+      <button class="btn-primary" onclick="generateEvidence()">📋 Generar evidencia</button>
+      <button class="btn-secondary" onclick="window.print()">🖨️ Imprimir / PDF</button>
+    </div>
+  </div>
+
+  <!-- EVIDENCE BOX -->
+  <div id="evidence-box">
+    <h3>📄 CONSTANCIA DE EVIDENCIA — ACTIVIDAD FINAL</h3>
+    <div id="evidence-content"></div>
+    <p style="margin-top:1rem;font-size:0.78rem;color:var(--muted);">
+      Captura o imprime esta evidencia y súbela al portafolio digital del curso.
+    </p>
+  </div>
+
+</main>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   DATOS
+══════════════════════════════════════════════════════ */
+
+const SCENARIOS = [
+  {
+    id:'s1', label:'Escenario A',
+    text:'Un estudiante le pide a ChatGPT que le explique el principio de conservación de energía y le dé tres ejemplos cotidianos para entender mejor el concepto antes de su clase.',
+    correct:'adecuada',
+    feedback:{
+      adecuada:'✅ Correcto. Usar IA para aclarar conceptos y enriquecer la comprensión es un uso pedagógicamente válido, siempre que el estudiante revise y no copie la respuesta como propia.',
+      dudosa:'⚠️ Parcialmente. Aunque tiene elementos de precaución, este uso —consultar conceptos— es mayoritariamente adecuado si el estudiante verifica y procesa la información.',
+      riesgosa:'❌ No es riesgosa en este contexto. Consultar conceptos a la IA para aprender es un uso legítimo. El riesgo aparecería si se copia sin comprensión ni cita.'
+    }
+  },
+  {
+    id:'s2', label:'Escenario B',
+    text:'Una docente ingresa los nombres, correos y calificaciones de todos sus estudiantes a una plataforma de IA gratuita para pedirle que genere comentarios personalizados de retroalimentación.',
+    correct:'riesgosa',
+    feedback:{
+      adecuada:'❌ Esta solicitud es riesgosa. Al ingresar datos personales de terceros (estudiantes) a plataformas de terceros sin su consentimiento, se vulnera la Ley 1581 de 2012 y los principios éticos de privacidad.',
+      dudosa:'⚠️ Más que dudosa, es abiertamente riesgosa: compromete datos personales de menores o estudiantes sin consentimiento informado, lo cual viola la normativa colombiana de protección de datos.',
+      riesgosa:'✅ Correcto. Compartir nombres, correos y calificaciones de estudiantes con plataformas de IA viola su privacidad y el principio de consentimiento informado (Ley 1581). La docente debe anonimizar los datos o buscar alternativas.'
+    }
+  },
+  {
+    id:'s3', label:'Escenario C',
+    text:'Un futuro docente usa una IA generativa para crear un examen de física sobre cinemática, revisa cada pregunta, las adapta a su contexto y declara en el encabezado del examen que fue co-creado con IA.',
+    correct:'adecuada',
+    feedback:{
+      adecuada:'✅ Correcto. Este es un ejemplo de uso responsable, transparente y pedagógicamente fundamentado. El docente revisa, adapta y declara el uso de la IA, respetando los principios de integridad académica.',
+      dudosa:'⚠️ En realidad es adecuado. El docente aplica exactamente los principios de uso honesto: supervisión humana, adaptación y declaración explícita del uso de la IA.',
+      riesgosa:'❌ No es riesgoso. La revisión crítica, adaptación y declaración del uso son precisamente las prácticas que hacen ético el uso de la IA en la creación de material educativo.'
+    }
+  },
+  {
+    id:'s4', label:'Escenario D',
+    text:'Un estudiante graba en video a un compañero sin su conocimiento durante una clase, luego usa una herramienta de IA para clonar su voz y crear un audio falso con comentarios ofensivos que comparte en redes sociales.',
+    correct:'riesgosa',
+    feedback:{
+      adecuada:'❌ Esta situación es gravemente riesgosa y constituye múltiples violaciones: al derecho a la imagen, a la privacidad, posible delito informático y ciberacoso. El deepfake con fines de daño es inaceptable éticamente y puede ser sancionado legalmente.',
+      dudosa:'⚠️ Es mucho más que dudosa: es riesgosa y potencialmente delictiva. La creación de deepfakes para dañar a otra persona viola la dignidad humana, la privacidad y normativas legales colombianas.',
+      riesgosa:'✅ Correcto. Esta es una situación de alto riesgo ético y legal: grabación sin consentimiento, clonación de voz con IA para difamar y daño a terceros. Puede constituir acoso cibernético y vulnerar el Habeas Data.'
+    }
+  },
+  {
+    id:'s5', label:'Escenario E',
+    text:'Para su proyecto de grado, una estudiante usa Claude para que le sugiera referencias bibliográficas sobre didáctica de la física. Revisa cada referencia en bases de datos académicas antes de citarlas en su trabajo.',
+    correct:'adecuada',
+    feedback:{
+      adecuada:'✅ Correcto. Usar IA como punto de partida para encontrar fuentes, verificarlas en fuentes primarias y citarlas correctamente es un uso crítico, autónomo y académicamente honesto de las herramientas de IA.',
+      dudosa:'⚠️ En realidad este uso es adecuado. La clave está en que la estudiante verifica cada referencia antes de usarla, lo cual demuestra pensamiento crítico y autonomía intelectual.',
+      riesgosa:'❌ No es riesgosa. El paso fundamental —verificar en bases de datos académicas— convierte este uso en una práctica responsable y rigurosa.'
+    }
+  },
+  {
+    id:'s6', label:'Escenario F',
+    text:'Un docente quiere usar una plataforma de IA para monitorear el "nivel de atención" de sus estudiantes durante clases virtuales, analizando sus expresiones faciales sin informárselos.',
+    correct:'riesgosa',
+    feedback:{
+      adecuada:'❌ Esta práctica es abiertamente riesgosa. El análisis biométrico (expresiones faciales) sin consentimiento es una forma de vigilancia que viola la dignidad, la privacidad y vulnera principios fundamentales de protección de datos.',
+      dudosa:'⚠️ Es más que dudosa: es riesgosa. Capturar y procesar datos biométricos de estudiantes sin su conocimiento y consentimiento viola la Ley 1581 y principios éticos internacionales sobre IA educativa.',
+      riesgosa:'✅ Correcto. Esta práctica de vigilancia biométrica sin consentimiento representa uno de los usos más problemáticos de la IA en educación: viola la privacidad, la dignidad y genera una relación de vigilancia incompatible con la confianza pedagógica.'
+    }
+  }
+];
+
+const MCQ = [
+  {
+    q:'Una estudiante comparte con una IA su número de cédula para que le ayude a "verificar" si está registrada en un portal gubernamental. ¿Cuál es el principal riesgo ético?',
+    opts:['La IA puede dar una respuesta incorrecta sobre el portal.','Exposición de un dato sensible a una plataforma de terceros sin garantías de seguridad.','La consulta consume demasiado tiempo de procesamiento.','No hay riesgo si la plataforma es conocida como ChatGPT.'],
+    correct:1,
+    explanation:'Los números de identificación son datos personales sensibles. Compartirlos con plataformas de IA implica ceder ese dato a servidores externos sin saber cómo será almacenado o usado. Esto viola el principio de minimización de datos y puede facilitar suplantación de identidad.'
+  },
+  {
+    q:'Un algoritmo de IA que se usa en un colegio colombiano para predecir "probabilidad de deserción escolar" arroja resultados sistemáticamente más altos para estudiantes de ciertos barrios. ¿Qué problema ético describe esto?',
+    opts:['Problema de conectividad de internet en esos barrios.','Sesgo algorítmico que reproduce y amplifica desigualdades socioeconómicas.','Error técnico temporal en el servidor del sistema.','Necesidad de actualizar la versión del software.'],
+    correct:1,
+    explanation:'Esto ilustra el sesgo algorítmico: cuando los datos de entrenamiento reflejan desigualdades históricas, el modelo las aprende y las perpetúa. Un sistema que discrimina por zona geográfica (correlacionada con clase social) viola principios de equidad y puede generar daño institucional real.'
+  },
+  {
+    q:'Un futuro docente copia íntegramente una explicación generada por ChatGPT sobre movimiento rectilíneo uniforme y la entrega como su trabajo de didáctica sin citar el uso de la IA. ¿Qué riesgo ético principal implica esto?',
+    opts:['Riesgo de que el docente no entienda el tema profundamente y no pueda enseñarlo.','Plagio académico y falta de integridad intelectual, además de presentar como propio un trabajo ajeno.','Riesgo de que la explicación no sea lo suficientemente detallada.','Los dos anteriores son igualmente principales.'],
+    correct:3,
+    explanation:'Ambos riesgos son reales y están interconectados: hay una dimensión ética (deshonestidad académica, plagio) y una dimensión pedagógica (no procesar ni apropiarse el conocimiento). En el contexto de formación docente, esto es especialmente grave porque forma a alguien que enseñará a otros.'
+  },
+  {
+    q:'Según la Ley 1581 de 2012 de Colombia, ¿qué principio se viola cuando una plataforma educativa recopila los datos de navegación de los estudiantes sin informarles explícitamente para qué los usará?',
+    opts:['Principio de veracidad','Principio de finalidad y transparencia','Principio de acceso y circulación restringida','Principio de seguridad'],
+    correct:1,
+    explanation:'El principio de finalidad establece que los datos deben recolectarse con un propósito específico, explícito y legítimo, informado al titular. El principio de transparencia obliga a informar claramente sobre el tratamiento. Recopilar sin informar viola ambos principios fundacionales de la Ley 1581.'
+  },
+  {
+    q:'Una herramienta de IA de reconocimiento facial usada en un colegio identifica correctamente al 98% de estudiantes de piel clara, pero solo al 73% de estudiantes de piel oscura. ¿Qué situación describe esto?',
+    opts:['Un error de calibración de la cámara que se puede corregir fácilmente.','Sesgo racial algorítmico que resulta en discriminación tecnológica.','Una limitación técnica sin implicaciones éticas.','Un problema de iluminación del aula.'],
+    correct:1,
+    explanation:'Esta disparidad de rendimiento según características raciales es un ejemplo documentado de sesgo algorítmico con consecuencias discriminatorias reales. El sistema penaliza a estudiantes por sus características físicas, generando exclusión. Casos como este han llevado a prohibir este tipo de tecnología en varios contextos educativos.'
+  },
+  {
+    q:'¿Cuál de las siguientes prácticas representa el uso MÁS ético de la IA en el proceso de evaluación académica?',
+    opts:['Usar la IA para generar y calificar automáticamente todos los trabajos sin revisión humana.','Co-crear con la IA un banco de preguntas, revisarlas críticamente y declarar el uso de la IA a los estudiantes.','Prohibir completamente cualquier mención o uso de IA en el aula para evitar problemas.','Pedir a los estudiantes que usen IA libremente sin ninguna orientación ni reflexión crítica.'],
+    correct:1,
+    explanation:'El uso ético de la IA en evaluación implica: transparencia (declarar su uso), supervisión humana crítica (revisar lo que genera), y sentido pedagógico (usar la herramienta para potenciar el aprendizaje, no para sustituir el juicio docente). Las otras opciones representan extremos igualmente problemáticos.'
+  }
+];
+
+const LIKERT_ITEMS = [
+  'Identifico sesgos en las respuestas de herramientas de IA cuando las uso.',
+  'Comprendo cómo la Ley 1581 de 2012 protege mis datos y los de mis futuros estudiantes.',
+  'Sé distinguir cuándo una solicitud a una IA es adecuada, dudosa o riesgosa.',
+  'Puedo diseñar actividades de física que integren IA de forma ética y pedagógicamente justificada.',
+  'Tengo conciencia sobre mi huella digital y las implicaciones del uso de plataformas de IA gratuitas.',
+  'Me siento capaz de guiar a mis futuros estudiantes en el uso crítico y responsable de la IA.'
+];
+
+/* ══════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════ */
+const state = {
+  p1: {answers: {}, checked: false},
+  p2: {answers: {}, checked: false},
+  p3: {done: false},
+  p4: {likert: {}, commitDone: false},
+  partsComplete: [false,false,false,false]
+};
+
+/* ══════════════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════════════ */
+function buildScenarios(){
+  const c = document.getElementById('scenarios-container');
+  c.innerHTML = SCENARIOS.map(s => `
+    <div class="scenario-card" id="sc-${s.id}">
+      <div class="sc-label">${s.label}</div>
+      <div class="sc-text">${s.text}</div>
+      <div class="sc-options">
+        <button class="sc-btn" onclick="selectScenario('${s.id}','adecuada')" id="btn-${s.id}-adecuada">✅ Adecuada</button>
+        <button class="sc-btn" onclick="selectScenario('${s.id}','dudosa')"   id="btn-${s.id}-dudosa">⚠️ Dudosa</button>
+        <button class="sc-btn" onclick="selectScenario('${s.id}','riesgosa')" id="btn-${s.id}-riesgosa">🚨 Riesgosa</button>
+      </div>
+      <div class="sc-feedback" id="fb-${s.id}"></div>
+    </div>`).join('');
+}
+
+function buildMCQ(){
+  const c = document.getElementById('mcq-container');
+  c.innerHTML = MCQ.map((q,i) => `
+    <div class="mcq-item" id="mcq-${i}">
+      <div class="mcq-question"><span class="q-num">P${i+1}.</span>${q.q}</div>
+      <div class="mcq-options">
+        ${q.opts.map((o,j)=>`
+          <div class="mcq-opt" onclick="selectMCQ(${i},${j})" id="mqo-${i}-${j}">
+            <span class="opt-letter">${String.fromCharCode(65+j)}</span>
+            <span>${o}</span>
+          </div>`).join('')}
+      </div>
+      <div class="mcq-explanation" id="exp-${i}">${q.explanation}</div>
+    </div>`).join('');
+}
+
+function buildLikert(){
+  const c = document.getElementById('likert-container');
+  c.innerHTML = LIKERT_ITEMS.map((item,i)=>`
+    <div class="likert-item">
+      <label>${item}</label>
+      <div class="likert-scale">
+        ${[1,2,3,4,5].map(v=>`
+          <button class="likert-btn" onclick="selectLikert(${i},${v})" id="lk-${i}-${v}">
+            ${v}<br/><span style="font-size:0.6rem;color:var(--muted)">${likertLabel(v)}</span>
+          </button>`).join('')}
+      </div>
+      <div class="likert-labels"><span>Muy bajo</span><span>Muy alto</span></div>
+    </div>`).join('');
+}
+
+function likertLabel(v){return['','Inicio','Básico','Medio','Avanzado','Experto'][v];}
+
+/* ══════════════════════════════════════════════════════
+   INTERACTIONS — PART 1
+══════════════════════════════════════════════════════ */
+function selectScenario(id, cls){
+  if(state.p1.checked) return;
+  state.p1.answers[id] = cls;
+  ['adecuada','dudosa','riesgosa'].forEach(c=>{
+    document.getElementById(`btn-${id}-${c}`).className = 'sc-btn' + (c===cls ? ` selected-${cls}` : '');
+  });
+}
+
+function checkPart1(){
+  if(Object.keys(state.p1.answers).length < SCENARIOS.length){
+    alert('Por favor clasifica todos los escenarios antes de verificar.'); return;
+  }
+  state.p1.checked = true;
+  let correct = 0;
+  SCENARIOS.forEach(s=>{
+    const ans = state.p1.answers[s.id];
+    const fb  = document.getElementById(`fb-${s.id}`);
+    fb.textContent = s.feedback[ans];
+    fb.className = `sc-feedback show fb-${ans}`;
+    if(ans === s.correct) correct++;
+    ['adecuada','dudosa','riesgosa'].forEach(c=>{
+      const btn = document.getElementById(`btn-${s.id}-${c}`);
+      btn.disabled = true;
+    });
+  });
+  const el = document.getElementById('p1-score');
+  el.style.display = 'block';
+  el.innerHTML = `<span style="color:${correct>=4?'var(--green)':correct>=2?'var(--amber)':'var(--rose)'}">${correct}/${SCENARIOS.length} clasificaciones correctas</span> · ${correct>=5?'Excelente pensamiento crítico':'Revisa la retroalimentación de cada escenario para reforzar tus criterios.'}`;
+  state.partsComplete[0] = correct >= 4;
+  updateProgress();
+  markCard('card-1', correct >= 4);
+}
+
+function resetPart1(){
+  state.p1 = {answers:{}, checked:false};
+  buildScenarios();
+  document.getElementById('p1-score').style.display='none';
+  state.partsComplete[0]=false; updateProgress();
+  document.getElementById('card-1').classList.remove('completed');
+}
+
+/* ══════════════════════════════════════════════════════
+   INTERACTIONS — PART 2
+══════════════════════════════════════════════════════ */
+function selectMCQ(q,opt){
+  if(state.p2.checked) return;
+  state.p2.answers[q] = opt;
+  MCQ[q].opts.forEach((_,j)=>{
+    document.getElementById(`mqo-${q}-${j}`).className = 'mcq-opt' + (j===opt?' selected':'');
+  });
+}
+
+function checkPart2(){
+  if(Object.keys(state.p2.answers).length < MCQ.length){
+    alert('Por favor responde todas las preguntas antes de comprobar.'); return;
+  }
+  state.p2.checked = true;
+  let correct = 0;
+  MCQ.forEach((q,i)=>{
+    const ans = state.p2.answers[i];
+    MCQ[i].opts.forEach((_,j)=>{
+      const el = document.getElementById(`mqo-${i}-${j}`);
+      el.className = 'mcq-opt' + (j===q.correct?' correct': j===ans?' wrong':'');
+      el.style.pointerEvents='none';
+    });
+    if(ans===q.correct) correct++;
+    const exp = document.getElementById(`exp-${i}`);
+    exp.classList.add('show');
+  });
+  const el = document.getElementById('p2-score');
+  el.style.display='block';
+  el.innerHTML = `<span style="color:${correct>=5?'var(--green)':correct>=3?'var(--amber)':'var(--rose)'}">${correct}/${MCQ.length} respuestas correctas</span> · ${correct>=5?'Sólida comprensión de los riesgos éticos.':'Revisa las explicaciones para fortalecer tu identificación de riesgos.'}`;
+  state.partsComplete[1] = correct >= 4;
+  updateProgress();
+  markCard('card-2', correct >= 4);
+}
+
+function resetPart2(){
+  state.p2={answers:{},checked:false};
+  buildMCQ();
+  document.getElementById('p2-score').style.display='none';
+  state.partsComplete[1]=false; updateProgress();
+  document.getElementById('card-2').classList.remove('completed');
+}
+
+/* ══════════════════════════════════════════════════════
+   INTERACTIONS — PART 3
+══════════════════════════════════════════════════════ */
+function countWords(ta, cid, min){
+  const words = ta.value.trim().split(/\s+/).filter(w=>w.length>0).length;
+  const el = document.getElementById(cid);
+  el.textContent = `${words} palabras · mínimo ${min}`;
+  el.className = 'char-count' + (words>=min?' ok': words>min*0.6?' warn':'');
+}
+
+function checkPart3(){
+  const fields = [{id:'r1',min:80,cid:'c1'},{id:'r2',min:80,cid:'c2'},{id:'r3',min:80,cid:'c3'},{id:'r4',min:80,cid:'c4'}];
+  let allOk = true;
+  fields.forEach(f=>{
+    const words = document.getElementById(f.id).value.trim().split(/\s+/).filter(w=>w.length>0).length;
+    if(words < f.min){ allOk = false; document.getElementById(f.id).style.borderColor='var(--rose)'; }
+    else { document.getElementById(f.id).style.borderColor='var(--green)'; }
+  });
+  const msg = document.getElementById('p3-msg');
+  msg.style.display='block';
+  if(allOk){
+    msg.style.color='var(--green)';
+    msg.textContent='✅ Reflexiones registradas. Tu pensamiento crítico está documentado como evidencia.';
+    state.p3.done = true;
+    state.partsComplete[2]=true; updateProgress(); markCard('card-3',true);
+  } else {
+    msg.style.color='var(--rose)';
+    msg.textContent='⚠️ Algunas respuestas no alcanzan el mínimo de palabras. Completa los campos marcados en rojo.';
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   INTERACTIONS — PART 4
+══════════════════════════════════════════════════════ */
+function selectLikert(q, val){
+  state.p4.likert[q] = val;
+  [1,2,3,4,5].forEach(v=>{
+    const el = document.getElementById(`lk-${q}-${v}`);
+    el.className = 'likert-btn' + (v===val?' selected':'');
+  });
+}
+
+function checkPart4(){
+  if(Object.keys(state.p4.likert).length < LIKERT_ITEMS.length){
+    alert('Por favor valora todas las competencias antes de registrar.'); return;
+  }
+  const words = document.getElementById('r5').value.trim().split(/\s+/).filter(w=>w.length>0).length;
+  if(words < 60){
+    document.getElementById('r5').style.borderColor='var(--rose)';
+    const m = document.getElementById('p4-msg');
+    m.style.display='block'; m.style.color='var(--rose)';
+    m.textContent='⚠️ Escribe al menos 60 palabras en tus compromisos éticos.';
+    return;
+  }
+  document.getElementById('r5').style.borderColor='var(--green)';
+  state.p4.commitDone = true;
+  state.partsComplete[3]=true; updateProgress(); markCard('card-4',true);
+  const m = document.getElementById('p4-msg');
+  m.style.display='block'; m.style.color='var(--green)';
+  m.textContent='✅ Autoevaluación registrada. ¡Tus compromisos éticos quedan documentados!';
+}
+
+/* ══════════════════════════════════════════════════════
+   FINAL SCORE
+══════════════════════════════════════════════════════ */
+function showFinalScore(){
+  const done = state.partsComplete.filter(Boolean).length;
+  const pct = Math.round((done/4)*100);
+  const panel = document.getElementById('score-panel');
+  panel.style.display='block';
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+
+  const ring = document.getElementById('score-ring');
+  ring.style.setProperty('--pct', pct+'%');
+  document.getElementById('score-num').textContent = pct+'%';
+
+  const msgs = {
+    100: {title:'¡Formación ética consolidada!', msg:'Has demostrado pensamiento crítico sólido, conciencia ética sobre el manejo de datos, capacidad de identificar riesgos algorítmicos y autonomía intelectual frente al uso de la IA. Estás en camino de ser un/a docente que forma ciudadanos digitales críticos.'},
+    75:  {title:'Buen avance en tu formación ética', msg:'Muestras comprensión de los principios éticos fundamentales y capacidad crítica ante la IA. Refuerza las áreas donde la retroalimentación indicó oportunidades de mejora.'},
+    50:  {title:'En proceso de construcción crítica', msg:'Tienes bases sobre el uso ético de la IA, pero algunas áreas necesitan mayor profundización. Revisa la retroalimentación de cada parte y retoma los materiales de las sesiones anteriores.'},
+    0:   {title:'Continúa construyendo tu pensamiento crítico', msg:'Este resultado muestra áreas importantes de fortalecimiento. Recuerda que la formación ética es un proceso continuo. Revisa los materiales, las retroalimentaciones y consulta con tu docente.'}
+  };
+
+  const level = pct===100?100:pct>=75?75:pct>=50?50:0;
+  document.getElementById('score-title').textContent = msgs[level].title;
+  document.getElementById('score-msg').textContent = msgs[level].msg;
+
+  const badges = [];
+  if(state.partsComplete[0]) badges.push('<span class="badge badge-green">✅ Clasificación de solicitudes</span>');
+  if(state.partsComplete[1]) badges.push('<span class="badge badge-green">✅ Identificación de riesgos</span>');
+  if(state.partsComplete[2]) badges.push('<span class="badge badge-green">✅ Reflexión crítica</span>');
+  if(state.partsComplete[3]) badges.push('<span class="badge badge-green">✅ Autoevaluación ética</span>');
+  state.partsComplete.forEach((done,i)=>{ if(!done) badges.push(`<span class="badge badge-rose">⚠️ Parte ${i+1} incompleta</span>`); });
+  document.getElementById('score-badges').innerHTML = badges.join('');
+}
+
+/* ══════════════════════════════════════════════════════
+   EVIDENCE
+══════════════════════════════════════════════════════ */
+function generateEvidence(){
+  const box = document.getElementById('evidence-box');
+  const avg = Object.values(state.p4.likert).length ?
+    (Object.values(state.p4.likert).reduce((a,b)=>a+b,0)/Object.values(state.p4.likert).length).toFixed(1) : '—';
+
+  const rows = [
+    ['Fecha','Estudiante registra: '+new Date().toLocaleDateString('es-CO',{year:'numeric',month:'long',day:'numeric'})],
+    ['Actividad','Actividad 7 — Evaluación Integradora: Uso Ético de la IA'],
+    ['Partes completadas',state.partsComplete.filter(Boolean).length + '/4'],
+    ['Pt1 · Clasificaciones',state.p1.checked ? `${SCENARIOS.filter(s=>state.p1.answers[s.id]===s.correct).length}/${SCENARIOS.length} correctas` : 'No completado'],
+    ['Pt2 · Riesgos éticos',state.p2.checked ? `${MCQ.filter((q,i)=>state.p2.answers[i]===q.correct).length}/${MCQ.length} correctas` : 'No completado'],
+    ['Pt3 · Reflexión',state.p3.done ? 'Completada (4 reflexiones registradas)' : 'No completada'],
+    ['Pt4 · Autoevaluación Likert','Promedio: '+avg+'/5'],
+    ['Pt4 · Compromisos éticos',state.p4.commitDone ? 'Registrados' : 'No registrados'],
+    ['Reflexión 3.1 (extracto)',document.getElementById('r1').value.substring(0,120)+(document.getElementById('r1').value.length>120?'…':'' )],
+    ['Reflexión 3.4 (extracto)',document.getElementById('r4').value.substring(0,120)+(document.getElementById('r4').value.length>120?'…':'' )],
+    ['Compromisos éticos (extracto)',document.getElementById('r5').value.substring(0,150)+(document.getElementById('r5').value.length>150?'…':'' )],
+  ];
+
+  document.getElementById('evidence-content').innerHTML = rows.map(r=>`
+    <div class="ev-row">
+      <span class="ev-key">${r[0]}</span>
+      <span class="ev-val">${r[1]||'—'}</span>
+    </div>`).join('');
+  box.style.display='block';
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+/* ══════════════════════════════════════════════════════
+   UI HELPERS
+══════════════════════════════════════════════════════ */
+function toggleCard(id){
+  const card = document.getElementById(id);
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.section-card').forEach(c=>{
+    c.classList.remove('open','active');
+  });
+  if(!isOpen){ card.classList.add('open','active'); }
+}
+
+function markCard(id, success){
+  const card = document.getElementById(id);
+  if(success) card.classList.add('completed');
+}
+
+function updateProgress(){
+  const done = state.partsComplete.filter(Boolean).length;
+  document.getElementById('progress-label').textContent = `${done} / 4 partes`;
+  document.getElementById('progress-fill').style.width = (done/4*100)+'%';
+}
+
+/* ══════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', ()=>{
+  buildScenarios();
+  buildMCQ();
+  buildLikert();
+  // Open first card
+  document.getElementById('card-1').classList.add('open','active');
+});
+</script>
+</body>
+</html>

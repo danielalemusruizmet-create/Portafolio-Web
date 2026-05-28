@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A7 · Co-diseño Humano-IA — Ética en IA</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #466ff4;
+    --teal: #0f7c6e;
+    --teal-light: #e1f5f2;
+    --teal-mid: #c5ede7;
+    --amber: #c97c2e;
+    --amber-light: #fdf3e7;
+    --red: #c0392b;
+    --red-light: #fdecea;
+    --green: #2e7d52;
+    --green-light: #e8f5ee;
+    --purple: #5b3fa6;
+    --purple-light: #f0edfb;
+    --gray: #f5f4f0;
+    --gray-mid: #dddbd3;
+    --text: #1c1b18;
+    --text-muted: #6b6960;
+    --border: #dddbd3;
+    --white: #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f8f7f3;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--navy);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; letter-spacing: 0.02em; transition: color 0.2s; }
+  nav a:hover { color: #fff; }
+  nav .nav-title { color: #fff; font-size: 13px; font-weight: 500; }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    color: #fff;
+    padding: 56px 32px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(15,124,110,0.18);
+  }
+  .hero-subtitle {
+    max-width: 760px;
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.88);
+    opacity: 0.95;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15,124,110,0.3);
+    border: 1px solid rgba(15,124,110,0.5);
+    color: #7de8d8;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    line-height: 1.15;
+    max-width: 680px;
+    margin-bottom: 16px;
+  }
+  .hero h1 em { font-style: italic; color: #7de8d8; }
+  .hero p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.72);
+    max-width: 600px;
+    margin-bottom: 28px;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .hero-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+  }
+  .hero-meta-item span { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .progress-label { font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+  .progress-track {
+    flex: 1;
+    height: 5px;
+    background: var(--gray-mid);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--teal);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  .progress-count { font-size: 12px; font-weight: 600; color: var(--teal); white-space: nowrap; }
+
+  /* MAIN */
+  main { max-width: 820px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* INFO CARDS */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .info-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .info-card-label { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .info-card-value { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.4; }
+  .info-card-icon { font-size: 20px; margin-bottom: 8px; }
+
+  /* SECTION */
+  .section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    transition: box-shadow 0.2s;
+  }
+  .section:target, .section.active { box-shadow: 0 4px 24px rgba(15,124,110,0.12); }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-number {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-number.done {
+    background: var(--teal);
+    color: #fff;
+  }
+  .section-title { font-size: 15px; font-weight: 600; flex: 1; }
+  .section-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .chevron { font-size: 16px; color: var(--text-muted); transition: transform 0.3s; }
+  .section-body {
+    padding: 24px;
+    display: none;
+  }
+  .section-body.open { display: block; }
+
+  /* CRITERION TAG */
+  .criterion-tag {
+    display: inline-block;
+    background: var(--purple-light);
+    color: var(--purple);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  /* STEPS */
+  .step-list { list-style: none; counter-reset: step; }
+  .step-list li {
+    counter-increment: step;
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .step-list li::before {
+    content: counter(step);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-list li p { font-size: 14px; line-height: 1.65; color: var(--text); }
+  .step-list li strong { color: var(--navy); }
+
+  /* ROLE TABLE */
+  .role-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+  .role-table th {
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  .role-table th:first-child { border-radius: 8px 0 0 0; }
+  .role-table th:last-child { border-radius: 0 8px 0 0; }
+  .role-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .role-table tr:last-child td { border-bottom: none; }
+  .role-table tr:nth-child(even) td { background: var(--gray); }
+  .role-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .role-badge.humano { background: #e8f5ee; color: #2e7d52; }
+  .role-badge.ia { background: #e1f5f2; color: var(--teal); }
+  .role-badge.ambos { background: var(--purple-light); color: var(--purple); }
+
+  /* TEXTAREA */
+  .field-group { margin-bottom: 20px; }
+  .field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 7px;
+  }
+  .field-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 7px; }
+  textarea, input[type="text"], select {
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--gray);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    resize: vertical;
+  }
+  textarea:focus, input[type="text"]:focus, select:focus {
+    border-color: var(--teal);
+    background: var(--white);
+  }
+  .word-count { font-size: 11px; color: var(--text-muted); margin-top: 5px; text-align: right; }
+  .word-count.ok { color: var(--green); font-weight: 600; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--teal);
+    flex-shrink: 0;
+    margin-top: 1px;
+    cursor: pointer;
+  }
+  .checklist li.checked { color: var(--text-muted); text-decoration: line-through; }
+
+  /* RESOURCE TYPE SELECTOR */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .resource-card {
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--white);
+  }
+  .resource-card:hover { border-color: var(--teal-mid); background: var(--teal-light); }
+  .resource-card.selected { border-color: var(--teal); background: var(--teal-light); }
+  .resource-card-icon { font-size: 24px; margin-bottom: 6px; }
+  .resource-card-label { font-size: 12px; font-weight: 600; color: var(--text); }
+  .resource-card-desc { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+  /* DECLARATION BOX */
+  .declaration-box {
+    background: var(--teal-light);
+    border: 1px solid var(--teal-mid);
+    border-left: 4px solid var(--teal);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #0a4a42;
+  }
+  .declaration-box strong { color: var(--teal); }
+
+  /* ALERT */
+  .alert {
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 16px 0;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert.amber { background: var(--amber-light); border: 1px solid #f0d4a0; color: #7a4b10; }
+  .alert.teal { background: var(--teal-light); border: 1px solid var(--teal-mid); color: #0a4a42; }
+  .alert.purple { background: var(--purple-light); border: 1px solid #d4c8f7; color: #3b2680; }
+  .alert-icon { font-size: 16px; flex-shrink: 0; }
+
+  /* RATING STARS */
+  .rating-group { margin: 16px 0; }
+  .rating-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .rating-row:last-child { border-bottom: none; }
+  .rating-criterion { font-size: 13px; flex: 1; line-height: 1.4; }
+  .stars { display: flex; gap: 4px; }
+  .star {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--gray);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.15s;
+    color: var(--gray-mid);
+  }
+  .star:hover, .star.active { background: var(--amber-light); border-color: var(--amber); color: var(--amber); }
+
+  /* BTN */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-primary { background: var(--teal); color: #fff; }
+  .btn-primary:hover { background: #0d6b5f; }
+  .btn-secondary { background: var(--gray); color: var(--text); border: 1.5px solid var(--border); }
+  .btn-secondary:hover { background: var(--gray-mid); }
+  .btn-navy { background: var(--navy); color: #fff; }
+  .btn-navy:hover { background: #131929; }
+
+  /* EVIDENCE BOX */
+  .evidence-box {
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    display: none;
+    color: var(--text);
+  }
+  .evidence-box.visible { display: block; }
+  .evidence-header {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* FOOTER NAV */
+  .footer-nav {
+    border-top: 1px solid var(--border);
+    background: var(--white);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+  .footer-nav a {
+    color: var(--teal);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+  .footer-nav a:hover { color: var(--navy); }
+  .footer-center { font-size: 12px; color: var(--text-muted); text-align: center; }
+
+  @media (max-width: 600px) {
+    .hero, nav { padding-left: 20px; padding-right: 20px; }
+    main { padding: 24px 16px 60px; }
+    .progress-bar-wrap { padding: 12px 20px; }
+    .info-grid { grid-template-columns: 1fr 1fr; }
+    .footer-nav { padding: 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="back-link" href="index.html">← Regresar al portafolio</a>
+  <span class="nav-title">Actividad A7 · Co-diseño Humano-IA</span>
+</nav>
+<div class="hero">
+  <div class="hero-badge">Nueva actividad · A7 · Transversal</div>
+  <h1>Co-diseño Humano-IA</h1>
+  <p class="hero-subtitle">Crea un recurso didáctico usando IA como colaboradora, dejando visible qué decidiste tú y qué propuso la máquina. La transparencia en la co-creación es parte del aprendizaje.</p>
+</div>
+
+<div class="progress-bar-wrap">
+  <span class="progress-label">Progreso</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 / 5 partes</span>
+</div>
+
+<main>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card-label">Énfasis ético</div>
+      <div class="info-card-value">Transparencia en co-creación y reconocimiento de autoría humana</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Marco TPACK</div>
+      <div class="info-card-value">HAIC-K · AI-PK · AI-CK</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Producto</div>
+      <div class="info-card-value">Recurso didáctico + nota de transparencia + rúbrica</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Conexión portafolio</div>
+      <div class="info-card-value">Integra A2 (sesgo) · A4 (datos) · A7 (evaluación)</div>
+    </div>
+  </div>
+
+  <!-- PARTE 1 -->
+  <div class="section" id="s1">
+    <div class="section-header" onclick="toggleSection('s1')">
+      <div class="section-number" id="num1">1</div>
+      <div>
+        <div class="section-title">Definir el recurso y el equipo</div>
+        <div class="section-subtitle">Cada integrante toma un rol antes de abrir la IA</div>
+      </div>
+      <span class="chevron" id="chev1">▼</span>
+    </div>
+    <div class="section-body" id="body1">
+
+      <div class="alert amber">
+        <span class="alert-icon">⚠️</span>
+        <div><strong>Regla de oro:</strong> No abras ninguna herramienta de IA hasta completar esta parte. El equipo humano define primero; la IA llega después como apoyo, no como punto de partida.</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Nombre del equipo</label>
+        <input type="text" id="teamName" placeholder="Ej: Equipo Cuántico" oninput="updateEvidence()">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">¿Qué tipo de recurso van a crear?</label>
+        <p class="field-hint">Selecciona uno. El equipo define esto sin IA.</p>
+        <div class="resource-grid" id="resourceGrid">
+          <div class="resource-card" onclick="selectResource(this, 'Infografía')">
+            <div class="resource-card-icon">📊</div>
+            <div class="resource-card-label">Infografía</div>
+            <div class="resource-card-desc">Visual + texto síntesis</div>
+          </div>
+          <div class="resource-card" onclick="selectResource(this, 'Guía breve')">
+            <div class="resource-card-icon">📋</div>
+            <div class="resource-card-label">Guía breve</div>
+            <div class="resource-card-desc">Pasos + instrucciones</div>
+          </div>
+          <div class="resource-card" onclick="selectResource(this, 'Mapa conceptual')">
+            <div class="resource-card-icon">🗺️</div>
+            <div class="resource-card-label">Mapa conceptual</div>
+            <div class="resource-card-desc">Relaciones de ideas</div>
+          </div>
+          <div class="resource-card" onclick="selectResource(this, 'Actividad interactiva')">
+            <div class="resource-card-icon">🎮</div>
+            <div class="resource-card-label">Actividad interactiva</div>
+            <div class="resource-card-desc">Quiz, juego, caso</div>
+          </div>
+          <div class="resource-card" onclick="selectResource(this, 'Micro-explicación (video/audio)')">
+            <div class="resource-card-icon">🎙️</div>
+            <div class="resource-card-label">Micro-explicación</div>
+            <div class="resource-card-desc">Video o audio corto</div>
+          </div>
+          <div class="resource-card" onclick="selectResource(this, 'Secuencia de preguntas')">
+            <div class="resource-card-icon">❓</div>
+            <div class="resource-card-label">Secuencia de preguntas</div>
+            <div class="resource-card-desc">Guía de reflexión</div>
+          </div>
+        </div>
+        <input type="hidden" id="resourceType" value="">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Objetivo de aprendizaje (definido por el equipo humano)</label>
+        <p class="field-hint">¿Qué debe aprender o comprender el estudiante después de usar su recurso? Mínimo 40 palabras.</p>
+        <textarea id="objetivo" rows="3" placeholder="Ej: Que el estudiante sea capaz de identificar al menos tres tipos de sesgo algorítmico y proponer una corrección para cada uno, partiendo de ejemplos reales de la física y la educación..." oninput="countWords(this, 'wc-objetivo', 40); updateEvidence()"></textarea>
+        <div class="word-count" id="wc-objetivo">0 palabras · mínimo 40</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Público al que va dirigido el recurso</label>
+        <input type="text" id="publico" placeholder="Ej: Estudiantes de 7° semestre de Licenciatura en Física, entre 21 y 25 años..." oninput="updateEvidence()">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Distribución de roles en el equipo</label>
+        <table class="role-table">
+          <tr>
+            <th>Rol</th>
+            <th>Responsabilidad en este proyecto</th>
+            <th>¿Quién?</th>
+            <th>¿Quién revisa?</th>
+          </tr>
+          <tr>
+            <td><span class="role-badge humano">Humano</span><br><strong>Diseñador/a pedagógico/a</strong></td>
+            <td>Define el objetivo, valida que el recurso enseña lo correcto</td>
+            <td><input type="text" id="r1who" placeholder="Nombre" style="padding:6px 8px" oninput="updateEvidence()"></td>
+            <td><input type="text" id="r1rev" placeholder="Nombre" style="padding:6px 8px" oninput="updateEvidence()"></td>
+          </tr>
+          <tr>
+            <td><span class="role-badge ia">IA + Humano</span><br><strong>Generador/a de contenido</strong></td>
+            <td>Usa la IA para generar borradores; el equipo filtra y edita</td>
+            <td><input type="text" id="r2who" placeholder="Nombre" style="padding:6px 8px" oninput="updateEvidence()"></td>
+            <td><input type="text" id="r2rev" placeholder="Nombre" style="padding:6px 8px" oninput="updateEvidence()"></td>
+          </tr>
+          <tr>
+            <td><span class="role-badge humano">Humano</span><br><strong>Verificador/a ético/a</strong></td>
+            <td>Detecta sesgos, errores o contenido inapropiado en la respuesta de la IA</td>
+            <td><input type="text" id="r3who" placeholder="Nombre" style="padding:6px 8px" oninput="updateEvidence()"></td>
+            <td><input type="text" id="r3rev" placeholder="Nombre" style="padding:6px 8px" oninput="updateEvidence()"></td>
+          </tr>
+          <tr>
+            <td><span class="role-badge ambos">Todos</span><br><strong>Redactor/a final</strong></td>
+            <td>Escribe la nota de transparencia y presenta el recurso</td>
+            <td><input type="text" id="r4who" placeholder="Nombre" style="padding:6px 8px" oninput="updateEvidence()"></td>
+            <td>— Equipo —</td>
+          </tr>
+        </table>
+      </div>
+
+      <button class="btn btn-primary" onclick="markDone('s1', 1)">Completar parte 1 →</button>
+    </div>
+  </div>
+
+  <!-- PARTE 2 -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggleSection('s2')">
+      <div class="section-number" id="num2">2</div>
+      <div>
+        <div class="section-title">Exploración con IA — Generar el borrador</div>
+        <div class="section-subtitle">Ahora sí: abran la IA y trabajen con el prompt documentado</div>
+      </div>
+      <span class="chevron" id="chev2">▶</span>
+    </div>
+    <div class="section-body" id="body2">
+
+      <div class="alert teal">
+        <span class="alert-icon">💡</span>
+        <div>Un buen prompt incluye: <strong>qué tipo de recurso quieren</strong>, <strong>para quién</strong>, <strong>cuál es el objetivo</strong> y <strong>qué tono/extensión</strong> debe tener. Cuanto más específico, mejor será el borrador.</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Prompt exacto que usaron con la IA</label>
+        <p class="field-hint">Copia el prompt tal como lo escribieron. Esto hace visible la co-creación.</p>
+        <textarea id="prompt" rows="5" placeholder='Ej: "Genera el esquema de una infografía para estudiantes universitarios de Licenciatura en Física sobre los 3 tipos más comunes de sesgo algorítmico en IA educativa. El tono debe ser académico pero accesible. Incluye: título, 3 secciones con nombre, descripción breve de cada sesgo y un ejemplo de física o educación para cada uno. Formato: puntos concisos, máximo 200 palabras en total."' oninput="updateEvidence()"></textarea>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Herramienta de IA utilizada</label>
+        <select id="iaTool" onchange="updateEvidence()">
+          <option value="">— Selecciona —</option>
+          <option>ChatGPT (OpenAI)</option>
+          <option>Gemini (Google)</option>
+          <option>Claude (Anthropic)</option>
+          <option>Copilot (Microsoft)</option>
+          <option>Otra</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Borrador que generó la IA (pégalo aquí)</label>
+        <p class="field-hint">Esta es la materia prima. El equipo aún no la ha editado.</p>
+        <textarea id="borrador" rows="8" placeholder="Pega aquí la respuesta original de la IA, sin modificar..." oninput="updateEvidence()"></textarea>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Primera reacción del equipo al ver el borrador</label>
+        <p class="field-hint">¿Qué les pareció útil? ¿Qué fue lo primero que identificaron como problemático?</p>
+        <textarea id="reaccion" rows="3" placeholder="Ej: La estructura general nos pareció útil, pero los ejemplos que usó la IA eran muy generales y no tenían relación con física. Además, el tono era demasiado técnico para estudiantes..." oninput="countWords(this, 'wc-reaccion', 30); updateEvidence()"></textarea>
+        <div class="word-count" id="wc-reaccion">0 palabras · mínimo 30</div>
+      </div>
+
+      <button class="btn btn-primary" onclick="markDone('s2', 2)">Completar parte 2 →</button>
+    </div>
+  </div>
+
+  <!-- PARTE 3 -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggleSection('s3')">
+      <div class="section-number" id="num3">3</div>
+      <div>
+        <div class="section-title">Decisión humana — Seleccionar, corregir y contextualizar</div>
+        <div class="section-subtitle">Lo que la IA propone; lo que el equipo decide</div>
+      </div>
+      <span class="chevron" id="chev3">▶</span>
+    </div>
+    <div class="section-body" id="body3">
+
+      <div class="criterion-tag">📌 Indicador clave: autonomía intelectual y verificador/a ético/a en acción</div>
+
+      <p style="font-size:14px; line-height:1.65; margin-bottom:16px; color:var(--text-muted)">Revisen el borrador de la IA con ojo crítico. Para cada aspecto del recurso, el equipo toma una decisión consciente.</p>
+
+      <div class="field-group">
+        <label class="field-label">¿Qué conservaron del borrador de la IA? ¿Por qué?</label>
+        <textarea id="conservo" rows="3" placeholder="Ej: Conservamos la estructura de tres secciones porque era clara y pedagógicamente lógica. También usamos el término 'sesgo de confirmación' tal como lo propuso la IA porque coincidía con la definición académica..." oninput="countWords(this, 'wc-conservo', 40); updateEvidence()"></textarea>
+        <div class="word-count" id="wc-conservo">0 palabras · mínimo 40</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">¿Qué eliminaron o descartaron? ¿Por qué?</label>
+        <textarea id="elimino" rows="3" placeholder="Ej: Eliminamos el ejemplo de reconocimiento facial porque no era pertinente para un curso de Física. También quitamos el lenguaje excesivamente técnico de la introducción..." oninput="countWords(this, 'wc-elimino', 40); updateEvidence()"></textarea>
+        <div class="word-count" id="wc-elimino">0 palabras · mínimo 40</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">¿Qué corrigieron o mejoraron? (sesgos, errores, contextualización)</label>
+        <textarea id="corrigio" rows="3" placeholder="Ej: Reemplazamos los ejemplos genéricos por situaciones concretas de laboratorio de Física: el sesgo de selección lo ilustramos con conjuntos de datos de experimentos y el de representación con datos de partículas que la IA 'alucinó'..." oninput="countWords(this, 'wc-corrigio', 40); updateEvidence()"></textarea>
+        <div class="word-count" id="wc-corrigio">0 palabras · mínimo 40</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">¿Qué agregaron ustedes que la IA no propuso?</label>
+        <textarea id="agrego" rows="3" placeholder="Ej: Añadimos un cuadro de 'Preguntas para reflexionar' al final de cada sección, porque la IA no incluyó ningún elemento de metacognición. También agregamos el contexto de la Ley 1581 en la sección de privacidad..." oninput="countWords(this, 'wc-agrego', 40); updateEvidence()"></textarea>
+        <div class="word-count" id="wc-agrego">0 palabras · mínimo 40</div>
+      </div>
+
+      <div class="alert purple">
+        <span class="alert-icon">🔍</span>
+        <div>Verificación ética: ¿el recurso final incluye algún contenido que pueda perpetuar estereotipos, excluir poblaciones o transmitir información incorrecta? Si es así, descríbelo y explica cómo lo corrigieron.</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Verificación ética del recurso (verificador/a ético/a del equipo)</label>
+        <textarea id="verificacion" rows="3" placeholder="Ej: Revisamos que los ejemplos de 'científico exitoso' no reproducían el estereotipo de género masculino. Cambiamos las imágenes sugeridas por la IA por referencias más diversas. No encontramos información factualmente incorrecta, pero sí un par de simplificaciones excesivas que contextualizamos..." oninput="countWords(this, 'wc-verificacion', 30); updateEvidence()"></textarea>
+        <div class="word-count" id="wc-verificacion">0 palabras · mínimo 30</div>
+      </div>
+
+      <button class="btn btn-primary" onclick="markDone('s3', 3)">Completar parte 3 →</button>
+    </div>
+  </div>
+
+  <!-- PARTE 4 -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="toggleSection('s4')">
+      <div class="section-number" id="num4">4</div>
+      <div>
+        <div class="section-title">Nota de transparencia — Declarar el uso de IA</div>
+        <div class="section-subtitle">Esta nota acompaña el recurso como parte del producto final</div>
+      </div>
+      <span class="chevron" id="chev4">▶</span>
+    </div>
+    <div class="section-body" id="body4">
+
+      <div class="declaration-box">
+        <strong>¿Por qué es obligatoria la nota de transparencia?</strong><br>
+        Declarar el uso de IA es un acto ético en sí mismo. Así como se citan fuentes académicas, se debe declarar cuándo una herramienta de IA participó en la creación de un producto. Esta transparencia protege la autoría, evita el engaño y modela la práctica que queremos promover en los estudiantes.
+      </div>
+
+      <p style="font-size:14px; color:var(--text-muted); margin-bottom:16px; line-height:1.6">Redacten en equipo la nota de transparencia que acompañará su recurso. Debe ser breve (máximo 100 palabras) y responder: <em>¿qué hizo la IA?, ¿qué hizo el equipo?, ¿qué criterios usaron para filtrar?</em></p>
+
+      <div class="field-group">
+        <label class="field-label">Nota de transparencia del recurso (redacción final del equipo)</label>
+        <textarea id="notaTrans" rows="5" placeholder="Este recurso fue elaborado con apoyo de [herramienta de IA]. La IA generó un borrador estructural que el equipo utilizó como punto de partida. El equipo seleccionó, descartó y modificó el contenido, reemplazó los ejemplos genéricos por situaciones contextualizadas en Física, verificó la ausencia de sesgos y añadió [X, Y, Z] que no formaban parte de la propuesta original. La autoría intelectual, las decisiones pedagógicas y la responsabilidad ética del recurso son del equipo." oninput="countWords(this, 'wc-nota', 60); updateEvidence()"></textarea>
+        <div class="word-count" id="wc-nota">0 palabras · mínimo 60</div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">¿Cómo citarían el uso de la IA en formato APA? (práctica de integridad académica)</label>
+        <p class="field-hint">Las herramientas de IA generativa se citan de manera específica. Intenten construir la referencia.</p>
+        <input type="text" id="citaIA" placeholder="Ej: OpenAI. (2024). ChatGPT (versión GPT-4o) [Modelo de lenguaje de gran escala]. https://chat.openai.com" oninput="updateEvidence()">
+      </div>
+
+      <button class="btn btn-primary" onclick="markDone('s4', 4)">Completar parte 4 →</button>
+    </div>
+  </div>
+
+  <!-- PARTE 5 -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="toggleSection('s5')">
+      <div class="section-number" id="num5">5</div>
+      <div>
+        <div class="section-title">Autoevaluación y reflexión final</div>
+        <div class="section-subtitle">Cada integrante valora el proceso y el producto</div>
+      </div>
+      <span class="chevron" id="chev5">▶</span>
+    </div>
+    <div class="section-body" id="body5">
+
+      <div class="criterion-tag">📌 Indicadores: coherencia pedagógica, claridad sobre el papel de la IA y creatividad</div>
+
+      <div class="field-group">
+        <label class="field-label">Autoevaluación del producto — valora del 1 (muy bajo) al 5 (muy alto)</label>
+        <div class="rating-group" id="ratingGroup">
+          <div class="rating-row">
+            <span class="rating-criterion">El recurso es <strong>claro y pedagógicamente coherente</strong> con el objetivo definido</span>
+            <div class="stars" data-id="r1">
+              <div class="star" onclick="rateStar('r1',1)">1</div>
+              <div class="star" onclick="rateStar('r1',2)">2</div>
+              <div class="star" onclick="rateStar('r1',3)">3</div>
+              <div class="star" onclick="rateStar('r1',4)">4</div>
+              <div class="star" onclick="rateStar('r1',5)">5</div>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-criterion">El recurso está <strong>contextualizado</strong> para el público objetivo (Física, UDFJC)</span>
+            <div class="stars" data-id="r2">
+              <div class="star" onclick="rateStar('r2',1)">1</div>
+              <div class="star" onclick="rateStar('r2',2)">2</div>
+              <div class="star" onclick="rateStar('r2',3)">3</div>
+              <div class="star" onclick="rateStar('r2',4)">4</div>
+              <div class="star" onclick="rateStar('r2',5)">5</div>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-criterion">Se nota claramente <strong>qué hizo la IA y qué hizo el equipo</strong> (transparencia)</span>
+            <div class="stars" data-id="r3">
+              <div class="star" onclick="rateStar('r3',1)">1</div>
+              <div class="star" onclick="rateStar('r3',2)">2</div>
+              <div class="star" onclick="rateStar('r3',3)">3</div>
+              <div class="star" onclick="rateStar('r3',4)">4</div>
+              <div class="star" onclick="rateStar('r3',5)">5</div>
+            </div>
+          </div>
+          <div class="rating-row">
+            <span class="rating-criterion">El equipo mantuvo su <strong>criterio y autonomía</strong> frente a las sugerencias de la IA</span>
+            <div class="stars" data-id="r4">
+              <div class="star" onclick="rateStar('r4',1)">1</div>
+              <div class="star" onclick="rateStar('r4',2)">2</div>
+              <div class="star" onclick="rateStar('r4',3)">3</div>
+              <div class="star" onclick="rateStar('r4',4)">4</div>
+              <div class="star" onclick="rateStar('r4',5)">5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Reflexión final: ¿Qué aprendieron sobre la relación entre creatividad humana e IA?</label>
+        <textarea id="reflexion" rows="4" placeholder="Mínimo 60 palabras. Puede incluir: sorpresas, tensiones, lo que harían distinto en una próxima co-creación, qué significa para ustedes como futuros docentes ser transparentes sobre el uso de IA con sus estudiantes..." oninput="countWords(this, 'wc-reflexion', 60); updateEvidence()"></textarea>
+        <div class="word-count" id="wc-reflexion">0 palabras · mínimo 60</div>
+      </div>
+
+      <button class="btn btn-navy" onclick="generateEvidence()" style="margin-bottom:12px">📋 Generar evidencia completa</button>
+      <div id="evidenceBox" class="evidence-box">
+        <div class="evidence-header">Constancia de evidencia — Actividad A7 · Co-diseño Humano-IA</div>
+        <div id="evidenceContent"></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn btn-secondary" onclick="printEvidence()">🖨️ Imprimir / PDF</button>
+        <button class="btn btn-secondary" onclick="copyEvidence()">📋 Copiar texto</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="footer-nav">
+  <a href="a6-actividad.html">← Actividad 6</a>
+  <div class="footer-center">Actividad 7 de 10 · Ética de la IA</div>
+  <a href="a8-actividad.html">Actividad 8 →</a>
+</div>
+
+<script>
+const ratings = {};
+const done = new Set();
+
+function toggleSection(id) {
+  const body = document.getElementById('body' + id.slice(1));
+  const chev = document.getElementById('chev' + id.slice(1));
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.section-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.chevron').forEach(c => c.textContent = '▶');
+  if (!isOpen) {
+    body.classList.add('open');
+    chev.textContent = '▼';
+  }
+}
+
+function markDone(sectionId, num) {
+  done.add(num);
+  const numEl = document.getElementById('num' + num);
+  numEl.textContent = '✓';
+  numEl.classList.add('done');
+  updateProgress();
+  const nextId = 's' + (num + 1);
+  const nextSection = document.getElementById(nextId);
+  if (nextSection) {
+    toggleSection(nextId);
+    nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function updateProgress() {
+  const pct = (done.size / 5) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = done.size + ' / 5 partes';
+}
+
+function selectResource(el, type) {
+  document.querySelectorAll('.resource-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('resourceType').value = type;
+  updateEvidence();
+}
+
+function countWords(el, wcId, min) {
+  const words = el.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+  const el2 = document.getElementById(wcId);
+  el2.textContent = words + ' palabras · mínimo ' + min;
+  el2.className = 'word-count' + (words >= min ? ' ok' : '');
+}
+
+function rateStar(id, val) {
+  ratings[id] = val;
+  const container = document.querySelector('.stars[data-id="' + id + '"]');
+  container.querySelectorAll('.star').forEach((s, i) => {
+    s.classList.toggle('active', i < val);
+  });
+  updateEvidence();
+}
+
+function getVal(id) { return (document.getElementById(id) || {}).value || '—'; }
+
+function updateEvidence() {}
+
+function generateEvidence() {
+  const now = new Date().toLocaleString('es-CO');
+  const ratingLabels = {
+    r1: 'Claridad pedagógica',
+    r2: 'Contextualización al público',
+    r3: 'Transparencia sobre uso de IA',
+    r4: 'Autonomía del equipo'
+  };
+  let ratingText = Object.keys(ratingLabels).map(k =>
+    ratingLabels[k] + ': ' + (ratings[k] ? ratings[k] + '/5' : 'Sin valorar')
+  ).join('\n');
+
+  const content = `Fecha de generación: ${now}
+
+PARTE 1 — DEFINICIÓN DEL RECURSO Y EQUIPO
+Nombre del equipo: ${getVal('teamName')}
+Tipo de recurso: ${getVal('resourceType')}
+Objetivo de aprendizaje: ${getVal('objetivo')}
+Público objetivo: ${getVal('publico')}
+
+PARTE 2 — EXPLORACIÓN CON IA
+Herramienta usada: ${getVal('iaTool')}
+Prompt utilizado: ${getVal('prompt')}
+Primera reacción del equipo: ${getVal('reaccion')}
+
+PARTE 3 — DECISIÓN HUMANA
+Qué conservaron: ${getVal('conservo')}
+Qué eliminaron: ${getVal('elimino')}
+Qué corrigieron: ${getVal('corrigio')}
+Qué agregaron: ${getVal('agrego')}
+Verificación ética: ${getVal('verificacion')}
+
+PARTE 4 — NOTA DE TRANSPARENCIA
+${getVal('notaTrans')}
+Cita APA de la IA: ${getVal('citaIA')}
+
+PARTE 5 — AUTOEVALUACIÓN
+${ratingText}
+Reflexión final: ${getVal('reflexion')}`;
+
+  document.getElementById('evidenceContent').textContent = content;
+  const box = document.getElementById('evidenceBox');
+  box.classList.add('visible');
+  box.scrollIntoView({ behavior: 'smooth' });
+}
+
+function printEvidence() { window.print(); }
+function copyEvidence() {
+  const text = document.getElementById('evidenceContent').textContent;
+  navigator.clipboard.writeText(text).then(() => alert('Evidencia copiada al portapapeles.'));
+}
+
+// Open first section by default
+toggleSection('s1');
+</script>
+</body>
+</html>
