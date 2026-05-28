@@ -12,22 +12,18 @@
 
   <style>
     :root {
-      --primary-dark: #4c1d95;   /* Púrpura Intenso */
-      --primary-medium: #2563eb; /* Azul Eléctrico */
-      --primary-accent: #f97316; /* Naranja Vibrante */
-      --primary-light: #eef2ff;  /* Lavanda Muy Suave */
-      --accent-soft: #fde68a;    /* Amarillo Brillante */
-      --text-dark: #111827;      /* Gris Muy Oscuro */
-      --text-muted: #334155;     /* Azul Grisáceo */
+      --primary-dark: #4c1d95;
+      --primary-medium: #2563eb;
+      --primary-accent: #f97316;
+      --primary-light: #eef2ff;
+      --accent-soft: #fde68a;
+      --text-dark: #111827;
+      --text-muted: #334155;
       --white: #ffffff;
       --border-color: #c7d2fe;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -37,83 +33,19 @@
       font-size: 16px;
     }
 
-    /* Jerarquía Tipográfica Solicitada (Títulos 3x el texto base) */
-    h1, .display-titles {
-      font-size: 48px; /* 16px * 3 */
-      font-weight: 700;
-      line-height: 1.2;
-      color: var(--primary-dark);
-    }
+    h1, .display-titles { font-size: 48px; font-weight: 700; line-height: 1.2; color: var(--primary-dark); }
+    h2 { font-size: 32px; font-weight: 700; color: var(--primary-dark); margin-bottom: 1.5rem; }
+    h3 { font-size: 24px; font-weight: 600; color: var(--primary-dark); margin-bottom: 1rem; }
+    h5 { font-size: 18px; font-weight: 600; color: var(--primary-dark); margin-bottom: 0.5rem; }
+    p, li { font-size: 16px; color: var(--text-muted); }
 
-    h2 {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--primary-dark);
-      margin-bottom: 1.5rem;
-    }
+    .header { background: var(--white); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+    .navbar { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; }
+    .navbar-brand { font-weight: 700; color: var(--primary-dark); text-decoration: none; font-size: 1.25rem; }
+    .navbar-nav { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-link { text-decoration: none; color: var(--text-muted); font-weight: 500; transition: color 0.2s; }
+    .nav-link:hover, .nav-link.active { color: var(--primary-medium); }
 
-    h3 {
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--primary-dark);
-      margin-bottom: 1rem;
-    }
-
-    h5 {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--primary-dark);
-      margin-bottom: 0.5rem;
-    }
-
-    p, li {
-      font-size: 16px;
-      color: var(--text-muted);
-    }
-
-    /* Navegación */
-    .header {
-      background: var(--white);
-      border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .navbar {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-    }
-
-    .navbar-brand {
-      font-weight: 700;
-      color: var(--primary-dark);
-      text-decoration: none;
-      font-size: 1.25rem;
-    }
-
-    .navbar-nav {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-    }
-
-    .nav-link {
-      text-decoration: none;
-      color: var(--text-muted);
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .nav-link:hover, .nav-link.active {
-      color: var(--primary-medium);
-    }
-
-    /* Sección Hero (Inicio) */
     .hero {
       background: linear-gradient(135deg, rgba(76, 29, 149, 0.88) 0%, rgba(37, 99, 235, 0.80) 100%),
                   url("assets/images/WhatsApp Image 2026-05-20 at 22.24.37.png") center/cover no-repeat;
@@ -123,264 +55,260 @@
       position: relative;
       overflow: hidden;
     }
+    .hero::before { content: ""; position: absolute; inset: 0; background: rgba(15, 23, 42, 0.18); pointer-events: none; }
+    .hero > * { position: relative; z-index: 1; }
+    .hero h1 { color: var(--white); margin-bottom: 1.5rem; }
+    .hero p { color: rgba(255, 255, 255, 0.95); max-width: 800px; margin: 0 auto 2.5rem auto; font-size: 1.25rem; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.875rem; font-weight: 600; color: #93c5fd; display: block; margin-bottom: 0.5rem; }
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.18);
-      pointer-events: none;
-    }
+    .btn-container { display: flex; justify-content: center; gap: 1rem; }
+    .btn { padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 500; text-decoration: none; transition: all 0.2s; display: inline-block; }
+    .btn-light { background: #fff; color: var(--primary-dark); border: 2px solid rgba(76, 29, 149, 0.12); box-shadow: 0 18px 35px rgba(76, 29, 149, 0.12); }
+    .btn-light:hover { background: var(--accent-soft); color: var(--primary-dark); }
+    .btn-outline-light { border: 2px solid rgba(255, 255, 255, 0.85); color: var(--white); }
+    .btn-outline-light:hover { background: rgba(255, 255, 255, 0.18); }
+    .btn-primary-blue { background: var(--primary-accent); color: var(--white); box-shadow: 0 18px 30px rgba(249, 115, 22, 0.25); }
+    .btn-primary-blue:hover { background: #ea580c; }
 
-    .hero > * {
-      position: relative;
-      z-index: 1;
-    }
+    .section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .bg-light-section { background: linear-gradient(180deg, var(--primary-light) 0%, #fff7ed 100%); }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; align-items: center; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
 
-    .hero h1 {
-      color: var(--white);
-      margin-bottom: 1.5rem;
-    }
+    .card { background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+    .badge { display: inline-block; background: linear-gradient(135deg, var(--primary-accent), #fbbf24); color: var(--white); padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; width: fit-content; box-shadow: 0 10px 25px rgba(249, 115, 22, 0.2); }
+    .custom-list { margin-top: 1rem; padding-left: 1.25rem; }
+    .custom-list li { margin-bottom: 0.5rem; }
 
-    .hero p {
-      color: rgba(255, 255, 255, 0.95);
-      max-width: 800px;
-      margin: 0 auto 2.5rem auto;
-      font-size: 1.25rem;
-    }
+    .preview-box { width: 100%; height: 150px; background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--white); text-align: center; padding: 1rem; margin-bottom: 1.25rem; box-shadow: 0 25px 45px rgba(39, 83, 223, 0.22); }
+    .preview-box i { font-size: 2.2rem; margin-bottom: 0.5rem; }
+    .preview-box span { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; background: rgba(255, 255, 255, 0.2); padding: 0.2rem 0.6rem; border-radius: 4px; }
 
-    .eyebrow {
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #93c5fd;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
+    .btn-card-action { display: block; text-align: center; background: var(--primary-light); color: var(--primary-dark); text-decoration: none; font-weight: 600; font-size: 0.875rem; padding: 0.6rem; border-radius: 6px; margin-top: 1.25rem; transition: all 0.2s; }
+    .btn-card-action:hover { background: var(--primary-medium); color: var(--white); }
 
-    /* Botones */
-    .btn-container {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
+    .visual-resource-box { width: 100%; height: 150px; background: linear-gradient(135deg, rgba(251, 191, 36, 0.18) 0%, rgba(37, 99, 235, 0.16) 100%); border: 2px dashed rgba(37, 99, 235, 0.45); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--primary-dark); font-size: 0.9rem; text-align: center; padding: 1rem; margin-bottom: 1.25rem; backdrop-filter: blur(2px); }
+    .visual-resource-box i { font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.7; }
 
-    .btn {
-      padding: 0.75rem 1.5rem;
-      border-radius: 6px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.2s;
-      display: inline-block;
-    }
-
-    .btn-light {
-      background: #fff;
-      color: var(--primary-dark);
-      border: 2px solid rgba(76, 29, 149, 0.12);
-      box-shadow: 0 18px 35px rgba(76, 29, 149, 0.12);
-    }
-
-    .btn-light:hover {
-      background: var(--accent-soft);
-      color: var(--primary-dark);
-    }
-
-    .btn-outline-light {
-      border: 2px solid rgba(255, 255, 255, 0.85);
-      color: var(--white);
-    }
-
-    .btn-outline-light:hover {
-      background: rgba(255, 255, 255, 0.18);
-    }
-
-    .btn-primary-blue {
-      background: var(--primary-accent);
-      color: var(--white);
-      box-shadow: 0 18px 30px rgba(249, 115, 22, 0.25);
-    }
-
-    .btn-primary-blue:hover {
-      background: #ea580c;
-    }
-
-    /* Secciones Generales */
-    .section {
-      padding: 5rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .bg-light-section {
-      background: linear-gradient(180deg, var(--primary-light) 0%, #fff7ed 100%);
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 3rem;
-      align-items: center;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-
-    /* Tarjetas */
-    .card {
-      background: var(--white);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 2rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .badge {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--primary-accent), #fbbf24);
-      color: var(--white);
-      padding: 0.35rem 0.85rem;
-      border-radius: 9999px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      width: fit-content;
-      box-shadow: 0 10px 25px rgba(249, 115, 22, 0.2);
-    }
-
-    /* Listas */
-    .custom-list {
-      margin-top: 1rem;
-      padding-left: 1.25rem;
-    }
-
-    .custom-list li {
-      margin-bottom: 0.5rem;
-    }
-
-    /* Miniatura Visual Fija para el Recurso de Gamma */
-    .preview-box {
-      width: 100%;
-      height: 150px;
-      background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
-      border-radius: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--white);
-      text-align: center;
-      padding: 1rem;
-      margin-bottom: 1.25rem;
-      box-shadow: 0 25px 45px rgba(39, 83, 223, 0.22);
-    }
-
-    .preview-box i {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .preview-box span {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-weight: 600;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-    }
-
-    /* Botón interno para las tarjetas de recursos */
-    .btn-card-action {
-      display: block;
-      text-align: center;
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.875rem;
-      padding: 0.6rem;
-      border-radius: 6px;
-      margin-top: 1.25rem;
-      transition: all 0.2s;
-    }
-
-    .btn-card-action:hover {
-      background: var(--primary-medium);
-      color: var(--white);
-    }
-
-    /* Contenedores para Recursos Visuales (Placeholders standard) */
-    .visual-resource-box {
-      width: 100%;
-      height: 150px;
-      background: linear-gradient(135deg, rgba(251, 191, 36, 0.18) 0%, rgba(37, 99, 235, 0.16) 100%);
-      border: 2px dashed rgba(37, 99, 235, 0.45);
-      border-radius: 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary-dark);
-      font-size: 0.9rem;
-      text-align: center;
-      padding: 1rem;
-      margin-bottom: 1.25rem;
-      backdrop-filter: blur(2px);
-    }
-
-    .visual-resource-box i {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      opacity: 0.7;
-    }
-
-    /* Modal simple para ampliar mapas mentales */
-    .mm-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(17, 16, 16, 0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      padding: 1rem;
-    }
+    .mm-modal { position: fixed; inset: 0; background: rgba(17, 16, 16, 0.6); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 1rem; }
     .mm-modal.show { display: flex; }
     .mm-modal-content { width: 100%; max-width: 1100px; max-height: 92vh; background: #fff; border-radius: 10px; padding: 1rem; overflow: auto; }
     .mm-modal-close { position: absolute; right: 12px; top: 8px; background: transparent; border: none; font-size: 1.6rem; cursor: pointer; }
     .mm-modal-body svg { width: 100%; height: auto; display: block; }
 
-    /* Texto blanco para el primer mapa mental */
-    .mermaid.map-1 svg text,
-    .mermaid.map-1 svg tspan,
-    .mermaid.map-1 svg .label {
-      fill: #ffffff !important;
-      color: #ffffff !important;
+    .mermaid.map-1 svg text, .mermaid.map-1 svg tspan, .mermaid.map-1 svg .label { fill: #ffffff !important; color: #ffffff !important; }
+    .mm-modal-body svg.from-map-1 text, .mm-modal-body svg.from-map-1 tspan, .mm-modal-body svg.from-map-1 .label { fill: #ffffff !important; color: #ffffff !important; }
+
+    footer { border-top: 1px solid var(--border-color); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.875rem; }
+
+    /* ============================================================
+       BURBUJA FLOTANTE ETIBOT — MIZOU
+       ============================================================ */
+
+    /* Botón burbuja */
+    #mizou-bubble {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
     }
 
-    /* Cuando el SVG se clona al modal, aplicar también color blanco */
-    .mm-modal-body svg.from-map-1 text,
-    .mm-modal-body svg.from-map-1 tspan,
-    .mm-modal-body svg.from-map-1 .label {
-      fill: #ffffff !important;
-      color: #ffffff !important;
+    /* Etiqueta tooltip encima de la burbuja */
+    #mizou-tooltip {
+      background: #1e1b4b;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(76,29,149,0.25);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+    }
+    #mizou-tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    footer {
-      border-top: 1px solid var(--border-color);
-      padding: 2rem;
+    /* Botón circular */
+    #mizou-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4c1d95 0%, #2563eb 100%);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 24px rgba(76,29,149,0.40);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      flex-shrink: 0;
+    }
+    #mizou-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 32px rgba(76,29,149,0.50);
+    }
+    #mizou-btn:active { transform: scale(0.96); }
+
+    /* Ícono del botón */
+    #mizou-btn .icon-chat,
+    #mizou-btn .icon-close {
+      position: absolute;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    #mizou-btn .icon-chat  { opacity: 1; transform: scale(1); }
+    #mizou-btn .icon-close { opacity: 0; transform: scale(0.6); }
+    #mizou-btn.open .icon-chat  { opacity: 0; transform: scale(0.6); }
+    #mizou-btn.open .icon-close { opacity: 1; transform: scale(1); }
+
+    /* Punto de notificación (pulso) */
+    #mizou-btn .notif-dot {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 13px;
+      height: 13px;
+      background: #f97316;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.75; }
+    }
+    #mizou-btn.open .notif-dot { display: none; }
+
+    /* Panel del chatbot */
+    #mizou-panel {
+      position: fixed;
+      bottom: 102px;
+      right: 28px;
+      width: 380px;
+      height: 560px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(76,29,149,0.28), 0 4px 16px rgba(0,0,0,0.12);
+      border: 1.5px solid rgba(76,29,149,0.18);
+      z-index: 9998;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.88) translateY(20px);
+      transform-origin: bottom right;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), opacity 0.22s ease;
+    }
+    #mizou-panel.open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Encabezado del panel */
+    #mizou-panel-header {
+      background: linear-gradient(135deg, #4c1d95 0%, #2563eb 100%);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    #mizou-panel-header .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    #mizou-panel-header .info { flex: 1; }
+    #mizou-panel-header .bot-name {
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.2;
+    }
+    #mizou-panel-header .bot-status {
+      color: rgba(255,255,255,0.75);
+      font-size: 11.5px;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 1px;
+    }
+    #mizou-panel-header .bot-status::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: #4ade80;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    #mizou-panel-header .header-close {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 14px;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    #mizou-panel-header .header-close:hover { background: rgba(255,255,255,0.28); }
+
+    /* Iframe del chatbot */
+    #mizou-frame {
+      flex: 1;
+      width: 100%;
+      border: none;
+      background: #f9fafb;
+    }
+
+    /* Pie del panel */
+    #mizou-panel-footer {
+      background: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+      padding: 7px 14px;
       text-align: center;
-      color: var(--text-muted);
-      font-size: 0.875rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: #9ca3af;
+      flex-shrink: 0;
+    }
+    #mizou-panel-footer a { color: #6366f1; text-decoration: none; font-weight: 500; }
+    #mizou-panel-footer a:hover { text-decoration: underline; }
+
+    /* Responsive: en móvil el panel ocupa más pantalla */
+    @media (max-width: 480px) {
+      #mizou-panel {
+        width: calc(100vw - 24px);
+        height: 70vh;
+        right: 12px;
+        bottom: 90px;
+        border-radius: 14px;
+      }
+      #mizou-bubble { right: 16px; bottom: 16px; }
     }
   </style>
 </head>
@@ -606,20 +534,77 @@ mindmap
 
   <!-- Modal para ver mapas mentales en grande -->
   <div id="mm-modal" class="mm-modal" aria-hidden="true">
-    <div class="mm-modal-content">
+    <div class="mm-modal-content" style="position:relative;">
       <button class="mm-modal-close" aria-label="Cerrar">&times;</button>
       <div class="mm-modal-body"></div>
     </div>
   </div>
 
+  <!-- ============================================================
+       BURBUJA FLOTANTE ETIBOT — MIZOU
+       ============================================================ -->
+  <div id="mizou-bubble">
+    <!-- Tooltip -->
+    <div id="mizou-tooltip">¿Tienes dudas éticas? ¡Pregúntame!</div>
+
+    <!-- Botón circular -->
+    <button id="mizou-btn" aria-label="Abrir asistente EtiBot" title="EtiBot — Asistente de Ética en IA">
+      <!-- Ícono chat (visible por defecto) -->
+      <svg class="icon-chat" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
+        <path d="M12 2C6.477 2 2 6.163 2 11.333c0 2.528 1.11 4.81 2.907 6.477L4 22l4.383-1.333A10.87 10.87 0 0012 21.333C17.523 21.333 22 17.17 22 12S17.523 2 12 2z" fill="white"/>
+      </svg>
+      <!-- Ícono X (visible cuando está abierto) -->
+      <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24">
+        <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <!-- Punto de notificación -->
+      <span class="notif-dot" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <!-- Panel del chatbot -->
+  <div id="mizou-panel" role="dialog" aria-label="EtiBot — Asistente de Ética en IA" aria-modal="true">
+    <!-- Encabezado -->
+    <div id="mizou-panel-header">
+      <div class="avatar">🤖</div>
+      <div class="info">
+        <div class="bot-name">EtiBot</div>
+        <div class="bot-status">En línea · Asistente de Ética en IA</div>
+      </div>
+      <button class="header-close" id="mizou-close-header" aria-label="Cerrar chatbot">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24">
+          <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Iframe Mizou -->
+    <iframe
+      id="mizou-frame"
+      src="https://mizou.com/preview-bot?ID=143327"
+      title="EtiBot — Asistente de Ética en IA"
+      allow="microphone"
+      loading="lazy">
+    </iframe>
+
+    <!-- Pie -->
+    <div id="mizou-panel-footer">
+      Powered by <a href="https://mizou.com" target="_blank" rel="noopener">Mizou</a> · Curso Ética en IA · UD
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <script>
+    /* ── Mermaid ── */
     if (typeof mermaid !== 'undefined') {
       mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
     }
+
+    /* ── Modal mapas mentales ── */
     document.addEventListener('DOMContentLoaded', function () {
-      const modal = document.getElementById('mm-modal');
-      const body = modal.querySelector('.mm-modal-body');
+      const modal   = document.getElementById('mm-modal');
+      const body    = modal.querySelector('.mm-modal-body');
       const closeBtn = modal.querySelector('.mm-modal-close');
 
       function openFrom(el) {
@@ -627,13 +612,9 @@ mindmap
         const svg = el.querySelector('svg');
         if (svg) {
           const clone = svg.cloneNode(true);
-          // si el contenedor original tiene clase map-1, marcar el svg clonado
-          if (el.classList && el.classList.contains('map-1')) {
-            clone.classList.add('from-map-1');
-          }
+          if (el.classList && el.classList.contains('map-1')) clone.classList.add('from-map-1');
           body.appendChild(clone);
         } else {
-          // fallback: render text
           const pre = document.createElement('pre');
           pre.textContent = el.textContent || '';
           body.appendChild(pre);
@@ -642,15 +623,84 @@ mindmap
         modal.setAttribute('aria-hidden', 'false');
       }
 
-      document.querySelectorAll('.mermaid').forEach(function (el) {
-        el.addEventListener('click', function () { openFrom(el); });
+      document.querySelectorAll('.mermaid').forEach(function(el) {
+        el.addEventListener('click', function() { openFrom(el); });
       });
 
-      closeBtn.addEventListener('click', function () { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); body.innerHTML=''; });
-      modal.addEventListener('click', function (e) { if (e.target === modal) { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); body.innerHTML=''; } });
-      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); body.innerHTML=''; } });
+      function closeModal() {
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        body.innerHTML = '';
+      }
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
     });
+
+    /* ── Burbuja Mizou ── */
+    (function () {
+      const btn        = document.getElementById('mizou-btn');
+      const panel      = document.getElementById('mizou-panel');
+      const tooltip    = document.getElementById('mizou-tooltip');
+      const closeHeader = document.getElementById('mizou-close-header');
+      let isOpen       = false;
+      let tooltipTimer = null;
+
+      /* Mostrar tooltip al cargar (después de 2 s) */
+      setTimeout(function () {
+        tooltip.classList.add('visible');
+        tooltipTimer = setTimeout(function () {
+          tooltip.classList.remove('visible');
+        }, 4000);
+      }, 2000);
+
+      function openPanel() {
+        isOpen = true;
+        panel.classList.add('open');
+        btn.classList.add('open');
+        tooltip.classList.remove('visible');
+        clearTimeout(tooltipTimer);
+        btn.setAttribute('aria-expanded', 'true');
+      }
+
+      function closePanel() {
+        isOpen = false;
+        panel.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+
+      btn.addEventListener('click', function () {
+        isOpen ? closePanel() : openPanel();
+      });
+
+      /* Botón X del encabezado del panel */
+      closeHeader.addEventListener('click', function () {
+        closePanel();
+      });
+
+      /* Mostrar tooltip al hacer hover cuando está cerrado */
+      btn.addEventListener('mouseenter', function () {
+        if (!isOpen) {
+          clearTimeout(tooltipTimer);
+          tooltip.classList.add('visible');
+        }
+      });
+      btn.addEventListener('mouseleave', function () {
+        if (!isOpen) {
+          tooltipTimer = setTimeout(function () {
+            tooltip.classList.remove('visible');
+          }, 800);
+        }
+      });
+
+      /* Cerrar con Escape */
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && isOpen) closePanel();
+      });
+    })();
   </script>
 
 </body>
 </html>
+HTMLEOF
