@@ -101,215 +101,7 @@
 
     footer { border-top: 1px solid var(--border-color); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.875rem; }
 
-    /* ============================================================
-       BURBUJA FLOTANTE ETIBOT — MIZOU
-       ============================================================ */
-
-    /* Botón burbuja */
-    #mizou-bubble {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-    }
-
-    /* Etiqueta tooltip encima de la burbuja */
-    #mizou-tooltip {
-      background: #1e1b4b;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 7px 14px;
-      border-radius: 20px;
-      white-space: nowrap;
-      box-shadow: 0 4px 14px rgba(76,29,149,0.25);
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      pointer-events: none;
-    }
-    #mizou-tooltip.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Botón circular */
-    #mizou-btn {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #4c1d95 0%, #2563eb 100%);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 24px rgba(76,29,149,0.40);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      position: relative;
-      flex-shrink: 0;
-    }
-    #mizou-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 10px 32px rgba(76,29,149,0.50);
-    }
-    #mizou-btn:active { transform: scale(0.96); }
-
-    /* Ícono del botón */
-    #mizou-btn .icon-chat,
-    #mizou-btn .icon-close {
-      position: absolute;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-    }
-    #mizou-btn .icon-chat  { opacity: 1; transform: scale(1); }
-    #mizou-btn .icon-close { opacity: 0; transform: scale(0.6); }
-    #mizou-btn.open .icon-chat  { opacity: 0; transform: scale(0.6); }
-    #mizou-btn.open .icon-close { opacity: 1; transform: scale(1); }
-
-    /* Punto de notificación (pulso) */
-    #mizou-btn .notif-dot {
-      position: absolute;
-      top: 3px;
-      right: 3px;
-      width: 13px;
-      height: 13px;
-      background: #f97316;
-      border: 2px solid #fff;
-      border-radius: 50%;
-      animation: pulse-dot 2s infinite;
-    }
-    @keyframes pulse-dot {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.35); opacity: 0.75; }
-    }
-    #mizou-btn.open .notif-dot { display: none; }
-
-    /* Panel del chatbot */
-    #mizou-panel {
-      position: fixed;
-      bottom: 102px;
-      right: 28px;
-      width: 380px;
-      height: 560px;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(76,29,149,0.28), 0 4px 16px rgba(0,0,0,0.12);
-      border: 1.5px solid rgba(76,29,149,0.18);
-      z-index: 9998;
-      display: flex;
-      flex-direction: column;
-      transform: scale(0.88) translateY(20px);
-      transform-origin: bottom right;
-      opacity: 0;
-      pointer-events: none;
-      transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1), opacity 0.22s ease;
-    }
-    #mizou-panel.open {
-      transform: scale(1) translateY(0);
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    /* Encabezado del panel */
-    #mizou-panel-header {
-      background: linear-gradient(135deg, #4c1d95 0%, #2563eb 100%);
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-    #mizou-panel-header .avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-    #mizou-panel-header .info { flex: 1; }
-    #mizou-panel-header .bot-name {
-      color: #fff;
-      font-weight: 700;
-      font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      line-height: 1.2;
-    }
-    #mizou-panel-header .bot-status {
-      color: rgba(255,255,255,0.75);
-      font-size: 11.5px;
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      margin-top: 1px;
-    }
-    #mizou-panel-header .bot-status::before {
-      content: '';
-      width: 7px;
-      height: 7px;
-      background: #4ade80;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    #mizou-panel-header .header-close {
-      background: rgba(255,255,255,0.15);
-      border: none;
-      border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #fff;
-      font-size: 14px;
-      transition: background 0.15s;
-      flex-shrink: 0;
-    }
-    #mizou-panel-header .header-close:hover { background: rgba(255,255,255,0.28); }
-
-    /* Iframe del chatbot */
-    #mizou-frame {
-      flex: 1;
-      width: 100%;
-      border: none;
-      background: #f9fafb;
-    }
-
-    /* Pie del panel */
-    #mizou-panel-footer {
-      background: #f9fafb;
-      border-top: 1px solid #e5e7eb;
-      padding: 7px 14px;
-      text-align: center;
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      color: #9ca3af;
-      flex-shrink: 0;
-    }
-    #mizou-panel-footer a { color: #6366f1; text-decoration: none; font-weight: 500; }
-    #mizou-panel-footer a:hover { text-decoration: underline; }
-
-    /* Responsive: en móvil el panel ocupa más pantalla */
-    @media (max-width: 480px) {
-      #mizou-panel {
-        width: calc(100vw - 24px);
-        height: 70vh;
-        right: 12px;
-        bottom: 90px;
-        border-radius: 14px;
-      }
-      #mizou-bubble { right: 16px; bottom: 16px; }
-    }
+    /* Responsive: en móvil el panel 
   </style>
 </head>
 <body>
@@ -540,58 +332,34 @@ mindmap
     </div>
   </div>
 
-  <!-- ============================================================
-       BURBUJA FLOTANTE ETIBOT — MIZOU
-       ============================================================ -->
-  <div id="mizou-bubble">
-    <!-- Tooltip -->
-    <div id="mizou-tooltip">¿Tienes dudas éticas? ¡Pregúntame!</div>
-
-    <!-- Botón circular -->
-    <button id="mizou-btn" aria-label="Abrir asistente EtiBot" title="EtiBot — Asistente de Ética en IA">
-      <!-- Ícono chat (visible por defecto) -->
-      <svg class="icon-chat" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
-        <path d="M12 2C6.477 2 2 6.163 2 11.333c0 2.528 1.11 4.81 2.907 6.477L4 22l4.383-1.333A10.87 10.87 0 0012 21.333C17.523 21.333 22 17.17 22 12S17.523 2 12 2z" fill="white"/>
-      </svg>
-      <!-- Ícono X (visible cuando está abierto) -->
-      <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24">
-        <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-      </svg>
-      <!-- Punto de notificación -->
-      <span class="notif-dot" aria-hidden="true"></span>
-    </button>
-  </div>
-
-  <!-- Panel del chatbot -->
-  <div id="mizou-panel" role="dialog" aria-label="EtiBot — Asistente de Ética en IA" aria-modal="true">
-    <!-- Encabezado -->
-    <div id="mizou-panel-header">
-      <div class="avatar">🤖</div>
-      <div class="info">
-        <div class="bot-name">EtiBot</div>
-        <div class="bot-status">En línea · Asistente de Ética en IA</div>
-      </div>
-      <button class="header-close" id="mizou-close-header" aria-label="Cerrar chatbot">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24">
-          <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Iframe Mizou -->
-    <iframe
-      id="mizou-frame"
-      src="https://mizou.com/preview-bot?ID=143327"
-      title="EtiBot — Asistente de Ética en IA"
-      allow="microphone"
-      loading="lazy">
-    </iframe>
-
-    <!-- Pie -->
-    <div id="mizou-panel-footer">
-      Powered by <a href="https://mizou.com" target="_blank" rel="noopener">Mizou</a> · Curso Ética en IA · UD
-    </div>
-  </div>
+  <!-- Burbuja flotante de Chatbot para Mizou -->
+  <a href="https://mizou.com/login-thread?ID=9y6ycWM8yS2RZppuQXkG8wycASZ1mFIwn7T0D2zqe9g-133693" 
+     target="_blank" 
+     rel="noopener noreferrer" 
+     title="Abrir Chatbot IA"
+     style="
+       position: fixed;
+       bottom: 20px;
+       right: 20px;
+       width: 60px;
+       height: 60px;
+       background-color: #4f46e5;
+       color: white;
+       border-radius: 50%;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       font-size: 28px;
+       text-decoration: none;
+       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+       z-index: 9999;
+       transition: transform 0.2s ease, background-color 0.2s ease;
+       cursor: pointer;
+     "
+     onmouseover="this.style.transform='scale(1.1)'; this.style.backgroundColor='#4338ca';"
+     onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#4f46e5';">
+     💬
+  </a>
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
@@ -636,69 +404,6 @@ mindmap
       modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
       document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
     });
-
-    /* ── Burbuja Mizou ── */
-    (function () {
-      const btn        = document.getElementById('mizou-btn');
-      const panel      = document.getElementById('mizou-panel');
-      const tooltip    = document.getElementById('mizou-tooltip');
-      const closeHeader = document.getElementById('mizou-close-header');
-      let isOpen       = false;
-      let tooltipTimer = null;
-
-      /* Mostrar tooltip al cargar (después de 2 s) */
-      setTimeout(function () {
-        tooltip.classList.add('visible');
-        tooltipTimer = setTimeout(function () {
-          tooltip.classList.remove('visible');
-        }, 4000);
-      }, 2000);
-
-      function openPanel() {
-        isOpen = true;
-        panel.classList.add('open');
-        btn.classList.add('open');
-        tooltip.classList.remove('visible');
-        clearTimeout(tooltipTimer);
-        btn.setAttribute('aria-expanded', 'true');
-      }
-
-      function closePanel() {
-        isOpen = false;
-        panel.classList.remove('open');
-        btn.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
-      }
-
-      btn.addEventListener('click', function () {
-        isOpen ? closePanel() : openPanel();
-      });
-
-      /* Botón X del encabezado del panel */
-      closeHeader.addEventListener('click', function () {
-        closePanel();
-      });
-
-      /* Mostrar tooltip al hacer hover cuando está cerrado */
-      btn.addEventListener('mouseenter', function () {
-        if (!isOpen) {
-          clearTimeout(tooltipTimer);
-          tooltip.classList.add('visible');
-        }
-      });
-      btn.addEventListener('mouseleave', function () {
-        if (!isOpen) {
-          tooltipTimer = setTimeout(function () {
-            tooltip.classList.remove('visible');
-          }, 800);
-        }
-      });
-
-      /* Cerrar con Escape */
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && isOpen) closePanel();
-      });
-    })();
   </script>
 
 </body>
