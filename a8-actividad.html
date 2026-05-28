@@ -394,14 +394,56 @@
 </head>
 <body>
 
+<style>
+  /* Contenedor azul que ocupa todo el ancho */
+  .hero {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #0056b3; /* Color azul */
+    color: white;
+  }
+
+  .hero h1 {
+    margin: 15px 0;
+  }
+
+  /* Estilo para la introducción */
+  .intro {
+    max-width: 700px;
+    margin: 40px auto;
+    text-align: center;
+    line-height: 1.6;
+    color: #333;
+    padding: 0 20px;
+  }
+
+  /* Centrado del nav */
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    background: #0960b8;
+  }
+</style>
+
 <nav>
-<a class="back-link" href="index.html">← Regresar al portafolio</a> 
+  <a class="back-link" href="index.html">← Regresar al portafolio</a> 
   <span class="nav-title">Actividad A8 · Diario Metacognitivo</span>
 </nav>
 
 <div class="hero">
   <div class="hero-badge">Nueva actividad · A8 · Transversal</div>
   <h1>Mi diario de <em>uso responsable</em><br>de la IA</h1>
+</div>
+
+<div class="intro">
+  <h2>Sobre esta actividad</h2>
+  <p>En este espacio documentaré mi proceso de aprendizaje y reflexión crítica sobre el uso de herramientas de Inteligencia Artificial. El objetivo es analizar no solo los resultados obtenidos, sino también las decisiones éticas y metodológicas tomadas al colaborar con la máquina en mis tareas académicas.</p>
 </div>
 
 <div class="week-nav" id="weekNav">

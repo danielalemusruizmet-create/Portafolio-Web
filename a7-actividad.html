@@ -491,10 +491,33 @@
 </head>
 <body>
 
+<style>
+  /* Asegura que el contenedor azul ocupe todo el ancho */
+  .hero {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el contenido horizontalmente */
+    text-align: center;
+    padding: 40px 20px;  /* Espaciado interno */
+    background-color: blue; /* Aquí va tu color azul */
+    color: white;         /* Asegura que el texto sea legible sobre el azul */
+  }
+
+  /* Opcional: centrar el nav también */
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+  }
+</style>
+
 <nav>
   <a class="back-link" href="index.html">← Regresar al portafolio</a>
   <span class="nav-title">Actividad A7 · Co-diseño Humano-IA</span>
 </nav>
+
 <div class="hero">
   <div class="hero-badge">Nueva actividad · A7 · Transversal</div>
   <h1>Co-diseño Humano-IA</h1>
